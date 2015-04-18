@@ -36,5 +36,5 @@ Built with the spirit of love and live by kuehkookies.
 -  ippa (https://github.com/ippa)
 -  theoallen (https://github.com/theoallen)
 
-
-##### _Love the life. Live the life._
+----
+###### _Love the life. Live the life._
