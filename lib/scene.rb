@@ -37,7 +37,7 @@ class Scene < GameState
 		@player.sword = nil
 
 		# Better to say this in Honoka's voice :D
-		# Honoka::Music.start!
+		Honoka::Music.start!
 
 		clear_game_terrains
 		clear_subweapon_projectile

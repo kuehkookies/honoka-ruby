@@ -39,14 +39,14 @@ module Honoka
     @current_bgm = nil
 
     def self.set(index)
-      $window.bgm = Sound["bgm/" + BGM[index] + ".ogg"]
+      $window.bgm = Song["bgm/" + BGM[index] + ".ogg"]
     end
 
     def self.start!; start; end
     def self.start
       return if $window.bgm.nil?
       return if @current_bgm == $window.bgm
-      $window.bgm.play
+      $window.bgm.play true
       @current_bgm = $window.bgm
     end
 
