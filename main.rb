@@ -9,13 +9,18 @@ include Chingu
 Dir[File.dirname(__FILE__) + '/lib/*.rb'].each {|file| require file }
 Dir[File.dirname(__FILE__) + '/lib/*/*.rb'].each {|file| require file }
 
-# ------------------------------------------------------
-# Main process
-# Everything started here.
-# ------------------------------------------------------
+# ==================================================================================
+# Main stage is here!
+#
+# The main process of the game. Also provided in this main process the timer logic,
+# event handler and caching processes.
+# ==================================================================================
+
 class Game < Chingu::Window
-	attr_accessor :level, :block, :lives, :hp, :maxhp, :ammo, :wp_level, :subweapon, :map, :transfer
-	attr_accessor :bgm, :enemies, :hazards, :terrains, :bridges, :decorations, :items, :subweapons
+	attr_accessor :level, :block, :lives, :hp, :maxhp, :ammo, :wp_level, :subweapon, 
+								:map, :transfer
+	attr_accessor :bgm, :enemies, :hazards, :terrains, :bridges, :decorations, 
+								:items, :subweapons
 	attr_accessor :paused, :waiting, :in_event, :passing_door
 	attr_accessor :frame, :frame_last_tick
 	
@@ -54,6 +59,9 @@ class Game < Chingu::Window
 		self.caption = "Scene0"
 	end
 
+	# --------------------------------------------------------------------------------
+  # This is believed to cache all assets, lightening up the game's processes.
+  # --------------------------------------------------------------------------------
 	def cache_assets
 		Dir[File.dirname(__FILE__) + 'media/sfx/*.*'].each do |file| 
 			Sound[file]
@@ -134,5 +142,7 @@ class Game < Chingu::Window
 	end
 end
 
-# This is important.
+# ==================================================================================
+# Honoka on stage!
+# ==================================================================================
 Game.new.show
