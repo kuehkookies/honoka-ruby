@@ -3,7 +3,7 @@
 # modules needed for the game
 # ------------------------------------------------------
 
-module Module_Game
+module Honoka
 	module Environment
 		GRAV_CAP = 8
 		GRAV_ACC = 0.4
@@ -13,13 +13,32 @@ module Module_Game
 	INVULNERABLE_DURATION = 24
 	ALLOWED_SUBWEAPON_THROWN = 1
 
-	BGM =[
-    "sol_morrington's theme",
-		"level03-binding",
-		"Gears_and_Chains"
-	]
-end
+  class Music
+  	BGM =[
+      "sol_morrington's theme",
+  		"level03-binding",
+  		"Gears_and_Chains"
+  	]
 
+    @current_bgm = nil
+
+    def self.set(index)
+      $window.bgm = Sound["bgm/" + BGM[index] + ".ogg"]
+    end
+
+    def self.start!; start; end
+    def self.start
+      return if $window.bgm.nil?
+      return if @current_bgm == $window.bgm
+      $window.bgm.play
+      @current_bgm = $window.bgm
+    end
+
+    def self.stop
+      # TODO: Add stop music. Honoka can't sing forever
+    end
+  end
+end
 
 # ------------------------------------------------------
 # Object helper and viewport setting
@@ -195,4 +214,61 @@ module Chingu
       
     end
   end
+end
+
+
+# ------------------------------------------------------
+# Maps
+# A simple implementation of block mapping
+# ------------------------------------------------------
+
+class Map
+  attr_reader :row, :col
+  attr_accessor :map
+  
+  def initialize(options = {})
+    @row = options[:row] || 0
+    @col = options[:col] || 0    
+    @map = options[:map] || [ [ ] ] 
+  end
+  
+  def current
+    @map[@row][@col] rescue nil
+  end
+
+  def current_level
+    @row rescue nil
+  end
+  
+  def current_block
+    @col rescue nil
+  end
+
+  def first_block
+    @col = 0
+    @map[@row][@col] rescue nil
+  end
+    
+  def next_block
+    @col += 1
+    current
+  end
+
+  def prev_block
+    @col -= 1
+    current
+  end
+
+  def next_level
+    @col = 0
+    @row += 1
+    current
+  end
+
+  def prev_level
+    @col = 0
+    @row -= 1
+    current
+  end
+
 end

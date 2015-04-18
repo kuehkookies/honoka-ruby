@@ -1,5 +1,7 @@
 class Level01 < Scene
 	def initialize
+		Honoka::Music.stop
+		
 		super
 		@area = [320,368]
 		@player.x = 16 # self.viewport.x+(@player.bb.width/2)+16 # 32

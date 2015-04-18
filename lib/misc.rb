@@ -33,21 +33,6 @@ class Misc_Flame < GameObject
 	end
 end
 
-class Shot < GameObject
-	traits :timer
-	def setup
-		@shot = Chingu::Animation.new(:file => "misc/shot.gif", :size => [10,11])
-		@shot.delay = 20
-		self.zorder = 300
-		@image = @shot.first
-	end
-	
-	def update
-		after(20){@image = @shot.last}
-		after(40){destroy}
-	end
-end
-
 # ------------------------------------------------------
 # Don't stop me now!
 # ------------------------------------------------------
@@ -84,7 +69,7 @@ class Ghoul_Sword < Hazard
 		self.rotation_center = :center_left
 		@velocity_x *= 1
 		@velocity_y *= 1
-		@max_velocity = Module_Game::Environment::GRAV_CAP
+		@max_velocity = Honoka::Environment::GRAV_CAP
 		@damage = 4
 		@rotation = 0
 		@color = Color.new(0xff88DD44)
@@ -92,7 +77,7 @@ class Ghoul_Sword < Hazard
 	end
 	
 	def die
-		@acceleration_y = Module_Game::Environment::GRAV_ACC # 0.3
+		@acceleration_y = Honoka::Environment::GRAV_ACC # 0.3
 		self.rotation_center = :center_center
 		@velocity_x = -@factor_x
 		@velocity_y = -6

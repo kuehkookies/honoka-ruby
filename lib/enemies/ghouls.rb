@@ -16,8 +16,8 @@ class Zombie < Enemy
 		@hp = 5
 		@damage = 3
 		@action = :idle
-		@acceleration_y = Module_Game::Environment::GRAV_ACC
-		@max_velocity = Module_Game::Environment::GRAV_CAP # 8
+		@acceleration_y = Honoka::Environment::GRAV_ACC
+		@max_velocity = Honoka::Environment::GRAV_CAP # 8
 		@velocity_y = 2
 		self.rotation_center = :bottom_center
 		@image = @animations[:walk].first
@@ -29,7 +29,7 @@ class Zombie < Enemy
 		self.each_collision(*$window.terrains) do |me, stone_wall|
 			next if me.y > stone_wall.y
 			if collision_at?(me.x, me.y)
-				me.velocity_y = Module_Game::Environment::GRAV_WHEN_LAND
+				me.velocity_y = Honoka::Environment::GRAV_WHEN_LAND
 				me.y = stone_wall.bb.top - 1 
 			end
 		end
@@ -39,11 +39,11 @@ class Zombie < Enemy
 		super
 		land?
 		destroy if self.parent.viewport.outside_game_area?(self)
-		unless self.velocity_y > Module_Game::Environment::GRAV_WHEN_LAND or @invincible or die?
+		unless self.velocity_y > Honoka::Environment::GRAV_WHEN_LAND or @invincible or die?
 			@image = @animations[:walk].next
 			@x += @speed*@factor_x
 		end
-		@image = @animations[:walk].first if @velocity_y > Module_Game::Environment::GRAV_WHEN_LAND
+		@image = @animations[:walk].first if @velocity_y > Honoka::Environment::GRAV_WHEN_LAND
 	end
 	
 	def die
@@ -58,7 +58,7 @@ class Zombie < Enemy
 			after(5){destroy}
 		else
 			@invincible = true
-			after(Module_Game::INVULNERABLE_DURATION) { @invincible = false; } # unpause! }
+			after(Honoka::INVULNERABLE_DURATION) { @invincible = false; } # unpause! }
 		end
 	end
 end
@@ -80,8 +80,8 @@ class Ghoul < Enemy
 		@hp = 6
 		@damage = 3
 		@action = :idle
-		@acceleration_y = Module_Game::Environment::GRAV_ACC
-		@max_velocity = Module_Game::Environment::GRAV_CAP # 8
+		@acceleration_y = Honoka::Environment::GRAV_ACC
+		@max_velocity = Honoka::Environment::GRAV_CAP # 8
 		@velocity_y = 2
 		self.rotation_center = :bottom_center
 		@image = @animations[:walk].first
@@ -93,7 +93,7 @@ class Ghoul < Enemy
 		self.each_collision(*$window.terrains) do |me, stone_wall|
 			next if me.y > stone_wall.y
 			if collision_at?(me.x, me.y)
-				me.velocity_y = Module_Game::Environment::GRAV_WHEN_LAND
+				me.velocity_y = Honoka::Environment::GRAV_WHEN_LAND
 				me.y = stone_wall.bb.top - 1 
 			end
 		end
@@ -147,7 +147,7 @@ class Ghoul < Enemy
 		
 		unless die? or @action == :attack
 			@sword.x = @x+(3*@sword.factor_x)
-			@sword.y = @y-6 if @velocity_y > Module_Game::Environment::GRAV_WHEN_LAND
+			@sword.y = @y-6 if @velocity_y > Honoka::Environment::GRAV_WHEN_LAND
 			@sword.factor_x = @factor_x
 		end
 		
@@ -162,14 +162,14 @@ class Ghoul < Enemy
 				#~ after(400){
 				after(24){
 					@last_x = @x
-					@image = @animations[:walk].first if @velocity_y > Module_Game::Environment::GRAV_WHEN_LAND
+					@image = @animations[:walk].first if @velocity_y > Honoka::Environment::GRAV_WHEN_LAND
 				}
 			else
-				unless self.velocity_y > Module_Game::Environment::GRAV_WHEN_LAND or @invincible or @gap_x.abs < 32
+				unless self.velocity_y > Honoka::Environment::GRAV_WHEN_LAND or @invincible or @gap_x.abs < 32
 					@image = @animations[:walk].next
 					@x += @speed*@factor_x
 				end
-				@image = @animations[:walk].first if @velocity_y > Module_Game::Environment::GRAV_WHEN_LAND
+				@image = @animations[:walk].first if @velocity_y > Honoka::Environment::GRAV_WHEN_LAND
 			end
 		end
 	end
@@ -192,7 +192,7 @@ class Ghoul < Enemy
 			after(24){destroy}
 		else
 			@invincible = true
-			after(Module_Game::INVULNERABLE_DURATION) { @invincible = false; } # unpause! }
+			after(Honoka::INVULNERABLE_DURATION) { @invincible = false; } # unpause! }
 		end
 	end
 end

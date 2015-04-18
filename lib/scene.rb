@@ -18,7 +18,10 @@ class Scene < GameState
 		player_start
 		@hud = HUD.create(:player => @player) # if @hud == nil
 		@player.sword = nil
-		$window.bgm.play(0.6) unless $window.bgm.nil?
+
+		# Better to say this in Honoka's voice :D
+		Honoka::Music.start!
+
 		clear_game_terrains
 		clear_subweapon_projectile
 		game_objects.select { |game_object| !game_object.is_a? Player }.each { |game_object| game_object.destroy }

@@ -1,6 +1,7 @@
 class Level00 < Scene
 	def initialize
-		$window.bgm = Sound["bgm/sol_morrington's theme.ogg"]
+		Honoka::Music.set(0)
+
 		super
 		@area = [512, 240]
 		self.viewport.game_area = [0,0,@area[0],@area[1]]

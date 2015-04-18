@@ -82,7 +82,7 @@ class Enemy < GameObject
 	end
 	
 	def update
-		@velocity_y = Module_Game::Environment::GRAV_CAP if @velocity_y > Module_Game::Environment::GRAV_CAP
+		@velocity_y = Honoka::Environment::GRAV_CAP if @velocity_y > Honoka::Environment::GRAV_CAP
 		check_collision
 	end
 end

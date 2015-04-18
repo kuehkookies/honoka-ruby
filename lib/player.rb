@@ -50,8 +50,8 @@ class Player < Chingu::GameObject
 		@subattack = false
 		@sub = [:knife, :axe, :torch, :rang]
 		self.zorder = 250
-		@acceleration_y = Module_Game::Environment::GRAV_ACC
-		self.max_velocity = Module_Game::Environment::GRAV_CAP
+		@acceleration_y = Honoka::Environment::GRAV_ACC
+		self.max_velocity = Honoka::Environment::GRAV_CAP
 		self.rotation_center = :bottom_center
 		
 		# Idle animation? Idle animation.
@@ -132,7 +132,7 @@ class Player < Chingu::GameObject
 	end
 	
 	def attacking_on_ground
-		@action == :attack && @status == :stand && @velocity_y < Module_Game::Environment::GRAV_WHEN_LAND + 1
+		@action == :attack && @status == :stand && @velocity_y < Honoka::Environment::GRAV_WHEN_LAND + 1
 	end
 	
 	def damaged
@@ -204,9 +204,9 @@ class Player < Chingu::GameObject
 			if jumping or on_wall or falling
 				@image = @animations[:stand].first unless Sword.size >= 1
 				@status = :stand 
-			elsif @velocity_y >= Module_Game::Environment::GRAV_WHEN_LAND + 1 # 2
+			elsif @velocity_y >= Honoka::Environment::GRAV_WHEN_LAND + 1 # 2
 				@image = @animations[:stand].first unless Sword.size >= 1
-				@velocity_y = Module_Game::Environment::GRAV_WHEN_LAND # 1
+				@velocity_y = Honoka::Environment::GRAV_WHEN_LAND # 1
 			end
 		end
 		@jumping = false if @jumping
@@ -257,7 +257,7 @@ class Player < Chingu::GameObject
 			}
 			after(15){ @action = :stand; @velocity_y = -2 if @jumping; @y_flag = @y; @velocity_x = 0}
 		else
-			return if self.velocity_y > Module_Game::Environment::GRAV_WHEN_LAND # 1
+			return if self.velocity_y > Honoka::Environment::GRAV_WHEN_LAND # 1
 			return if crouching or jumping or damaged or die? or not idle or on_wall
 			@status = :jump
 			@jumping = true
@@ -266,7 +266,7 @@ class Player < Chingu::GameObject
 			during(9){
 				@vert_jump = true if !holding_any?(:left, :right)
 				if holding?(:z) && @jumping && !disabled
-					@velocity_y = -4  unless @velocity_y <=  -Module_Game::Environment::GRAV_CAP || !@jumping
+					@velocity_y = -4  unless @velocity_y <=  -Honoka::Environment::GRAV_CAP || !@jumping
 				else
 					@velocity_y = -1 unless !@jumping
 				end
@@ -291,10 +291,10 @@ class Player < Chingu::GameObject
 	end
 	
 	def limit_subweapon
-		Knife.size >= Module_Game::ALLOWED_SUBWEAPON_THROWN || 
-		Axe.size >= Module_Game::ALLOWED_SUBWEAPON_THROWN || 
-		Torch.size >= Module_Game::ALLOWED_SUBWEAPON_THROWN || 
-		Rang.size >= Module_Game::ALLOWED_SUBWEAPON_THROWN
+		Knife.size >= Honoka::ALLOWED_SUBWEAPON_THROWN || 
+		Axe.size >= Honoka::ALLOWED_SUBWEAPON_THROWN || 
+		Torch.size >= Honoka::ALLOWED_SUBWEAPON_THROWN || 
+		Rang.size >= Honoka::ALLOWED_SUBWEAPON_THROWN
 	end
 	
 	def land?
@@ -313,7 +313,7 @@ class Player < Chingu::GameObject
 				else
 					land
 				end
-				me.velocity_y = Module_Game::Environment::GRAV_WHEN_LAND # 1
+				me.velocity_y = Honoka::Environment::GRAV_WHEN_LAND # 1
 				me.y = stone_wall.bb.top - 1 # unless me.y > stone_wall.y
 			end
 		end
@@ -324,7 +324,7 @@ class Player < Chingu::GameObject
 				else
 					land
 				end
-				me.velocity_y = Module_Game::Environment::GRAV_WHEN_LAND # 1
+				me.velocity_y = Honoka::Environment::GRAV_WHEN_LAND # 1
 				me.y = bridge.bb.top - 1
 			end
 		end
@@ -540,13 +540,13 @@ class Player < Chingu::GameObject
 			$window.ammo -= 1
 			case $window.subweapon
 				when :knife
-					Knife.create(:x => @x+(10*factor_x), :y => @y-(self.height/2), :velocity => @direction, :factor_x => factor_x) unless Knife.size >= Module_Game::ALLOWED_SUBWEAPON_THROWN
+					Knife.create(:x => @x+(10*factor_x), :y => @y-(self.height/2), :velocity => @direction, :factor_x => factor_x) unless Knife.size >= Honoka::ALLOWED_SUBWEAPON_THROWN
 				when :axe
-					Axe.create(:x => @x+(8*factor_x), :y => @y-(self.height/2)-4, :velocity => @direction, :factor_x => factor_x) unless Axe.size >= Module_Game::ALLOWED_SUBWEAPON_THROWN
+					Axe.create(:x => @x+(8*factor_x), :y => @y-(self.height/2)-4, :velocity => @direction, :factor_x => factor_x) unless Axe.size >= Honoka::ALLOWED_SUBWEAPON_THROWN
 				when :torch
-					Torch.create(:x => @x+(12*factor_x), :y => @y-(self.height/2), :velocity => @direction, :factor_x => factor_x) unless Torch.size >= Module_Game::ALLOWED_SUBWEAPON_THROWN
+					Torch.create(:x => @x+(12*factor_x), :y => @y-(self.height/2), :velocity => @direction, :factor_x => factor_x) unless Torch.size >= Honoka::ALLOWED_SUBWEAPON_THROWN
 				when :rang
-					Rang.create(:x => @x+(12*factor_x), :y => @y-(self.height/2), :velocity => @direction, :factor_x => factor_x) unless Rang.size >= Module_Game::ALLOWED_SUBWEAPON_THROWN
+					Rang.create(:x => @x+(12*factor_x), :y => @y-(self.height/2), :velocity => @direction, :factor_x => factor_x) unless Rang.size >= Honoka::ALLOWED_SUBWEAPON_THROWN
 			end
 			Sound["sfx/swing.wav"].play
 		}
@@ -570,7 +570,7 @@ class Player < Chingu::GameObject
 	
 	def update
 		land?
-		@velocity_y = Module_Game::Environment::GRAV_CAP if @velocity_y > Module_Game::Environment::GRAV_CAP
+		@velocity_y = Honoka::Environment::GRAV_CAP if @velocity_y > Honoka::Environment::GRAV_CAP
 		if @x == @last_x
 			@running = false
 			@animations[:walk].reset
@@ -585,7 +585,7 @@ class Player < Chingu::GameObject
 			end
 		end
 		check_last_direction
-		if @velocity_y > Module_Game::Environment::GRAV_WHEN_LAND + 1 && !jumping && idle && !on_wall
+		if @velocity_y > Honoka::Environment::GRAV_WHEN_LAND + 1 && !jumping && idle && !on_wall
 			@status = :fall unless disabled
 			@image = @animations[13] if @velocity_y <= 3
 			@image = @animations[:jump].last if @velocity_y > 3
@@ -593,6 +593,6 @@ class Player < Chingu::GameObject
 		self.each_collision(Rang) do |me, weapon|
 			weapon.die
 		end
-		@y_flag = @y if @velocity_y == Module_Game::Environment::GRAV_WHEN_LAND && !@jumping
+		@y_flag = @y if @velocity_y == Honoka::Environment::GRAV_WHEN_LAND && !@jumping
 	end
 end

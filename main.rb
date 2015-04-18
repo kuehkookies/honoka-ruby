@@ -22,17 +22,6 @@ class Game < Chingu::Window
 	def initialize
 		super(640,480)
 		
-		Sound["sfx/swing.wav"]
-		Sound["sfx/klang.wav"]
-		Sound["sfx/hit.wav"]
-		Sound["sfx/grunt.ogg"]
-		Sound["sfx/step.wav"]
-		Sound["sfx/rifle.ogg"]
-
-		Sound["bgm/sol_morrington's theme.ogg"]
-		
-		Font["runescape_uf_regular.ttf", 16]
-		
 		@frame = 0
 		@frame_last_tick = 0
 		
@@ -55,16 +44,25 @@ class Game < Chingu::Window
 		set_terrains
 		set_enemies
 		set_subweapons
-		#~ self.factor = 2
 		@transfer = true
 		transitional_game_state(Transitional, :speed => 32)
 		blocks = [
 			[Level00, Level01]
 		]
-		@bgm = Module_Game::BGM[@level]
 		@map = Map.new(:map =>blocks, :row => @level-1, :col => @block-1)
 		switch_game_state(@map.current)
 		self.caption = "Scene0"
+	end
+
+	def cache_assets
+		Dir[File.dirname(__FILE__) + 'media/sfx/*.*'].each do |file| 
+			Sound[file]
+		end
+		Dir[File.dirname(__FILE__) + 'media/bgm/*.*'].each do |file| 
+			Song[file]
+		end
+		
+		Font["runescape_uf_regular.ttf", 16]
 	end
 	
 	def setup_stage
@@ -97,7 +95,6 @@ class Game < Chingu::Window
 	
 	def setup_player
 		@hp = @maxhp = 16
-		#~ @lives = 3 unless @lives > 0
 		@ammo = 10
 		@wp_level = 1
 		@subweapon = :none
@@ -125,11 +122,11 @@ class Game < Chingu::Window
 		@items = []
 	end
 	
-	def draw
-		scale(2) do
-		   super
-		end
-	end
+	# def draw
+	# 	scale(2) do
+	# 	   super
+	# 	end
+	# end
 	
 	def update
 		@frame += 1 unless @paused
