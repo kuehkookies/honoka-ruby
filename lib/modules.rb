@@ -20,6 +20,11 @@ module Module_Game
 	]
 end
 
+
+# ------------------------------------------------------
+# Object helper and viewport setting
+# ------------------------------------------------------
+
 module Chingu
 	class GameObjectList
 		def grep(*object)
@@ -53,6 +58,12 @@ module Chingu
 		end
 	end
 end
+
+# ------------------------------------------------------
+# Timer module
+# Instead of using miliseconds, Honoka uses frame per
+# second (FPS)
+# ------------------------------------------------------
 
 module Chingu
   module Traits

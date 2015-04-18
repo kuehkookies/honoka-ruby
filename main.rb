@@ -125,11 +125,11 @@ class Game < Chingu::Window
 		@items = []
 	end
 	
-	# def draw
-	# 	scale(2) do
-	# 	   super
-	# 	end
-	# end
+	def draw
+		scale(2) do
+		   super
+		end
+	end
 	
 	def update
 		@frame += 1 unless @paused

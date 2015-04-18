@@ -106,39 +106,3 @@ class Ghoul_Sword < Hazard
 		@angle += @rotation
 	end
 end
-
-class Bullet_Musket < Hazard
-	trait :bounding_box
-	def setup
-		super
-		@image = Image["weapons/bullet-musket.png"]
-		@damage = 3
-		self.rotation_center = :left_center
-		self.factor_x *= 6
-		self.alpha = 192
-	end
-	def update
-		super
-		after(60){destroy}
-	end
-end
-
-class Reaper_Scite < Hazard
-	trait :bounding_circle, :debug => false
-	def setup
-	#~ def initialize
-		super
-		@image = Image["weapons/reaper-scite.png"]
-		@damage = 4
-		#~ @collidable = false
-		self.rotation_center = :center
-	end
-	
-	def update
-		self.each_collision(@player) do |enemy, me|
-			if collision_at?(me.x, me.y)
-				me.knockback(@damage) unless me.invincible 
-			end
-		end
-	end
-end

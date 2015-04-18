@@ -18,8 +18,8 @@ class Player < Chingu::GameObject
 			:holding_up => :steady,
 			[:released_left, :released_right, :released_down, :released_up] => :stand,
 			:z => :jump,
-			# :x => :fire,
-			# :c => :change_subweapon
+			:x => :fire,
+			:c => :change_subweapon
 		}
 		@animations = Chingu::Animation.new( :file => "player/mark.gif", :size => [32,32])
 		@animations.frame_names = {
