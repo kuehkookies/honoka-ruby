@@ -51,7 +51,7 @@ module Honoka
     end
 
     def self.stop
-      # Stop singing, okay?
+      $window.bgm.stop
     end
   end
 end

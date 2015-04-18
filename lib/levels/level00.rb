@@ -38,7 +38,7 @@ class Level00 < Scene
 			$window.in_event = true
 			@player.move(2,0)
 			if @player.x >= @area[0] + 32
-				to_next_block; $window.in_event = false
+				to_next_block; $window.in_event = false 
 			end
 		end
 				
