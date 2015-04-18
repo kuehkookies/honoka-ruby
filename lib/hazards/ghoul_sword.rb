@@ -1,3 +1,12 @@
+# ==================================================================================
+# Class Ghoul_Sword
+#     Part of Hazard
+# 
+# Here is sample of harmful object, whose purpose is to subdue our Actors. It can 
+# be stationery, but in this case, the object is carried by Ghoul, variant of 
+# Zombie.
+# ==================================================================================
+
 class Ghoul_Sword < Hazard
 	trait :bounding_box, :debug => false
 	

@@ -1,3 +1,14 @@
+# ==================================================================================
+# Class Ball
+#     Part of Enemy
+# 
+# Here is sample of unharmful enemy which drops loot when killed. Akin to candles
+# in Castlevania, or treasure boxes in Duck Tales.
+# 
+# Loots should be an Item, but there is no exception for another thing like Enemy
+# to appear when it's killed.
+# ==================================================================================
+
 class Ball < Enemy
 	trait :bounding_box, :debug => false
 	def setup

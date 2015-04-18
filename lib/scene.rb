@@ -12,6 +12,8 @@
 # 
 # Scene maps is defined by the .yml file in /levels folder, and can be changed via 
 # Scene Editor or edit it manually (which I don't recommend).
+# 
+# Maybe later known as part of SceneManager (Eli)
 #
 # TODO: 
 # Make the local Edit function in each stages.

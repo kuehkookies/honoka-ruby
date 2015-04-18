@@ -1,7 +1,13 @@
-# ------------------------------------------------------
-# Miscellaneous things
-# TODO: separating animations and hazards
-# ------------------------------------------------------
+# ==================================================================================
+# Useful effects
+#     Part of GameObject
+# 
+# Useful objects to add more fancy in certain segments. Here are sample of
+# animation effects when enemies got hit and when they're dead.
+#
+# What else Honoka needs when on stage? :P
+# ==================================================================================
+
 class Spark < GameObject
 	traits :timer
 	def setup

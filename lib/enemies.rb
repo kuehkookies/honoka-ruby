@@ -1,8 +1,14 @@
-# ------------------------------------------------------
-# Enemies
-# Everything related to things against our hero
-# written here
-# ------------------------------------------------------
+# ==================================================================================
+# Class Enemies
+#     Part of GameObject
+# 
+# Here defined the base logics for enemies, also some other functions like hazardous
+# flag and invincibility flag.
+#
+# To create and define enemies, make it in /enemies folder. Leave this file as 
+# mother of all /enemies files.
+# ==================================================================================
+
 class Enemy < GameObject
 	traits :collision_detection, :effect, :velocity, :timer
 	attr_reader :invincible, :hp, :damage, :harmful

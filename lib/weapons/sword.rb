@@ -1,7 +1,11 @@
-# ------------------------------------------------------
-# Weapons
-# When you need self-defense
-# ------------------------------------------------------
+# ==================================================================================
+# Class Sword
+#     Part of GameObject
+# 
+# A kinda large bar of sharpened steel. A sample of basic, upgradable weapon.
+# The parameter depends on Actor's strike level.
+# ==================================================================================
+
 class Sword < GameObject
 	trait :bounding_box, :debug => false
 	traits :collision_detection, :timer, :velocity

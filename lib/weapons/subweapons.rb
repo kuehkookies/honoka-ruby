@@ -1,7 +1,11 @@
-# ------------------------------------------------------
-# Le Projectile
-# When you might need something to throw...
-# ------------------------------------------------------
+# ==================================================================================
+# Class Subweapons
+#     Part of GameObject
+# 
+# Actors can't rely on single weapon. This is an option to provide another set of
+# weapon Actor can use, including examples in traditional Castlevanian 
+# vampire-hunting tradition.
+# ==================================================================================
 class Subweapons < GameObject
 	trait :bounding_box, :scale => [1, 1],:debug => false
 	traits :collision_detection, :timer, :velocity
@@ -19,6 +23,11 @@ class Subweapons < GameObject
 		destroy
 	end
 end
+
+
+# ==================================================================================
+# And here goes the samples. Make the Belmonts proud, Honoka!
+# ==================================================================================
 
 class Knife < Subweapons
 	attr_accessor :damage

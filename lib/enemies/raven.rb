@@ -1,6 +1,10 @@
-# ------------------------------------------------------
-# Raven
-# ------------------------------------------------------
+# ==================================================================================
+# Class Raven
+#     Part of Enemy
+# 
+# Here is sample of harmful enemy with absolute passability, meaning it can through
+# walls and solids. Also, this demonstrates a flying-type enemy.
+# ==================================================================================
 class Raven < Enemy
 	trait :bounding_box, :debug => false
 	

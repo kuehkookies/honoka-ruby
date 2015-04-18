@@ -1,3 +1,14 @@
+# ==================================================================================
+# Class Level00
+#     Part of Scene
+# 
+# Sample stage with multiple backdrops, and a transition when Actor reaches the
+# endmost of the stage.
+#
+# Once reached the transition point, Actor will be transferred into next block, 
+# calling Scene superclass method.
+# ==================================================================================
+
 class Level00 < Scene
 	def initialize
 		Honoka::Music.set(0)
@@ -9,8 +20,10 @@ class Level00 < Scene
 		@player.x = 64
 		@player.y = 240
 		@player.y_flag = @player.y
-		@backdrop << {:image => "parallax/panorama1-1.png", :damping => 10, :repeat_x => true, :repeat_y => false}
-		@backdrop << {:image => "parallax/bg1-1.png", :damping => 5, :repeat_x => true, :repeat_y => false}
+		@backdrop << {:image => "parallax/panorama1-1.png", :damping => 10, 
+								  :repeat_x => true, :repeat_y => false}
+		@backdrop << {:image => "parallax/bg1-1.png", :damping => 5, :repeat_x => true, 
+									:repeat_y => false}
 		update
 	end
 	
@@ -21,7 +34,7 @@ class Level00 < Scene
 	 
 	def update
 		super
-		if @player.x >= @area[0]-(@player.bb.width) - 2 and @player.idle # and !$window.waiting
+		if @player.x >= @area[0]-(@player.bb.width) - 2 and @player.idle
 			$window.in_event = true
 			@player.move(2,0)
 			if @player.x >= @area[0] + 32

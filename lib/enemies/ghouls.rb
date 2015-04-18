@@ -1,6 +1,10 @@
-# ------------------------------------------------------
-# Ghouls
-# ------------------------------------------------------
+# ==================================================================================
+# Class Zombie
+#     Part of Enemy
+# 
+# Here is sample of harmful enemy with simple movement. Ghoul variant wields a 
+# small sword, which is a Hazard object.
+# ==================================================================================
 class Zombie < Enemy
 	trait :bounding_box, :scale => [0.5, 0.7], :debug => false
 	def setup

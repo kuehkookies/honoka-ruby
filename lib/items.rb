@@ -1,7 +1,17 @@
-# ------------------------------------------------------
-# Items
-# Collectibles and valueables
-# ------------------------------------------------------
+# ==================================================================================
+# Class Items
+#     Part of GameObject
+# 
+# Here defined the logics for Items classes. Items are variable objects which has
+# variable uses like collectible items (i.e. coins in Mario, hearts in Castlevania)
+#
+# To define the stage and setting start point for Actor, make the stages 
+# in /items folder. Leave this file as mother of all /items files.
+#
+# TODO: 
+# Make variable definitions depending on the game setting
+# ==================================================================================
+
 class Items < GameObject
   trait :bounding_box, :debug => false
   traits :collision_detection, :velocity, :timer

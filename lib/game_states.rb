@@ -1,8 +1,11 @@
-# ------------------------------------------------------
-# Game States
-# Handles special game state i.e. pause or
-# transition between blocks
-# ------------------------------------------------------
+# ==================================================================================
+# Useful GameStates Collection
+#     Part of GameState
+# 
+# Some useful states like Pause and Transition goes here. Maybe later known as part 
+# of SceneManager (Eli)
+# ==================================================================================
+
 class Pause < GameState
 	def initialize(options={})
 		super

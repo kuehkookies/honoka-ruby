@@ -1,3 +1,10 @@
+# ==================================================================================
+# Class Drops
+#     Part of Items
+# 
+# Here is sample of collectibles which change Actor's subweapons. 
+# ==================================================================================
+
 class Item_Sword < Items
 	def setup; super; end
 	def die
