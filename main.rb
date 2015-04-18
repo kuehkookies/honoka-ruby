@@ -23,6 +23,7 @@ class Game < Chingu::Window
 								:items, :subweapons
 	attr_accessor :paused, :waiting, :in_event, :passing_door
 	attr_accessor :frame, :frame_last_tick
+	attr_accessor :selected_actor, :actor_temp_data
 	
 	def initialize
 		super(640,480)
@@ -30,6 +31,9 @@ class Game < Chingu::Window
 		@frame = 0
 		@frame_last_tick = 0
 		
+		@selected_actor = nil
+		@actor_temp_data = []
+
 		@bgm = nil
 		@enemies = []
 		@hazards = []
@@ -44,8 +48,8 @@ class Game < Chingu::Window
 		@passing_door = false
 		
 		retrofy # THE classy command!
-		setup_player
 		setup_stage
+		set_actor
 		set_terrains
 		set_enemies
 		set_subweapons
@@ -73,14 +77,9 @@ class Game < Chingu::Window
 		Font["runescape_uf_regular.ttf", 16]
 	end
 	
-	def setup_stage
-		@level = 1
-		@block = 1 # 1
-	end
 	
 	def reset_stage
 		transferring
-		setup_player
 		switch_game_state($window.map.first_block)
 		@block = 1
 	end
@@ -101,13 +100,15 @@ class Game < Chingu::Window
 		@frame = 0
 	end
 	
-	def setup_player
-		@hp = @maxhp = 16
-		@ammo = 10
-		@wp_level = 1
-		@subweapon = :none
+	def set_actor
+		@selected_actor = Mark
 	end
-	
+
+	def setup_stage
+		@level = 1
+		@block = 1 # 1
+	end
+
 	def set_terrains
 		@terrains = Solid.descendants
 		@bridges = Bridge.descendants
@@ -123,7 +124,21 @@ class Game < Chingu::Window
 	def set_subweapons
 		@subweapons = Subweapons.descendants
 	end
+
+	def make_temp_data(actor)
+		@actor_temp_data = [
+				actor.hp,
+				actor.ammo,
+				actor.level,
+				actor.damage, 
+				actor.subweapon
+			]
+	end
 	
+	def clear_temp_data
+		@actor_temp_data.clear
+	end
+
 	def clear_cache
 		@enemies = []
 		@hazards = []

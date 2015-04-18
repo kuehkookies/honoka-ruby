@@ -89,7 +89,7 @@ class Transitional < Chingu::GameState
 		
 		@new_game_state = new_game_state
 		@new_game_state = new_game_state.new if new_game_state.is_a? Class        
-		p @new_game_state
+		p @new_game_state if options[:debug]
 	end
 
 	def setup

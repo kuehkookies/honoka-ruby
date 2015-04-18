@@ -99,16 +99,16 @@ class Scene < GameState
 	end
 	
 	def player_start
-		@player = Mark.create
-		@player.reset_state
+		@player = $window.selected_actor.create
+		@player.reset_state($window.actor_temp_data)
 	end
 	
 	def to_next_block
 		clear_game_terrains
 		@player.status = :blink
 		@player.sword.die if @player.sword != nil
+		$window.make_temp_data(@player)
 		$window.transfer
-		#~ $window.block += 1
 		switch_game_state($window.map.next_block)
 		$window.block += 1
 	end
@@ -117,6 +117,7 @@ class Scene < GameState
 		@player.status = :blink
 		@player.sword.die if @player.sword != nil
 		clear_game_terrains
+		$window.make_temp_data(@player)
 		$window.transfer
 		switch_game_state($window.map.next_level)
 		$window.level += 1

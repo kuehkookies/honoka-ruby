@@ -8,12 +8,14 @@
 # ==================================================================================
 
 class Mark < Actor
-	attr_reader 	:direction, :invincible, :last_x 
-	attr_accessor	:y_flag, :sword, :status, :action, :running, :animations
+	attr_reader 	:direction, :invincible, :last_x
+	attr_accessor	:y_flag, :sword, :status, :action, :running, :animations, :subweapon
 	trait :bounding_box, :scale => [0.3, 0.8], :debug => false
 	traits :timer, :collision_detection, :velocity
 	
 	def setup
+		super
+
 		self.input = {
 			:holding_left => :move_left,
 			:holding_right => :move_right,
@@ -79,7 +81,10 @@ class Mark < Actor
 	
 
 	# Reset player's flags. Useful when respawning Mark on Scene.
-	def reset_state
+	def reset_state(value)
+		@subweapon = value.last || :none
+
+		super(value)
 		@status = :stand; @action = :stand
 		@sword = nil
 		@invincible = false
@@ -94,8 +99,8 @@ class Mark < Actor
 	end
 	
 	def die?
-		return false if $window.hp > 0
-		return true if $window.hp <= 0
+		return false if @hp > 0
+		return true if @hp <= 0
 	end
 	
 	def disabled
@@ -163,7 +168,7 @@ class Mark < Actor
 	end
 	
 	def holding_subweapon?
-		$window.subweapon != :none
+		@subweapon != :none
 	end
 	
 	def in_event
@@ -340,8 +345,8 @@ class Mark < Actor
 		@action = :stand
 		@sword.destroy if @sword != nil
 		Sound["sfx/grunt.ogg"].play(0.8)
-		$window.hp -= damage # 3
-		$window.hp = 0 if $window.hp <= 0
+		@hp -= damage # 3
+		@hp = 0 if @hp <= 0
 		self.velocity_x = (self.factor_x*-1)
 		self.velocity_y = -4
 		land?
@@ -362,7 +367,7 @@ class Mark < Actor
 	end
 
 	def dead
-		$window.hp = 0
+		@hp = 0
 		@sword.die if @sword != nil
 		@status = :die
 		@image = @animations[:stand].last
@@ -434,8 +439,8 @@ class Mark < Actor
 		unless disabled or raising_sword or walljumping or die?
 			if holding?(:up) and holding_subweapon?
 				unless attacking || crouching || limit_subweapon
-					attack_sword if $window.ammo == 0
-					attack_subweapon if $window.ammo != 0
+					attack_sword if @ammo == 0
+					attack_subweapon if @ammo != 0
 				end
 			else
 				unless Sword.size >= 1
@@ -447,7 +452,7 @@ class Mark < Actor
 	
 	def change_subweapon
 		@sub = @sub.rotate
-		$window.subweapon = @sub[0]
+		@subweapon = @sub[0]
 	end
 	
 	def attack_sword
@@ -538,8 +543,8 @@ class Mark < Actor
 			@image = @animations[:shoot][1]
 		}.then{
 			@image = @animations[:shoot][2]
-			$window.ammo -= 1
-			case $window.subweapon
+			@ammo -= 1
+			case @subweapon
 				when :knife
 					Knife.create(:x => @x+(10*factor_x), :y => @y-(self.height/2), :velocity => @direction, :factor_x => factor_x) unless Knife.size >= Honoka::ALLOWED_SUBWEAPON_THROWN
 				when :axe

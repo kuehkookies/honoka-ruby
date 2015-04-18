@@ -15,15 +15,15 @@ class Sword < GameObject
 	def initialize(options={})
 		super
 		@player = parent.player
-		@image = Image["weapons/sword-#{$window.wp_level}.gif"]
+		@image = Image["weapons/sword-#{@player.level}.gif"]
 		self.rotation_center = :center_left
 		@zorder = @player.zorder
 		@velocity_x *= 1
 		@velocity_y *= -1 if self.velocity_y > 0
 		@velocity_y *= 1
 		@collidable = false
-		@damage = $window.wp_level*2
-		@damage = 4 if $window.wp_level >= 3
+		@damage = @player.damage*2
+		@damage = 4 if @player.level >= 3
 		cache_bounding_box
 	end
 	
