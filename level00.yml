@@ -1,0 +1,17 @@
+---
+- Ball:
+    :x: 200.0
+    :y: 176.0
+    :angle: 0
+    :zorder: 200
+    :factor_x: 1.0
+    :factor_y: 1.0
+    :alpha: 255
+- Ball:
+    :x: 440.0
+    :y: 176.0
+    :angle: 0
+    :zorder: 200
+    :factor_x: 1.0
+    :factor_y: 1.0
+    :alpha: 255

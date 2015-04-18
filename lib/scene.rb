@@ -37,11 +37,11 @@ class Scene < GameState
 		@player.sword = nil
 
 		# Better to say this in Honoka's voice :D
-		Honoka::Music.start!
+		# Honoka::Music.start!
 
 		clear_game_terrains
 		clear_subweapon_projectile
-		game_objects.select { |game_object| !game_object.is_a? Player }.each { |game_object| game_object.destroy }
+		game_objects.select { |game_object| !game_object.is_a? Actor }.each { |game_object| game_object.destroy }
 		load_game_objects(:file => @file) unless self.class.to_s == "Zero"
 		for i in 0..$window.terrains.size
 			@tiles += game_objects.grep($window.terrains[i])
@@ -99,7 +99,7 @@ class Scene < GameState
 	end
 	
 	def player_start
-		@player = Player.create
+		@player = Mark.create
 		@player.reset_state
 	end
 	

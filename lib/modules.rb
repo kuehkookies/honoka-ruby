@@ -94,7 +94,7 @@ module Chingu
       d_edge = @game_area.height-$window.height/2
 			if @game_area
 				@y = @game_area.y                       if @y < u_edge
-				@y = @game_area.height-$window.height/2 if @y < d_edge
+				@y = @game_area.height-$window.height/2 if @y > d_edge
 			end
 		end
 	end

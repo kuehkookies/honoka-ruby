@@ -16,7 +16,7 @@ class Level00 < Scene
 		super
 		@area = [512, 240]
 		self.viewport.game_area = [0,0,@area[0],@area[1]]
-		self.viewport.y = 64
+		self.viewport.y = 0
 		@player.x = 64
 		@player.y = 240
 		@player.y_flag = @player.y
