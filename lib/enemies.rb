@@ -28,7 +28,7 @@ class Enemy < GameObject
 	def hit(weapon, x, y, side)
 		unless die?
 			y -= 16 if weapon.is_a? Torch_Fire
-			Spark.create(:x => x, :y => y, :angle => 30*side)
+			Spark.create(:x => x, :y => y, :angle => rand(30)*side)
 			Sound["sfx/hit.wav"].play(0.5) if !@hardened
 			Sound["sfx/klang.wav"].play(0.3) if @hardened
 			@hp -= weapon.damage

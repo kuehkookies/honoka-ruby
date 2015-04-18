@@ -1,7 +1,22 @@
-# ------------------------------------------------------
-# Scenes
-# What's happening in each blocks?
-# ------------------------------------------------------
+# ==================================================================================
+# Class Scene
+#     Part of GameState. Known also as SceneManager
+# 
+# Here defined the logics of our game's stages. Including parallax scrolling
+# and displays like HUDs, Actors and Enemies.
+# All the Scenes can be built by Scene Editor by pressing 'E' when testing. Useful
+# to build stages in grid style.
+#
+# To define the stage and setting start point for Actor, make the stages 
+# in /levels folder. Leave this file as mother of all /levels files.
+# 
+# Scene maps is defined by the .yml file in /levels folder, and can be changed via 
+# Scene Editor or edit it manually (which I don't recommend).
+#
+# TODO: 
+# Make the local Edit function in each stages.
+# ==================================================================================
+
 class Scene < GameState
 	traits :viewport, :timer
 	attr_reader :player, :terrain, :area, :backdrop, :hud
@@ -13,7 +28,7 @@ class Scene < GameState
 		@area = [0,0]
 		@tiles = []
 		@recorded_tilemap = nil
-		@file = File.join(ROOT, "levels/#{self.class.to_s.downcase}.yml")
+		@file = File.join(ROOT, "lib/levels/#{self.class.to_s.downcase}.yml")
 		$window.clear_cache
 		player_start
 		@hud = HUD.create(:player => @player) # if @hud == nil
