@@ -24,7 +24,6 @@ module Honoka
   # Music module, which later will be separated and known as MusicManager (Maki)
   # TODO: 
   # - Make music library. Maki, your job.
-  # - Add stop music
   # - Make the music loopable
   # - Incorporate fade-in and fade-out effect
   # - Make variable sound volume

@@ -28,7 +28,7 @@ Built with the spirit of love and live by kuehkookies.
   - [ ] Menu sample
   - [ ] Stage sample
 - [ ] Music
-  - [ ] Add Stop command
+  - [x] Add Stop command
   - [ ] Make music loopable
 
 ## Credits
