@@ -14,101 +14,21 @@ class Actor < Chingu::GameObject
 	traits :timer, :collision_detection, :velocity
 	
 	def setup
-		self.input = {
-			:holding_left => :move_left,
-			:holding_right => :move_right,
-			:holding_down => :crouch,
-			:holding_up => :steady,
-			[:released_left, :released_right, :released_down, :released_up] => :stand,
-			:z => :jump
-		}
-
+		create_character_frame
 		@blank = TexPlay.create_image($window, 1, 1)
-
 		@image = character_frame(:stand, :first)
-
-		@maxhp  = 16
-		@hp     = 0
-		@ammo   = 0
-		@damage = 0
-		@level  = 0
-		@speed  = 2
-
-		@status = :stand
-		@action = :stand
-		@invincible = false
-		@jumping = false
-		@vert_jump = false
-		@running = false
-		@subattack = false
-		self.zorder = 250
-
-		@acceleration_y = Orange::Environment::GRAV_ACC
-		self.max_velocity = Orange::Environment::GRAV_CAP
-
-		self.rotation_center = :bottom_center
-
-		# Yet other flags
-		@last_x, @last_y = @x, @y
-		@y_flag = @y
+		
+		make_idle_animation
+		key_inputs
+		actor_properties
+		actor_parameters
 
 		# Trait feature that creates a bounding box for collision detection and stuffs.
 		# Without this, Actor can't stand on very ground.
 		cache_bounding_box
 	end
 
-	def reset_state(value)
-		@hp        = value[0] || @maxhp
-		@ammo      = value[1] || 10
-		@level     = value[2] || 1
-		@damage    = value[3] || 1
-		@subweapon = value[4] || :none
-
-		@status = :stand; @action = :stand
-		@sword = nil
-		@invincible = false
-		@jumping = false
-		@vert_jump = false
-		@running = false
-		@subattack = false
-
-		$window.clear_temp_data
-	end
-	
-	def disabled
-		@status == :hurt or @status == :die
-	end
-	
-	def blinking;     @status == :blink;    end
-	def standing;     @status == :stand;    end
-	def jumping;      @status == :jump;     end
-	def falling;      @status == :fall;     end
-	def crouching;    @status == :crouch;   end
-	def steading;     @status == :stead;    end
-	def on_wall;      @status == :walljump; end
-	def damaged;      @status == :hurt; 	  end
-
-	def attacking;    @action == :attack;   end
-	def idle;         @action == :stand;    end
-	def walljumping;  @action == :walljump; end
-
-	def die?;         @hp <= 0;           end
-
-	def knocked_back; @status == :hurt and moved?; end
-	def moving_to_another_area; $window.transfer; end
-	def in_event; $window.in_event; end
-	
-	def holding_subweapon?; @subweapon != :none; end
-
-	def attacking_on_ground
-		@action == :attack && @status == :stand && 
-			@velocity_y < Orange::Environment::GRAV_WHEN_LAND + 1
-	end
-	
-	def at_edge?
-		@x < (bb.width/2)  || @x > parent.area[0]-(bb.width/2) unless blinking
-	end
-
+	def create_character_frame; end
 	def character_frame(symbol, number = nil)
 		chara = @character.nil? ? @blank : @character[symbol]
 		unless @character.nil?
@@ -130,6 +50,101 @@ class Actor < Chingu::GameObject
 		return chara
 	end
 
+	def make_idle_animation; end
+	
+	def key_inputs
+		self.input = {
+			:holding_left => :move_left,
+			:holding_right => :move_right,
+			:holding_down => :crouch,
+			:holding_up => :steady,
+			[:released_left, :released_right, :released_down, :released_up] => :stand,
+			:z => :jump
+		}
+	end
+
+	def actor_parameters
+		@maxhp  = 16
+		@hp     = 0
+		@ammo   = 0
+		@damage = 0
+		@level  = 0
+		@speed  = 2
+		@subweapon = :none
+	end
+
+	def actor_properties
+		@status = :stand
+		@action = :stand
+		@invincible = false
+		@jumping = false
+		@vert_jump = false
+		@running = false
+		@subattack = false
+		self.zorder = 250
+
+		@acceleration_y = Orange::Environment::GRAV_ACC
+		self.max_velocity = Orange::Environment::GRAV_CAP
+
+		self.rotation_center = :bottom_center
+
+		@last_x, @last_y = @x, @y
+		@y_flag = @y
+	end
+
+	def reset_state(value=[])
+		@hp        = value[0] || @maxhp
+		@ammo      = value[1] || 10
+		@level     = value[2] || 1
+		@damage    = value[3] || 1
+		@subweapon = value[4] || :none
+
+		@status = :stand; @action = :stand
+		@invincible = false
+		@jumping = false
+		@vert_jump = false
+		@running = false
+		@subattack = false
+
+		$window.clear_temp_data
+	end
+	
+	def blinking;     @status == :blink;    end
+	def standing;     @status == :stand;    end
+	def jumping;      @status == :jump;     end
+	def falling;      @status == :fall;     end
+	def crouching;    @status == :crouch;   end
+	def steading;     @status == :stead;    end
+	def damaged;      @status == :hurt; 	  end
+	
+	def crouching_on_bridge
+		@status == :crouch_on_bridge
+	end
+
+	def disabled
+		@status == :hurt or @status == :die
+	end
+
+	def attacking;    @action == :attack;   end
+	def idle;         @action == :stand;    end
+
+	def die?;         @hp <= 0;           end
+
+	def knocked_back; @status == :hurt and moved?; end
+	def moving_to_another_area; $window.transfer; end
+	def in_event; $window.in_event; end
+	
+	def holding_subweapon?; @subweapon != :none; end
+
+	def attacking_on_ground
+		@action == :attack && @status == :stand && 
+			@velocity_y < Orange::Environment::GRAV_WHEN_LAND + 1
+	end
+	
+	def at_edge?
+		@x < (bb.width/2)  || @x > parent.area[0]-(bb.width/2) unless blinking
+	end
+
 	def stand
 		unless jumping or disabled or die? or @y != @y_flag or not idle
 			@image = character_frame(:stand, :first)
@@ -142,7 +157,7 @@ class Actor < Chingu::GameObject
 	def crouch
 		unless jumping or disabled or attacking or die? or disabled
 			@image = character_frame(:crouch, :first)
-			@status = :crouch
+			# @status = :crouch
 		end
 	end
 	
@@ -164,7 +179,7 @@ class Actor < Chingu::GameObject
 				if !die?; @status = :stand; @image = character_frame(:stand, :first); end
 			}
 		else
-			if jumping or on_wall or falling
+			if jumping or falling
 				@image = character_frame(:stand, :first) unless Sword.size >= 1
 				@status = :stand 
 			elsif @velocity_y >= Orange::Environment::GRAV_WHEN_LAND + 1 # 2
@@ -179,48 +194,62 @@ class Actor < Chingu::GameObject
 	end
 
 	def move_left
-		return if attacking_on_ground or walljumping
-		return if crouching or steading
+		return if attacking_on_ground
+		return if crouching_on_bridge or crouching or steading
 		return if moving_to_another_area or in_event
 		return if die? or disabled
 		move(-@speed, 0)
 	end
 	
 	def move_right
-		return if attacking_on_ground or walljumping
-		return if crouching or steading
+		return if attacking_on_ground
+		return if crouching_on_bridge or crouching or steading
 		return if moving_to_another_area or in_event
 		return if die? or disabled
 		move(@speed, 0)
 	end
+
+	def move(x,y)
+		return if blinking
+		if x != 0 and not jumping
+			@image = character_frame(:step, :first) if !@running
+			@image = character_frame(:walk, :next) if @running
+			after(2) { @running = true if not @running }
+		end
+		
+		@image = character_frame(:hurt, :first)  if damaged
+		
+		unless attacking or damaged
+			self.factor_x = self.factor_x.abs   if x > 0
+			self.factor_x = -self.factor_x.abs  if x < 0
+		end
+		
+		@x += x if !@vert_jump and not falling
+		@x += x/2 if @vert_jump or falling
+
+		self.each_collision(*$window.terrains) do |me, stone_wall|
+			@x = previous_x
+			break
+		end
+		
+		@x = previous_x  if at_edge? and not in_event
+
+		@y += y
+	end
 	
 	def jump
-		return if on_wall and @jumping
-		if on_wall and not attacking and not @jumping and holding_any?(:left, :right)
-			@action = :walljump
-			@sword.die if @sword != nil
-			@y_flag = @y
-			self.factor_x *= -self.factor_x.abs
-			@velocity_y = 0
-			between(1,6){ 
-				@image = character_frame(:wall_jump, :first)
-				@velocity_y = 0
-			}.then{
-				@x += 4 * self.factor_x
-				@image = character_frame(:jump, :first)
-				@status = :jump; @jumping = true
-				Sound["sfx/jump.wav"].play
-				@velocity_x = 4 * self.factor_x
-			}
-			between(6,15){
-				@velocity_y = -6 if @jumping
-				@velocity_y = -2 if !@jumping
-			}
-			after(15){ @action = :stand; @velocity_y = -2 if @jumping; 
-				@y_flag = @y; @velocity_x = 0 }
+		if crouching_on_bridge
+			return if self.velocity_y > Orange::Environment::GRAV_WHEN_LAND # 1
+			return if jumping or damaged or die? or not idle
+			@status = :jump
+			@jumping = true
+			@velocity_y = -1
+			@y += 12
 		else
 			return if self.velocity_y > Orange::Environment::GRAV_WHEN_LAND # 1
-			return if crouching or jumping or damaged or die? or not idle or on_wall
+			return if crouching or jumping 
+			return if damaged or die? 
+			return unless idle 
 			@status = :jump
 			@jumping = true
 			Sound["sfx/jump.wav"].play
@@ -242,11 +271,8 @@ class Actor < Chingu::GameObject
 				me.y = stone_wall.bb.bottom + me.image.height * me.factor_y
 				me.velocity_y = 0
 				@jumping = false
-			elsif walljumping
-				@jumping = false
-				me.x = stone_wall.bb.right + (me.image.width/4) if me.x > stone_wall.x
-				me.x = stone_wall.bb.left - (me.image.width/4) if me.x < stone_wall.x
 			else  # Land on ground
+				@status = :crouch if holding?(:down)
 				if damaged
 					hurt
 				else
@@ -258,6 +284,7 @@ class Actor < Chingu::GameObject
 		end
 		self.each_collision(*$window.bridges) do |me, bridge|
 			if me.y <= bridge.y+2 && me.velocity_y > 0
+				@status = :crouch_on_bridge if holding?(:down)
 				if damaged
 					hurt
 				else
@@ -305,7 +332,6 @@ class Actor < Chingu::GameObject
 		after(12){
 			@image = character_frame(:die, :first)
 			@x += 8*@factor_x unless @y > ($window.height/2) + parent.viewport.y
-			#~ game_state.after(1500) { 
 			game_state.after(90) { 
 				@sword.die if @sword != nil
 				reset_state
@@ -313,44 +339,6 @@ class Actor < Chingu::GameObject
 				parent.clear_game_terrains
 			}
 		}
-	end
-	
-	def move(x,y)
-		return if blinking
-		if x != 0 and not (jumping or on_wall)
-			@image = character_frame(:step, :first) if !@running
-			@image = character_frame(:walk, :next) if @running
-			after(2) { @running = true if not @running }
-		end
-		
-		@image = character_frame(:hurt, :first)  if damaged
-		
-		unless attacking or damaged or on_wall
-			self.factor_x = self.factor_x.abs   if x > 0
-			self.factor_x = -self.factor_x.abs  if x < 0
-		end
-		
-		unless (on_wall and @jumping)
-			@x += x if !@vert_jump and not falling
-			@x += x/2 if @vert_jump or falling
-		end
-
-		self.each_collision(*$window.terrains) do |me, stone_wall|
-			@x = previous_x
-			if @jumping
-				if stone_wall.x < me.x and holding?(:left); @status = :walljump; @jumping = false; end
-				if stone_wall.x > me.x and holding?(:right); @status = :walljump; @jumping = false; end
-			end
-			break
-		end
-		
-		if @x != previous_x and on_wall and !@jumping
-			@status = :jump; @jumping = true
-		end
-		
-		@x = previous_x  if at_edge? and not in_event
-
-		@y += y
 	end
 	
 	def check_last_direction
@@ -362,4 +350,28 @@ class Actor < Chingu::GameObject
 		@last_x, @last_y = @x, @y
 	end
 
+	def update
+		land?
+		@velocity_y = Orange::Environment::GRAV_CAP if @velocity_y > Orange::Environment::GRAV_CAP
+		if @x == @last_x
+			@running = false
+			character_frame(:walk, :reset)
+		end
+		if jumping and idle
+			if @last_y > @y 
+				@image = character_frame(:jump, :first)
+				@image = character_frame(13)if @vert_jump
+			else
+				@image = character_frame(13) if @velocity_y <= 2
+				@image = character_frame(:jump, :last) if @velocity_y > 2
+			end
+		end
+		check_last_direction
+		if @velocity_y > Orange::Environment::GRAV_WHEN_LAND + 1 && !jumping && idle
+			@status = :fall unless disabled
+			@image = character_frame(13) if @velocity_y <= 3
+			@image = character_frame(:jump, :last) if @velocity_y > 3
+		end
+		@y_flag = @y if @velocity_y == Orange::Environment::GRAV_WHEN_LAND && !@jumping
+	end
 end

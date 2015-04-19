@@ -49,7 +49,7 @@ class Game < Chingu::Window
 		
 		retrofy # THE classy command!
 		setup_stage
-		set_actor
+		set_actor(Mark)
 		set_terrains
 		set_enemies
 		set_subweapons
@@ -100,8 +100,8 @@ class Game < Chingu::Window
 		@frame = 0
 	end
 	
-	def set_actor
-		@selected_actor = Lakon
+	def set_actor(character)
+		@selected_actor = character
 	end
 
 	def setup_stage
