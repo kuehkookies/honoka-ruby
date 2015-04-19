@@ -35,10 +35,11 @@ class Level00 < Scene
 	def update
 		super
 		if @player.x >= @area[0]-(@player.bb.width) - 2 and @player.idle
-			$window.in_event = true
+			$window.start_event
 			@player.move(2,0)
 			if @player.x >= @area[0] + 32
-				to_next_block; $window.in_event = false 
+				to_next_block
+				$window.stop_event
 			end
 		end
 				

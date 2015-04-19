@@ -21,9 +21,10 @@ class Game < Chingu::Window
 								:map, :transfer
 	attr_accessor :bgm, :enemies, :hazards, :terrains, :bridges, :decorations, 
 								:items, :subweapons
-	attr_accessor :paused, :waiting, :in_event, :passing_door
+	attr_accessor :paused, :waiting, :passing_door
 	attr_accessor :frame, :frame_last_tick
 	attr_accessor :selected_actor, :actor_temp_data
+	attr_reader   :in_event
 	
 	def initialize
 		super(640,480)
@@ -76,7 +77,14 @@ class Game < Chingu::Window
 		
 		Font["runescape_uf_regular.ttf", 16]
 	end
-	
+
+	def start_event
+		@in_event = true
+	end	
+
+	def stop_event
+		@in_event = false
+	end	
 	
 	def reset_stage
 		transferring
@@ -145,11 +153,11 @@ class Game < Chingu::Window
 		@items = []
 	end
 	
-	def draw
-		scale(2) do
-		   super
-		end
-	end
+	# def draw
+	# 	scale(2) do
+	# 	   super
+	# 	end
+	# end
 	
 	def update
 		@frame += 1 unless @paused

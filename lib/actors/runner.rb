@@ -1,6 +1,9 @@
 # ==================================================================================
-# Class Lakon
-#     part from Actor
+# Class Runner
+#     part of Actor
+# 
+# A sample actor which can only run and jump. The heart of every platformer.
+# Use this as base of every Actors you'd like to create.
 # ==================================================================================
 
 class Runner < Actor	

@@ -1,6 +1,6 @@
 # ==================================================================================
 # Class Mark
-#     part from Actor
+#     part of Actor
 #
 # Sample of Actor namely Märk Hammerfist the Warrior Blacksmith of Westerland.
 # Mark harnesses basic movements and actions akin to Simon Belmont, in addition
@@ -67,9 +67,15 @@ class Mark < Actor
 	# --------------------------------------------------------------------------------
   # Individual method goes below
   # --------------------------------------------------------------------------------
+	
+	def reset_state(value=[])
+		@sword = nil
+		super(value)
+	end
 
 	def on_wall;      @status == :walljump; end
 	def walljumping;  @action == :walljump; end
+
 
 	def limit_subweapon
 		Knife.size >= Orange::ALLOWED_SUBWEAPON_THROWN || 

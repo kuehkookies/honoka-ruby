@@ -30,28 +30,28 @@ class Scene < GameState
 		@area = [0,0]
 		@tiles = []
 		@recorded_tilemap = nil
-		@file = File.join(ROOT, "lib/levels/#{self.class.to_s.downcase}.yml")
 		$window.clear_cache
+		@file = File.join(ROOT, "lib/levels/#{self.class.to_s.downcase}.yml")
 		player_start
 		@hud = HUD.create(:player => @player) # if @hud == nil
-		@player.sword = nil
 
-		# Orange::Music.start!
+		Orange::Music.start!
 
 		clear_game_terrains
 		clear_subweapon_projectile
+
 		game_objects.select { |game_object| !game_object.is_a? Actor }.each { |game_object| game_object.destroy }
 		load_game_objects(:file => @file) unless self.class.to_s == "Zero"
-		for i in 0..$window.terrains.size
-			@tiles += game_objects.grep($window.terrains[i])
-		end
-		for i in 0..$window.bridges.size
-			@tiles += game_objects.grep($window.bridges[i])
-		end
-		for i in 0..$window.decorations.size
-			@tiles += game_objects.grep($window.decorations[i])
-		end
-		game_objects.subtract_with(@tiles)
+		# for i in 0..$window.terrains.size
+		# 	@tiles += game_objects.grep($window.terrains[i])
+		# end
+		# for i in 0..$window.bridges.size
+		# 	@tiles += game_objects.grep($window.bridges[i])
+		# end
+		# for i in 0..$window.decorations.size
+		# 	@tiles += game_objects.grep($window.decorations[i])
+		# end
+		# game_objects.subtract_with(@tiles)
 		after(15) { $window.stop_transfer }
 		
 		@hud.update
@@ -69,7 +69,7 @@ class Scene < GameState
 	end
 	
 	def edit
-		push_game_state(GameStates::Edit.new(:grid => [8,8], :classes => [Ball, Zombie, Ground, GroundTiled, GroundLower, GroundLoop, Brick, Brick_Loop, Brick_Loop_Back, Brick_Window, Brick_Window_Small, Bridge_Wood] ))
+		push_game_state(GameStates::Edit.new(:file => @file, :grid => [8,8], :classes => [Ball, Zombie, Ground, GroundTiled, GroundLower, GroundLoop, Brick, Brick_Loop, Brick_Loop_Back, Brick_Window, Brick_Window_Small, Bridge_Wood] ))
 	end
 	
 	def clear_game_terrains
@@ -84,9 +84,11 @@ class Scene < GameState
 	end
 	
 	def restart
+		$window.start_event
 		clear_subweapon_projectile
 		clear_game_terrains
 		$window.reset_stage
+		$window.stop_event
 	end
 	
 	def pause

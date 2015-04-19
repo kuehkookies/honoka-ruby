@@ -6,6 +6,7 @@
 # To define an Actor and available actions and behaviors, make the Actor
 # in /actors folder. Leave this file as mother of all /actors files.
 # ==================================================================================
+
 class Actor < Chingu::GameObject
 	attr_accessor :maxhp, :hp, :damage, :level, :ammo
 	attr_accessor	:y_flag, :sword, :status, :action, :running, :character, :subweapon
