@@ -23,7 +23,7 @@ class Lakon < Actor
 		@character[:stand].delay = 50
 		@character[:stand].bounce = true
 		@character[:walk].delay = 60 # 65
-		@image = @character[:stand].first
+		# @image = character_frame(:stand, :first)
 		
 		super
 
@@ -58,13 +58,13 @@ class Lakon < Actor
 			unless die?
 				if @action == :stand && @status == :stand && @last_x == @x
 					during(9){
-						@image = @character[:stand].next
-					}.then{@image = @character[:stand].reset; @image = @character[:stand].first}
+						@image = character_frame(:stand, :next)
+					}.then{@image = character_frame(:stand, :reset); 
+						@image = character_frame(:stand, :first) }
 				end
 			end
 		}
 	end
-	
 	
 	def fire
 		unless disabled or walljumping or die?
@@ -81,17 +81,14 @@ class Lakon < Actor
 		end
 	end
 	
-	def change_subweapon
-		@sub = @sub.rotate
-		@subweapon = @sub[0]
-	end
-	
 	def attack_sword
 		@action = :attack
-		@image = @character[:shoot].first if not crouching
-		@image = @character[:crouch_shoot].first if crouching
+		@image = character_frame(:shoot, :first) if not crouching
+		@image = character_frame(:crouch_shoot, :first) if crouching
 		factor = -(self.factor_x^0)
-		@sword = Sword.create(:x => @x+(5*factor), :y => (@y-14), :velocity => @direction, :factor_x => -factor, :angle => 90*(-factor_x))
+		@sword = Sword.create(:x => @x+(5*factor), :y => (@y-14), 
+			:velocity => @direction, :factor_x => -factor, 
+			:angle => 90*(-factor_x))
 		between(1, 6) {
 			unless disabled
 				@sword.x = @x+(9*(-factor_x))
@@ -103,8 +100,8 @@ class Lakon < Actor
 		}. then {
 			Sound["sfx/swing.wav"].play
 			unless disabled
-				@image = @character[:crouch_shoot][1] if crouching
-				@image = @character[:shoot][1] if not crouching
+				@image = character_frame(:crouch_shoot, 1) if crouching
+				@image = character_frame(:shoot, 1) if not crouching
 			end
 		}
 		between(6,10) {
@@ -117,8 +114,8 @@ class Lakon < Actor
 			end
 		}.then {
 			unless disabled
-				@image = @character[:crouch_shoot][2] if crouching
-				@image = @character[:shoot][2] if not crouching
+				@image = character_frame(:crouch_shoot, 2) if crouching
+				@image = character_frame(:shoot, 2) if not crouching
 			end
 			@sword.bb.height = (@sword.bb.width)*-1 + 8
 			@sword.angle = 130*(-factor_x)
@@ -134,8 +131,8 @@ class Lakon < Actor
 			end
 		}.then {
 			unless disabled
-				@image = @character[:crouch_shoot][3] if crouching
-				@image = @character[:shoot][3] if not crouching
+				@image = character_frame(:crouch_shoot, 3) if crouching
+				@image = character_frame(:shoot, 3) if not crouching
 			end
 			@sword.bb.height = ((@sword.bb.width*1/10))
 		}
@@ -148,32 +145,32 @@ class Lakon < Actor
 				@sword.y = (@y-(self.height/2)+6)
 				@sword.y = (@y-(self.height/2)+11) if crouching
 				@sword.angle = 0*(-factor_x/2)
-				@image = @character[:crouch_shoot].last if crouching
+				@image = character_frame(:crouch_shoot, :last) if crouching
 			end
 		}.then {
 			unless disabled
 				@sword.die
 				@action = :stand
 				unless disabled
-					@image = @character[:stand].first if standing or steading
-					@image = @character[:crouch].first if crouching
-					@image = @character[:jump].last if jumping
+					@image = character_frame(:stand, :first) if standing or steading
+					@image = character_frame(:crouch, :first) if crouching
+					@image = character_frame(:jump, :last) if jumping
 				end
 				@status = :stand if steading || !holding?(:down)
 			end
-			@character[:shoot].reset
-			@character[:crouch_shoot].reset
+			character_frame(:shoot, :reset)
+			character_frame(:crouch_shoot, :reset)
 		}
 	end
 	
 	def attack_subweapon
 		@action = :attack
 		@subattack = true
-		@image = @character[:shoot][0]
+		@image = character_frame(:shoot, 0)
 		between(6,12) { 
-			@image = @character[:shoot][1]
+			@image = character_frame(:shoot, 1)
 		}.then{
-			@image = @character[:shoot][2]
+			@image = character_frame(:shoot, 2)
 			@ammo -= 1
 			case @subweapon
 				when :knife
@@ -187,21 +184,19 @@ class Lakon < Actor
 			end
 			Sound["sfx/swing.wav"].play
 		}
-		#~ after(200) { @image = @character[:shoot].last}
 		between(12,32) { 
-		#~ after(350) {  
-			@image = @character[:shoot].last
-			@image = @character[:crouch_shoot].last if crouching
+			@image = character_frame(:shoot, :last)
+			@image = character_frame(:crouch_shoot, :reset) if crouching
 		}.then {
 			@action = :stand
 			@status = :stand if steading
 			unless disabled
-				@image = @character[:stand].first if standing or steading
-				@image = @character[:crouch].first if crouching
-				@image = @character[:jump].last if jumping
+				@image = character_frame(:stand, :first) if standing or steading
+				@image = character_frame(:crouch, :first) if crouching
+				@image = character_frame(:jump, :last) if jumping
 			end
-			@character[:shoot].reset
-			@character[:crouch_shoot].reset
+			character_frame(:shoot, :reset)
+			character_frame(:crouch_shoot, :reset)
 		}
 	end
 	
@@ -210,22 +205,22 @@ class Lakon < Actor
 		@velocity_y = Orange::Environment::GRAV_CAP if @velocity_y > Orange::Environment::GRAV_CAP
 		if @x == @last_x
 			@running = false
-			@character[:walk].reset
+			character_frame(:walk, :reset)
 		end
 		if (jumping or on_wall) and idle
 			if @last_y > @y 
-				@image = @character[:jump].first
-				@image = @character[13] if @vert_jump
+				@image = character_frame(:jump, :first)
+				@image = character_frame(13)if @vert_jump
 			else
-				@image = @character[13] if @velocity_y <= 2
-				@image = @character[:jump].last if @velocity_y > 2
+				@image = character_frame(13) if @velocity_y <= 2
+				@image = character_frame(:jump, :last) if @velocity_y > 2
 			end
 		end
 		check_last_direction
 		if @velocity_y > Orange::Environment::GRAV_WHEN_LAND + 1 && !jumping && idle && !on_wall
 			@status = :fall unless disabled
-			@image = @character[13] if @velocity_y <= 3
-			@image = @character[:jump].last if @velocity_y > 3
+			@image = character_frame(13) if @velocity_y <= 3
+			@image = character_frame(:jump, :last) if @velocity_y > 3
 		end
 		self.each_collision(Rang) do |me, weapon|
 			weapon.die

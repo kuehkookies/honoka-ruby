@@ -23,6 +23,10 @@ class Actor < Chingu::GameObject
 			:z => :jump
 		}
 
+		@blank = TexPlay.create_image($window, 1, 1)
+
+		@image = character_frame(:stand, :first)
+
 		@maxhp  = 16
 		@hp     = 0
 		@ammo   = 0
@@ -37,7 +41,6 @@ class Actor < Chingu::GameObject
 		@vert_jump = false
 		@running = false
 		@subattack = false
-		@sub = []
 		self.zorder = 250
 
 		@acceleration_y = Orange::Environment::GRAV_ACC
@@ -50,7 +53,7 @@ class Actor < Chingu::GameObject
 		@y_flag = @y
 
 		# Trait feature that creates a bounding box for collision detection and stuffs.
-		# Without this, Mark can't stand on very ground.
+		# Without this, Actor can't stand on very ground.
 		cache_bounding_box
 	end
 
@@ -98,16 +101,38 @@ class Actor < Chingu::GameObject
 	def holding_subweapon?; @subweapon != :none; end
 
 	def attacking_on_ground
-		@action == :attack && @status == :stand && @velocity_y < Orange::Environment::GRAV_WHEN_LAND + 1
+		@action == :attack && @status == :stand && 
+			@velocity_y < Orange::Environment::GRAV_WHEN_LAND + 1
 	end
 	
 	def at_edge?
-		@x < (bb.width/2)  || @x > parent.area[0]-(bb.width/2) unless @status == :blink
+		@x < (bb.width/2)  || @x > parent.area[0]-(bb.width/2) unless blinking
+	end
+
+	def character_frame(symbol, number = nil)
+		chara = @character.nil? ? @blank : @character[symbol]
+		unless @character.nil?
+			case number
+			when :first
+				return chara.first
+			when :next
+				return chara.next
+			when :last
+				return chara.last
+			when :reset
+				return chara.reset
+			when nil
+				return chara
+			else
+				return chara[number]
+			end
+		end
+		return chara
 	end
 
 	def stand
 		unless jumping or disabled or die? or @y != @y_flag or not idle
-			@image = @character[:stand].first
+			@image = character_frame(:stand, :first)
 			@status = :stand
 			@running = false
 			@jumping = false
@@ -116,14 +141,14 @@ class Actor < Chingu::GameObject
 	
 	def crouch
 		unless jumping or disabled or attacking or die? or disabled
-			@image = @character[:crouch].first
+			@image = character_frame(:crouch, :first)
 			@status = :crouch
 		end
 	end
 	
 	def steady
 		unless jumping or disabled or attacking or die? or disabled
-			@image = @character[:stead].first
+			@image = character_frame(:stead, :first)
 			@status = :stead
 		end
 	end
@@ -136,14 +161,14 @@ class Actor < Chingu::GameObject
 			between(1,delay) { 
 				@status = :crouch; crouch
 			}.then { 
-				if !die?; @status = :stand; @image = @character[:stand].first; end
+				if !die?; @status = :stand; @image = character_frame(:stand, :first); end
 			}
 		else
 			if jumping or on_wall or falling
-				@image = @character[:stand].first unless Sword.size >= 1
+				@image = character_frame(:stand, :first) unless Sword.size >= 1
 				@status = :stand 
 			elsif @velocity_y >= Orange::Environment::GRAV_WHEN_LAND + 1 # 2
-				@image = @character[:stand].first unless Sword.size >= 1
+				@image = character_frame(:stand, :first) unless Sword.size >= 1
 				@velocity_y = Orange::Environment::GRAV_WHEN_LAND # 1
 			end
 		end
@@ -178,11 +203,11 @@ class Actor < Chingu::GameObject
 			self.factor_x *= -self.factor_x.abs
 			@velocity_y = 0
 			between(1,6){ 
-				@image = @character[:wall_jump].first
+				@image = character_frame(:wall_jump, :first)
 				@velocity_y = 0
 			}.then{
 				@x += 4 * self.factor_x
-				@image = @character[:jump].first
+				@image = character_frame(:jump, :first)
 				@status = :jump; @jumping = true
 				Sound["sfx/jump.wav"].play
 				@velocity_x = 4 * self.factor_x
@@ -191,7 +216,8 @@ class Actor < Chingu::GameObject
 				@velocity_y = -6 if @jumping
 				@velocity_y = -2 if !@jumping
 			}
-			after(15){ @action = :stand; @velocity_y = -2 if @jumping; @y_flag = @y; @velocity_x = 0}
+			after(15){ @action = :stand; @velocity_y = -2 if @jumping; 
+				@y_flag = @y; @velocity_x = 0 }
 		else
 			return if self.velocity_y > Orange::Environment::GRAV_WHEN_LAND # 1
 			return if crouching or jumping or damaged or die? or not idle or on_wall
@@ -263,7 +289,7 @@ class Actor < Chingu::GameObject
 		if not die?
 			between(1,30) { 
 				@status = :crouch; crouch
-			}.then { @status = :stand; @image = @character[:stand].first}
+			}.then { @status = :stand; @image = character_frame(:stand, :first)}
 			between(30,120){@color.alpha = 128}.then{@invincible = false; @color.alpha = 255}
 		else
 			dead
@@ -274,10 +300,10 @@ class Actor < Chingu::GameObject
 		@hp = 0
 		@sword.die if @sword != nil
 		@status = :die
-		@image = @character[:stand].last
+		@image = character_frame(:stand, :last)
 		after(6){@image = @character[16]}
 		after(12){
-			@image = @character[:die].first
+			@image = character_frame(:die, :first)
 			@x += 8*@factor_x unless @y > ($window.height/2) + parent.viewport.y
 			#~ game_state.after(1500) { 
 			game_state.after(90) { 
@@ -292,12 +318,12 @@ class Actor < Chingu::GameObject
 	def move(x,y)
 		return if blinking
 		if x != 0 and not (jumping or on_wall)
-			@image = @character[:step].first if !@running
-			@image = @character[:walk].next if @running
+			@image = character_frame(:step, :first) if !@running
+			@image = character_frame(:walk, :next) if @running
 			after(2) { @running = true if not @running }
 		end
 		
-		@image = @character[:hurt].first  if damaged
+		@image = character_frame(:hurt, :first)  if damaged
 		
 		unless attacking or damaged or on_wall
 			self.factor_x = self.factor_x.abs   if x > 0
