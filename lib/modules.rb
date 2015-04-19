@@ -1,12 +1,12 @@
 # ==================================================================================
 # Working Modules(TM)
-#     part of Honoka Core
+#     part of Orange Core
 # 
-# Here incorporated the base logics and modules for Honoka, also some overrides for
+# Here incorporated the base logics and modules for Orange, also some overrides for
 # existing modules provided by Gosu and Chingu.
 # ==================================================================================
 
-module Honoka
+module Orange
   # --------------------------------------------------------------------------------
   # Basic settings
   # Gravities and duration of invulnerability
@@ -58,7 +58,7 @@ end
 
 # ==================================================================================
 # Chingu overrides
-# These are here to make Honoka runs the game properly. 
+# These are here to make Orange runs the game properly. 
 # Maybe known later as CoreOverrides, part of SystemRules (Umi)
 # ==================================================================================
 module Chingu

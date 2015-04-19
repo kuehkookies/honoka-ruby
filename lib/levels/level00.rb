@@ -11,7 +11,7 @@
 
 class Level00 < Scene
 	def initialize
-		Honoka::Music.set(0)
+		Orange::Music.set(0)
 
 		super
 		@area = [512, 240]

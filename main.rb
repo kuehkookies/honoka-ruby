@@ -101,7 +101,7 @@ class Game < Chingu::Window
 	end
 	
 	def set_actor
-		@selected_actor = Mark
+		@selected_actor = Lakon
 	end
 
 	def setup_stage
@@ -158,6 +158,6 @@ class Game < Chingu::Window
 end
 
 # ==================================================================================
-# Honoka on stage!
+# Show on!
 # ==================================================================================
 Game.new.show

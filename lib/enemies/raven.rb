@@ -10,9 +10,9 @@ class Raven < Enemy
 	
 	def setup
 		super
-		@animations = Chingu::Animation.new( :file => "enemies/raven.png", :size => [16,16])
-		@animations.frame_names = {:idle => 0..0, :flutter => 1..3}
-		@image = @animations[:idle].first
+		@character = Chingu::Animation.new( :file => "enemies/raven.png", :size => [16,16])
+		@character.frame_names = {:idle => 0..0, :flutter => 1..3}
+		@image = @character[:idle].first
 		@max_velocity = 5
 		@acceleration_y = 0
 		@hp = 1
@@ -28,7 +28,7 @@ class Raven < Enemy
 		unless @flutter != nil
 		every(5){ 
 			if @gap_x > -150 and @gap_x < 150 and @flutter == nil
-				during(2) { @image = @animations[:flutter].next; self.velocity_x = 0.5*self.factor; self.velocity_y = -0.5 }.then {flutter}
+				during(2) { @image = @character[:flutter].next; self.velocity_x = 0.5*self.factor; self.velocity_y = -0.5 }.then {flutter}
 			end
 			}
 		end
@@ -42,7 +42,7 @@ class Raven < Enemy
 		self.velocity_x = dist_scale.abs.to_i < 4 ? dist_scale.abs*flip : 4*flip
 		self.velocity_x *= -1
 		self.velocity_y = alt_scale.abs.to_i < 4 ? alt_scale.abs : 4
-		during(60) { @image = @animations[:flutter].first; self.velocity_y -= 0.1; self.velocity_y = -3 if self.velocity_y < -3 }.then {flutter}
+		during(60) { @image = @character[:flutter].first; self.velocity_y -= 0.1; self.velocity_y = -3 if self.velocity_y < -3 }.then {flutter}
 	end
 	
 	def flutter
@@ -67,9 +67,9 @@ class Raven < Enemy
 			@gap_x = @x - @player.x
 			@gap_y = @y - @player.y
 		end
-		@image = @animations[:flutter].next if @flutter
-		@image = @animations[:flutter].first if !@flutter
-		@image = @animations[:idle].first if @flutter == nil
+		@image = @character[:flutter].next if @flutter
+		@image = @character[:flutter].first if !@flutter
+		@image = @character[:idle].first if @flutter == nil
 		destroy if self.parent.viewport.outside_game_area?(self)
 		check_collision
 	end

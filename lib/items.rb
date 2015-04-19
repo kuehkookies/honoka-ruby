@@ -34,14 +34,14 @@ class Items < GameObject
 	def land?
 		self.each_collision(*$window.terrains, *$window.bridges) do |me, stone_wall|
 			if collision_at?(me.x, me.y) and me.y <= stone_wall.y
-				me.velocity_y = Honoka::Environment::GRAV_WHEN_LAND
+				me.velocity_y = Orange::Environment::GRAV_WHEN_LAND
 				me.y = stone_wall.bb.top - 1 
 			end
 		end
 	end
 	
 	def update
-		@velocity_y = Honoka::Environment::GRAV_CAP if @velocity_y > Honoka::Environment::GRAV_CAP
+		@velocity_y = Orange::Environment::GRAV_CAP if @velocity_y > Orange::Environment::GRAV_CAP
 		unless destroyed?
 			land?
 			@player.each_collision(self) do |me, item|

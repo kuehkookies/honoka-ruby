@@ -9,7 +9,7 @@
 
 class Mark < Actor
 	attr_reader 	:direction, :invincible, :last_x
-	attr_accessor	:y_flag, :sword, :status, :action, :running, :animations, :subweapon
+	attr_accessor	:y_flag, :sword, :status, :action, :running, :character, :subweapon
 	trait :bounding_box, :scale => [0.3, 0.8], :debug => false
 	traits :timer, :collision_detection, :velocity
 	
@@ -26,8 +26,8 @@ class Mark < Actor
 			:x => :fire,
 			:c => :change_subweapon
 		}
-		@animations = Chingu::Animation.new( :file => "player/mark.gif", :size => [32,32])
-		@animations.frame_names = {
+		@character = Chingu::Animation.new( :file => "player/mark.gif", :size => [32,32])
+		@character.frame_names = {
 			:stand => 0..2,
 			:step => 3..3,
 			:walk => 4..11,
@@ -41,10 +41,10 @@ class Mark < Actor
 			:raise => 28..30,
 			:wall_jump => 31..31
 		}
-		@animations[:stand].delay = 50
-		@animations[:stand].bounce = true
-		@animations[:walk].delay = 60 # 65
-		@image = @animations[:stand].first
+		@character[:stand].delay = 50
+		@character[:stand].bounce = true
+		@character[:walk].delay = 60 # 65
+		@image = @character[:stand].first
 		@speed = 2
 		@status = :stand
 		@action = :stand
@@ -55,8 +55,8 @@ class Mark < Actor
 		@subattack = false
 		@sub = [:knife, :axe, :torch, :rang]
 		self.zorder = 250
-		@acceleration_y = Honoka::Environment::GRAV_ACC
-		self.max_velocity = Honoka::Environment::GRAV_CAP
+		@acceleration_y = Orange::Environment::GRAV_ACC
+		self.max_velocity = Orange::Environment::GRAV_CAP
 		self.rotation_center = :bottom_center
 		
 		# Idle animation? Idle animation.
@@ -64,8 +64,8 @@ class Mark < Actor
 			unless die?
 				if @action == :stand && @status == :stand && @last_x == @x
 					during(9){
-						@image = @animations[:stand].next
-					}.then{@image = @animations[:stand].reset; @image = @animations[:stand].first}
+						@image = @character[:stand].next
+					}.then{@image = @character[:stand].reset; @image = @character[:stand].first}
 				end
 			end
 		}
@@ -96,11 +96,6 @@ class Mark < Actor
 	
 	def at_edge?
 		@x < (bb.width/2)  || @x > parent.area[0]-(bb.width/2) unless @status == :blink
-	end
-	
-	def die?
-		return false if @hp > 0
-		return true if @hp <= 0
 	end
 	
 	def disabled
@@ -140,7 +135,7 @@ class Mark < Actor
 	end
 	
 	def attacking_on_ground
-		@action == :attack && @status == :stand && @velocity_y < Honoka::Environment::GRAV_WHEN_LAND + 1
+		@action == :attack && @status == :stand && @velocity_y < Orange::Environment::GRAV_WHEN_LAND + 1
 	end
 	
 	def damaged
@@ -171,13 +166,9 @@ class Mark < Actor
 		@subweapon != :none
 	end
 	
-	def in_event
-		$window.in_event
-	end
-	
 	def stand
 		unless jumping or disabled or die? or @y != @y_flag or not idle
-			@image = @animations[:stand].first
+			@image = @character[:stand].first
 			@status = :stand
 			@running = false
 			@jumping = false
@@ -186,14 +177,14 @@ class Mark < Actor
 	
 	def crouch
 		unless jumping or disabled or attacking or die? or disabled
-			@image = @animations[:crouch].first
+			@image = @character[:crouch].first
 			@status = :crouch
 		end
 	end
 	
 	def steady
 		unless jumping or disabled or attacking or die? or disabled
-			@image = @animations[:stead].first
+			@image = @character[:stead].first
 			@status = :stead
 		end
 	end
@@ -206,15 +197,15 @@ class Mark < Actor
 			between(1,delay) { 
 				@status = :crouch; crouch
 			}.then { 
-				if !die?; @status = :stand; @image = @animations[:stand].first; end
+				if !die?; @status = :stand; @image = @character[:stand].first; end
 			}
 		else
 			if jumping or on_wall or falling
-				@image = @animations[:stand].first unless Sword.size >= 1
+				@image = @character[:stand].first unless Sword.size >= 1
 				@status = :stand 
-			elsif @velocity_y >= Honoka::Environment::GRAV_WHEN_LAND + 1 # 2
-				@image = @animations[:stand].first unless Sword.size >= 1
-				@velocity_y = Honoka::Environment::GRAV_WHEN_LAND # 1
+			elsif @velocity_y >= Orange::Environment::GRAV_WHEN_LAND + 1 # 2
+				@image = @character[:stand].first unless Sword.size >= 1
+				@velocity_y = Orange::Environment::GRAV_WHEN_LAND # 1
 			end
 		end
 		@jumping = false if @jumping
@@ -247,13 +238,12 @@ class Mark < Actor
 			@y_flag = @y
 			self.factor_x *= -self.factor_x.abs
 			@velocity_y = 0
-			#~ between(1,100){ 
 			between(1,6){ 
-				@image = @animations[:wall_jump].first
+				@image = @character[:wall_jump].first
 				@velocity_y = 0
 			}.then{
 				@x += 4 * self.factor_x
-				@image = @animations[:jump].first
+				@image = @character[:jump].first
 				@status = :jump; @jumping = true
 				#~ @action = :stand
 				Sound["sfx/jump.wav"].play
@@ -265,7 +255,7 @@ class Mark < Actor
 			}
 			after(15){ @action = :stand; @velocity_y = -2 if @jumping; @y_flag = @y; @velocity_x = 0}
 		else
-			return if self.velocity_y > Honoka::Environment::GRAV_WHEN_LAND # 1
+			return if self.velocity_y > Orange::Environment::GRAV_WHEN_LAND # 1
 			return if crouching or jumping or damaged or die? or not idle or on_wall
 			@status = :jump
 			@jumping = true
@@ -274,7 +264,7 @@ class Mark < Actor
 			during(9){
 				@vert_jump = true if !holding_any?(:left, :right)
 				if holding?(:z) && @jumping && !disabled
-					@velocity_y = -4  unless @velocity_y <=  -Honoka::Environment::GRAV_CAP || !@jumping
+					@velocity_y = -4  unless @velocity_y <=  -Orange::Environment::GRAV_CAP || !@jumping
 				else
 					@velocity_y = -1 unless !@jumping
 				end
@@ -285,13 +275,13 @@ class Mark < Actor
 	def raise
 		@action = :raise
 		dir = [self.velocity_x, self.velocity_y]
-		@image = @animations[:shoot].last
+		@image = @character[:shoot].last
 		@sword.die if @sword != nil
 		factor = (self.factor_x^0)*(-1)
 		self.velocity_x = self.velocity_y = @acceleration_y = 0
-		@image = @animations[:raise].first
+		@image = @character[:raise].first
 		@sword = Sword.create(:x => @x+(5*factor), :y => (@y-15), :factor_x => -factor, :angle => 90*factor)
-		after(500) {@sword.die; @image = @animations[:stand].first; @image = @animations[:jump].last if @status == :jump; @action = :stand; self.velocity_x, self.velocity_y = dir[0], dir[1]; @acceleration_y = 0.3}
+		after(500) {@sword.die; @image = @character[:stand].first; @image = @character[:jump].last if @status == :jump; @action = :stand; self.velocity_x, self.velocity_y = dir[0], dir[1]; @acceleration_y = 0.3}
 	end
 	
 	def weapon_up
@@ -299,10 +289,10 @@ class Mark < Actor
 	end
 	
 	def limit_subweapon
-		Knife.size >= Honoka::ALLOWED_SUBWEAPON_THROWN || 
-		Axe.size >= Honoka::ALLOWED_SUBWEAPON_THROWN || 
-		Torch.size >= Honoka::ALLOWED_SUBWEAPON_THROWN || 
-		Rang.size >= Honoka::ALLOWED_SUBWEAPON_THROWN
+		Knife.size >= Orange::ALLOWED_SUBWEAPON_THROWN || 
+		Axe.size >= Orange::ALLOWED_SUBWEAPON_THROWN || 
+		Torch.size >= Orange::ALLOWED_SUBWEAPON_THROWN || 
+		Rang.size >= Orange::ALLOWED_SUBWEAPON_THROWN
 	end
 	
 	def land?
@@ -321,7 +311,7 @@ class Mark < Actor
 				else
 					land
 				end
-				me.velocity_y = Honoka::Environment::GRAV_WHEN_LAND # 1
+				me.velocity_y = Orange::Environment::GRAV_WHEN_LAND # 1
 				me.y = stone_wall.bb.top - 1 # unless me.y > stone_wall.y
 			end
 		end
@@ -332,7 +322,7 @@ class Mark < Actor
 				else
 					land
 				end
-				me.velocity_y = Honoka::Environment::GRAV_WHEN_LAND # 1
+				me.velocity_y = Orange::Environment::GRAV_WHEN_LAND # 1
 				me.y = bridge.bb.top - 1
 			end
 		end
@@ -359,7 +349,7 @@ class Mark < Actor
 			#~ between(1,500) { 
 			between(1,30) { 
 				@status = :crouch; crouch
-			}.then { @status = :stand; @image = @animations[:stand].first}
+			}.then { @status = :stand; @image = @character[:stand].first}
 			between(30,120){@color.alpha = 128}.then{@invincible = false; @color.alpha = 255}
 		else
 			dead
@@ -370,10 +360,10 @@ class Mark < Actor
 		@hp = 0
 		@sword.die if @sword != nil
 		@status = :die
-		@image = @animations[:stand].last
-		after(6){@image = @animations[16]}
+		@image = @character[:stand].last
+		after(6){@image = @character[16]}
 		after(12){
-			@image = @animations[:die].first
+			@image = @character[:die].first
 			@x += 8*@factor_x unless @y > ($window.height/2) + parent.viewport.y
 			#~ game_state.after(1500) { 
 			game_state.after(90) { 
@@ -388,14 +378,13 @@ class Mark < Actor
 	def move(x,y)
 		return if blinking
 		if x != 0 and not (jumping or on_wall)
-			@image = @animations[:step].first if !@running
-			@image = @animations[:walk].next if @running
-			#~ after(50) { @running = true if not @running }
+			@image = @character[:step].first if !@running
+			@image = @character[:walk].next if @running
 			after(2) { @running = true if not @running }
 		end
 		
-		@image = @animations[:hurt].first  if damaged
-		@image = @animations[:raise].first  if raising_sword
+		@image = @character[:hurt].first  if damaged
+		@image = @character[:raise].first  if raising_sword
 		
 		unless attacking or damaged or on_wall
 			self.factor_x = self.factor_x.abs   if x > 0
@@ -409,8 +398,7 @@ class Mark < Actor
 
 		self.each_collision(*$window.terrains) do |me, stone_wall|
 			@x = previous_x
-			#~ if @jumping and (@y_flag - @y).abs > 8
-			if @jumping # (@y_flag - @y).abs > 8
+			if @jumping
 				if stone_wall.x < me.x and holding?(:left); @status = :walljump; @jumping = false; end
 				if stone_wall.x > me.x and holding?(:right); @status = :walljump; @jumping = false; end
 			end
@@ -457,8 +445,8 @@ class Mark < Actor
 	
 	def attack_sword
 		@action = :attack
-		@image = @animations[:shoot].first if not crouching
-		@image = @animations[:crouch_shoot].first if crouching
+		@image = @character[:shoot].first if not crouching
+		@image = @character[:crouch_shoot].first if crouching
 		factor = -(self.factor_x^0)
 		@sword = Sword.create(:x => @x+(5*factor), :y => (@y-14), :velocity => @direction, :factor_x => -factor, :angle => 90*(-factor_x))
 		between(1, 6) {
@@ -472,8 +460,8 @@ class Mark < Actor
 		}. then {
 			Sound["sfx/swing.wav"].play
 			unless disabled or raising_sword
-				@image = @animations[:crouch_shoot][1] if crouching
-				@image = @animations[:shoot][1] if not crouching
+				@image = @character[:crouch_shoot][1] if crouching
+				@image = @character[:shoot][1] if not crouching
 			end
 		}
 		between(6,10) {
@@ -486,8 +474,8 @@ class Mark < Actor
 			end
 		}.then {
 			unless disabled or raising_sword
-				@image = @animations[:crouch_shoot][2] if crouching
-				@image = @animations[:shoot][2] if not crouching
+				@image = @character[:crouch_shoot][2] if crouching
+				@image = @character[:shoot][2] if not crouching
 			end
 			@sword.bb.height = (@sword.bb.width)*-1 + 8
 			@sword.angle = 130*(-factor_x) unless raising_sword
@@ -503,8 +491,8 @@ class Mark < Actor
 			end
 		}.then {
 			unless disabled or raising_sword
-				@image = @animations[:crouch_shoot][3] if crouching
-				@image = @animations[:shoot][3] if not crouching
+				@image = @character[:crouch_shoot][3] if crouching
+				@image = @character[:shoot][3] if not crouching
 			end
 			@sword.bb.height = ((@sword.bb.width*1/10))
 		}
@@ -517,88 +505,88 @@ class Mark < Actor
 				@sword.y = (@y-(self.height/2)+6)
 				@sword.y = (@y-(self.height/2)+11) if crouching
 				@sword.angle = 0*(-factor_x/2)
-				@image = @animations[:crouch_shoot].last if crouching
+				@image = @character[:crouch_shoot].last if crouching
 			end
 		}.then {
 			unless disabled or raising_sword
 				@sword.die
 				@action = :stand
 				unless disabled
-					@image = @animations[:stand].first if standing or steading
-					@image = @animations[:crouch].first if crouching
-					@image = @animations[:jump].last if jumping
+					@image = @character[:stand].first if standing or steading
+					@image = @character[:crouch].first if crouching
+					@image = @character[:jump].last if jumping
 				end
 				@status = :stand if steading || !holding?(:down)
 			end
-			@animations[:shoot].reset
-			@animations[:crouch_shoot].reset
+			@character[:shoot].reset
+			@character[:crouch_shoot].reset
 		}
 	end
 	
 	def attack_subweapon
 		@action = :attack
 		@subattack = true
-		@image = @animations[:shoot][0]
+		@image = @character[:shoot][0]
 		between(6,12) { 
-			@image = @animations[:shoot][1]
+			@image = @character[:shoot][1]
 		}.then{
-			@image = @animations[:shoot][2]
+			@image = @character[:shoot][2]
 			@ammo -= 1
 			case @subweapon
 				when :knife
-					Knife.create(:x => @x+(10*factor_x), :y => @y-(self.height/2), :velocity => @direction, :factor_x => factor_x) unless Knife.size >= Honoka::ALLOWED_SUBWEAPON_THROWN
+					Knife.create(:x => @x+(10*factor_x), :y => @y-(self.height/2), :velocity => @direction, :factor_x => factor_x) unless Knife.size >= Orange::ALLOWED_SUBWEAPON_THROWN
 				when :axe
-					Axe.create(:x => @x+(8*factor_x), :y => @y-(self.height/2)-4, :velocity => @direction, :factor_x => factor_x) unless Axe.size >= Honoka::ALLOWED_SUBWEAPON_THROWN
+					Axe.create(:x => @x+(8*factor_x), :y => @y-(self.height/2)-4, :velocity => @direction, :factor_x => factor_x) unless Axe.size >= Orange::ALLOWED_SUBWEAPON_THROWN
 				when :torch
-					Torch.create(:x => @x+(12*factor_x), :y => @y-(self.height/2), :velocity => @direction, :factor_x => factor_x) unless Torch.size >= Honoka::ALLOWED_SUBWEAPON_THROWN
+					Torch.create(:x => @x+(12*factor_x), :y => @y-(self.height/2), :velocity => @direction, :factor_x => factor_x) unless Torch.size >= Orange::ALLOWED_SUBWEAPON_THROWN
 				when :rang
-					Rang.create(:x => @x+(12*factor_x), :y => @y-(self.height/2), :velocity => @direction, :factor_x => factor_x) unless Rang.size >= Honoka::ALLOWED_SUBWEAPON_THROWN
+					Rang.create(:x => @x+(12*factor_x), :y => @y-(self.height/2), :velocity => @direction, :factor_x => factor_x) unless Rang.size >= Orange::ALLOWED_SUBWEAPON_THROWN
 			end
 			Sound["sfx/swing.wav"].play
 		}
-		#~ after(200) { @image = @animations[:shoot].last}
+		#~ after(200) { @image = @character[:shoot].last}
 		between(12,32) { 
 		#~ after(350) {  
-			@image = @animations[:shoot].last
-			@image = @animations[:crouch_shoot].last if crouching
+			@image = @character[:shoot].last
+			@image = @character[:crouch_shoot].last if crouching
 		}.then {
 			@action = :stand
 			@status = :stand if steading
 			unless disabled
-				@image = @animations[:stand].first if standing or steading
-				@image = @animations[:crouch].first if crouching
-				@image = @animations[:jump].last if jumping
+				@image = @character[:stand].first if standing or steading
+				@image = @character[:crouch].first if crouching
+				@image = @character[:jump].last if jumping
 			end
-			@animations[:shoot].reset
-			@animations[:crouch_shoot].reset
+			@character[:shoot].reset
+			@character[:crouch_shoot].reset
 		}
 	end
 	
 	def update
 		land?
-		@velocity_y = Honoka::Environment::GRAV_CAP if @velocity_y > Honoka::Environment::GRAV_CAP
+		@velocity_y = Orange::Environment::GRAV_CAP if @velocity_y > Orange::Environment::GRAV_CAP
 		if @x == @last_x
 			@running = false
-			@animations[:walk].reset
+			@character[:walk].reset
 		end
 		if (jumping or on_wall) and idle
 			if @last_y > @y 
-				@image = @animations[:jump].first
-				@image = @animations[13] if @vert_jump
+				@image = @character[:jump].first
+				@image = @character[13] if @vert_jump
 			else
-				@image = @animations[13] if @velocity_y <= 2
-				@image = @animations[:jump].last if @velocity_y > 2
+				@image = @character[13] if @velocity_y <= 2
+				@image = @character[:jump].last if @velocity_y > 2
 			end
 		end
 		check_last_direction
-		if @velocity_y > Honoka::Environment::GRAV_WHEN_LAND + 1 && !jumping && idle && !on_wall
+		if @velocity_y > Orange::Environment::GRAV_WHEN_LAND + 1 && !jumping && idle && !on_wall
 			@status = :fall unless disabled
-			@image = @animations[13] if @velocity_y <= 3
-			@image = @animations[:jump].last if @velocity_y > 3
+			@image = @character[13] if @velocity_y <= 3
+			@image = @character[:jump].last if @velocity_y > 3
 		end
 		self.each_collision(Rang) do |me, weapon|
 			weapon.die
 		end
-		@y_flag = @y if @velocity_y == Honoka::Environment::GRAV_WHEN_LAND && !@jumping
+		@y_flag = @y if @velocity_y == Orange::Environment::GRAV_WHEN_LAND && !@jumping
 	end
 end

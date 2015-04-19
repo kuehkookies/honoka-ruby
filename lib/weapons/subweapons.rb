@@ -26,7 +26,7 @@ end
 
 
 # ==================================================================================
-# And here goes the samples. Make the Belmonts proud, Honoka!
+# And here goes the samples. Make the Belmonts proud, Orange!
 # ==================================================================================
 
 class Knife < Subweapons
@@ -49,7 +49,7 @@ class Knife < Subweapons
 		@velocity_x *= -0.15
 		@velocity_y = -6
 		@rotation = 25*@velocity_x
-		@acceleration_y = Honoka::Environment::GRAV_ACC
+		@acceleration_y = Orange::Environment::GRAV_ACC
 		@collidable = false
 	end
 	
@@ -77,9 +77,9 @@ class Axe < Subweapons
 		@zorder = 300
 		@velocity_x *= 1.5
 		@velocity_y -= 7
-		@max_velocity = Honoka::Environment::GRAV_CAP
+		@max_velocity = Orange::Environment::GRAV_CAP
 		#~ @acceleration_x = -0.15 # 0.4
-		@acceleration_y = Honoka::Environment::GRAV_ACC # 0.4
+		@acceleration_y = Orange::Environment::GRAV_ACC # 0.4
 		@rotation = 15*@velocity_x
 		@damage = 5
 		cache_bounding_box
@@ -162,7 +162,7 @@ class Torch < Subweapons
 					me.y = wall.bb.bottom + me.image.height * me.factor_y
 					me.velocity_y = 0
 				else  
-					me.velocity_y = Honoka::Environment::GRAV_WHEN_LAND
+					me.velocity_y = Orange::Environment::GRAV_WHEN_LAND
 					me.y = wall.bb.top - 1 unless me.y > wall.y
 				end
 				@x = previous_x if (wall.x < me.x or wall.x > me.x) and wall.y < me.y

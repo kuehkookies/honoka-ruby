@@ -16,7 +16,7 @@ class Ghoul_Sword < Hazard
 		self.rotation_center = :center_left
 		@velocity_x *= 1
 		@velocity_y *= 1
-		@max_velocity = Honoka::Environment::GRAV_CAP
+		@max_velocity = Orange::Environment::GRAV_CAP
 		@damage = 4
 		@rotation = 0
 		@color = Color.new(0xff88DD44)
@@ -24,7 +24,7 @@ class Ghoul_Sword < Hazard
 	end
 	
 	def die
-		@acceleration_y = Honoka::Environment::GRAV_ACC # 0.3
+		@acceleration_y = Orange::Environment::GRAV_ACC # 0.3
 		self.rotation_center = :center_center
 		@velocity_x = -@factor_x
 		@velocity_y = -6

@@ -36,8 +36,7 @@ class Scene < GameState
 		@hud = HUD.create(:player => @player) # if @hud == nil
 		@player.sword = nil
 
-		# Better to say this in Honoka's voice :D
-		Honoka::Music.start!
+		# Orange::Music.start!
 
 		clear_game_terrains
 		clear_subweapon_projectile
