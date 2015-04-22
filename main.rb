@@ -8,6 +8,9 @@ include Chingu
 
 Dir[File.dirname(__FILE__) + '/lib/*.rb'].each {|file| require file }
 Dir[File.dirname(__FILE__) + '/lib/*/*.rb'].each {|file| require file }
+Dir[File.dirname(__FILE__) + '/lib/*/*/*.rb'].each {|file| require file }
+
+include AStar
 
 # ==================================================================================
 # Main stage is here!

@@ -255,23 +255,26 @@ class Map
     width = area[0] / 16 + 1
     height = area[1] / 16 + 1
     has = Array.new(height) {Array.new(width) { 0 }}
-    # area = width * height
-    # for i in 0...area do; has[i] = 0; end
-    # tiles.each do |tile|
-    #   x = (tile.values[0].values_at(:x)[0] / 16).to_i 
-    #   y = (tile.values[0].values_at(:y)[0] / 16).to_i
-    #   z=x*y; z%=16; z+=x*y
-    #   has[z] = 1
-    # end
+    name = []
+    $window.enemies.each do |enemy|
+      name.push enemy.class.name
+    end
+    name.uniq!
     tiles.each do |tile|
+      clas = Object.const_get(tile.keys[0]).to_s
+      next if name.include?(clas)
       x = (tile.values[0].values_at(:x)[0] / 16).to_i
       y = (tile.values[0].values_at(:y)[0] / 16).to_i
       has[y][x] = 1
     end
     
-    # f = File.new("out.txt", "w")
-    # f.write(has)     #=> 10
-    # f.close   
+    name = current.to_s.downcase!
+    f = File.new("lib/levels/#{name}.map", "w")
+    for i in 0...height
+      n = has[i].join(",")
+      f.puts n
+    end
+    f.close   
 
     return has
   end

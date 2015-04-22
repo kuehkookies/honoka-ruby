@@ -28,9 +28,7 @@ class Enemy < GameObject
 		enemy_properties
 
 		cache_bounding_box
-
-		@pathfinder  = Astar.new({'x' => @x, 'y' => @y}, {'x' => @player.x, 'y' => @player.y})
-		# search
+		
 	end
 
 	def search

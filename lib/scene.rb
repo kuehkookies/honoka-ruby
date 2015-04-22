@@ -70,6 +70,8 @@ class Scene < GameState
 		@recorded_tilemap ||= $window.record 1, 1 do
 			@tiles.each &:draw
 			$window.map.create_tiles(@area, @map)
+			@gridmap = GridMap.new
+			# p @gridmap
 		end
 		@recorded_tilemap.draw 0, 0, 0
 		super
