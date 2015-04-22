@@ -10,15 +10,14 @@
 # ==================================================================================
 
 class Level00 < Scene
-	def initialize
+	def setup
 		Orange::Music.set(0)
-
 		super
 		@area = [512, 240]
 		self.viewport.game_area = [0,0,@area[0],@area[1]]
 		self.viewport.y = 0
 		@player.x = 64
-		@player.y = 240
+		@player.y = 216
 		@player.y_flag = @player.y
 		@backdrop << {:image => "parallax/panorama1-1.png", :damping => 10, 
 								  :repeat_x => true, :repeat_y => false}

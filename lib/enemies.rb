@@ -10,28 +10,99 @@
 # ==================================================================================
 
 class Enemy < GameObject
+	attr_reader :invincible, :hp, :damage, :harmful, :pathfinder
+	attr_accessor	:y_flag, :status, :action, :running, :character
+	trait :bounding_box, :debug => false
 	traits :collision_detection, :effect, :velocity, :timer
-	attr_reader :invincible, :hp, :damage, :harmful
 	
 	def self.descendants
 		ObjectSpace.each_object(Class).select { |klass| klass < self }
 	end
 	
 	def setup
-		@player = parent.player
+		create_character_frame
+		@blank = TexPlay.create_image($window, 1, 1)
+		@image = character_frame(:stand, :first)
+		
+		enemy_parameters
+		enemy_properties
+
+		cache_bounding_box
+
+		@pathfinder  = Astar.new({'x' => @x, 'y' => @y}, {'x' => @player.x, 'y' => @player.y})
+		# search
+	end
+
+	def search
+		@pathfinder.search
+	end
+
+	def enemy_parameters
 		@invincible = false
 		@harmful = true
 		@hardened = false
 		@hp = 0
 		@damage = 0
+	end
+
+	def enemy_properties
+		@player = parent.player
+		@status = :stand; @action = :stand
+		@invincible = false
+		@jumping = false
+		@vert_jump = false
+		@running = false
 		self.zorder = 200
 		@gap_x = @x - @player.x
 		@gap_y = @y - @player.y
 		@last_x, @last_y = @x, @y
 	  $window.enemies << self
 	end
+
+	def create_character_frame; end
+	def character_frame(symbol, number = nil)
+		chara = @character.nil? ? @blank : @character[symbol]
+		unless @character.nil?
+			case number
+			when :first
+				return chara.first
+			when :next
+				return chara.next
+			when :last
+				return chara.last
+			when :reset
+				return chara.reset
+			when nil
+				return chara
+			else
+				return chara[number]
+			end
+		end
+		return chara
+	end
+	
+	def standing;     @status == :stand;    end
+	def jumping;      @status == :jump;     end
+	def falling;      @status == :fall;     end
+	def damaged;      @status == :hurt; 	  end
+	def attacking;    @action == :attack;   end
+	def idle;         @action == :stand;    end
+	def die?;         @hp <= 0;             end
+	def crouching_on_bridge
+		@status == :crouch_on_bridge
+	end
+	def disabled
+		@status == :hurt or @status == :die
+	end
+
+	def knocked_back; @status == :hurt and moved?; end
+	def destroyed?; return true if self.nil? ; end
+	def harmful?; return @harmful; end
+	def in_event; $window.in_event; end
 	
 	def hit(weapon, x, y, side)
+		@status = :hurt
+		@action = :stand
 		unless die?
 			y -= 16 if weapon.is_a? Torch_Fire
 			Spark.create(:x => x, :y => y, :angle => rand(30)*side)
@@ -48,19 +119,82 @@ class Enemy < GameObject
 		$window.enemies.delete(self) rescue nil
 	end
 	
-	def die?
-		return @hp <= 0
-	end
-	
-	def destroyed?
-		return true if self == nil
-	end
-	
-	def harmful?
-		return @harmful
+
+	def jump
+		if crouching_on_bridge
+			return if self.velocity_y > Orange::Environment::GRAV_WHEN_LAND # 1
+			return if jumping or damaged or die? or not idle
+			@status = :jump
+			@jumping = true
+			@velocity_y = -1
+			@y += 12
+		else
+			return if self.velocity_y > Orange::Environment::GRAV_WHEN_LAND # 1
+			return if crouching or jumping 
+			return if damaged or die? 
+			return unless idle 
+			@status = :jump
+			@jumping = true
+			Sound["sfx/jump.wav"].play
+			@velocity_y = -4
+			during(9){
+				@velocity_y = -4  unless @velocity_y <=  -Orange::Environment::GRAV_CAP || !@jumping
+			}
+		end
 	end
 	
 	def land?
+		self.each_collision(*$window.terrains) do |me, stone_wall|
+			if me.y >= stone_wall.bb.bottom and self.velocity_y < 0 # Hitting the ceiling
+				me.y = stone_wall.bb.bottom + me.image.height * me.factor_y
+				me.velocity_y = 0
+				@jumping = false
+			else  # Land on ground
+				if damaged
+					hurt
+				else
+					land
+				end
+				me.velocity_y = Orange::Environment::GRAV_WHEN_LAND # 1
+				me.y = stone_wall.bb.top - 1 # unless me.y > stone_wall.y
+			end
+		end
+		self.each_collision(*$window.bridges) do |me, bridge|
+			if me.y <= bridge.y+2 && me.velocity_y > 0
+				if damaged
+					hurt
+				else
+					land
+				end
+				me.velocity_y = Orange::Environment::GRAV_WHEN_LAND # 1
+				me.y = bridge.bb.top - 1
+			end
+		end
+	end
+
+	def land
+		delay = 18
+		delay = 24 if attacking
+		if (@y - @y_flag > 56 or (@y - @y_flag > 48 && jumping ) ) && !die?
+			Sound["sfx/step.wav"].play
+			between(1,delay) { 
+				@status = :crouch; crouch
+			}.then { 
+				@status = :stand unless die?
+			}
+		else
+			if jumping or falling
+				@image = character_frame(:stand, :first)
+				@status = :stand 
+			elsif @velocity_y >= Orange::Environment::GRAV_WHEN_LAND + 1
+				@image = character_frame(:stand, :first)
+				@velocity_y = Orange::Environment::GRAV_WHEN_LAND
+			end
+		end
+		@jumping = false if @jumping
+		@vert_jump = false if !@jumping
+		@velocity_x = 0
+		@y_flag = @y
 	end
 	
 	def check_collision

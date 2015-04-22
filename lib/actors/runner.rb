@@ -50,17 +50,4 @@ class Runner < Actor
 			end
 		}
 	end
-
-	def make_idle_animation
-		every(120){
-			unless die?
-				if @action == :stand && @status == :stand && @last_x == @x
-					during(9){
-						@image = character_frame(:stand, :next)
-					}.then{@image = character_frame(:stand, :reset); 
-						@image = character_frame(:stand, :first) }
-				end
-			end
-		}
-	end
 end

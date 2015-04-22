@@ -35,13 +35,13 @@ class Scene < GameState
 		player_start
 		@hud = HUD.create(:player => @player) # if @hud == nil
 
-		Orange::Music.start!
+		# Orange::Music.start!
 
 		clear_game_terrains
 		clear_subweapon_projectile
 
 		game_objects.select { |game_object| !game_object.is_a? Actor }.each { |game_object| game_object.destroy }
-		load_game_objects(:file => @file) unless self.class.to_s == "Zero"
+		@map = load_game_objects(:file => @file) unless self.class.to_s == "Zero"
 		# for i in 0..$window.terrains.size
 		# 	@tiles += game_objects.grep($window.terrains[i])
 		# end
@@ -52,7 +52,9 @@ class Scene < GameState
 		# 	@tiles += game_objects.grep($window.decorations[i])
 		# end
 		# game_objects.subtract_with(@tiles)
-		after(15) { $window.stop_transfer }
+		after(15) { 
+			$window.stop_transfer
+		}
 		
 		@hud.update
 	end
@@ -62,14 +64,14 @@ class Scene < GameState
 		# Draw the static tilemap all at once and ONLY once.
 		@recorded_tilemap ||= $window.record 1, 1 do
 			@tiles.each &:draw
+			$window.map.create_tiles(@area, @map)
 		end
 		@recorded_tilemap.draw 0, 0, 0
-
 		super
 	end
 	
 	def edit
-		push_game_state(GameStates::Edit.new(:file => @file, :grid => [8,8], :classes => [Ball, Zombie, Ground, GroundTiled, GroundLower, GroundLoop, Brick, Brick_Loop, Brick_Loop_Back, Brick_Window, Brick_Window_Small, Bridge_Wood] ))
+		push_game_state(GameStates::Edit.new(:file => @file, :grid => [8,8], :classes => [Chaser, Ground, GroundTiled, GroundLower, GroundLoop, Brick, Brick_Loop, Brick_Loop_Back, Brick_Window, Brick_Window_Small, Bridge_Wood] ))
 	end
 	
 	def clear_game_terrains

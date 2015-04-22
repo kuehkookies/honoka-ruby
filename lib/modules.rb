@@ -250,6 +250,30 @@ class Map
     @col = options[:col] || 0    
     @map = options[:map] || [ [ ] ] 
   end
+
+  def create_tiles(area, tiles)
+    width = area[0] / 16 + 1
+    height = area[1] / 16 + 1
+    has = Array.new(height) {Array.new(width) { 0 }}
+    # area = width * height
+    # for i in 0...area do; has[i] = 0; end
+    # tiles.each do |tile|
+    #   x = (tile.values[0].values_at(:x)[0] / 16).to_i 
+    #   y = (tile.values[0].values_at(:y)[0] / 16).to_i
+    #   z=x*y; z%=16; z+=x*y
+    #   has[z] = 1
+    # end
+    tiles.each do |tile|
+      x = (tile.values[0].values_at(:x)[0] / 16).to_i
+      y = (tile.values[0].values_at(:y)[0] / 16).to_i
+      has[y][x] = 1
+    end
+    f = File.new("out.txt", "w")
+    f.write(has)     #=> 10
+    f.close   
+
+    # return has
+  end
   
   def current
     @map[@row][@col] rescue nil
