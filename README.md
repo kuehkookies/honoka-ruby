@@ -34,7 +34,9 @@ Built with the spirit of love and live by kuehkookies.
 ## Credits
 -  Julian Raschke, Jan Lücker, and other Gosu contributors (https://github.com/jlnr/gosu/)
 -  ippa (https://github.com/ippa)
--  Markus Handschuh (https://github.com/Pommespanzer) for A* library
+-  Amit Patel
+-  Marcin Coles (https://github.com/fjc) for A* library
+-  Markus Handschuh (https://github.com/Pommespanzer) for A* library reference
 -  theoallen (https://github.com/theoallen)
 
 ----
