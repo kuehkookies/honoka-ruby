@@ -10,7 +10,7 @@
 class Actor < Chingu::GameObject
 	attr_accessor :maxhp, :hp, :damage, :level, :ammo
 	attr_accessor	:y_flag, :sword, :status, :action, :running, :character, :subweapon
-	attr_reader 	:direction, :invincible, :last_x
+	attr_reader 	:direction, :invincible, :last_x, :pos
 	trait :bounding_box, :scale => [0.3, 0.8], :debug => false
 	traits :timer, :collision_detection, :velocity
 	
@@ -89,6 +89,8 @@ class Actor < Chingu::GameObject
 
 		self.rotation_center = :bottom_center
 
+		@pos = [0,0]
+
 		@last_x, @last_y = @x, @y
 		@y_flag = @y
 	end
@@ -108,6 +110,10 @@ class Actor < Chingu::GameObject
 		@subattack = false
 
 		$window.clear_temp_data
+	end
+
+	def save_pos(array)
+		@pos = array
 	end
 	
 	def blinking;     @status == :blink;    end

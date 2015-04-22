@@ -268,11 +268,12 @@ class Map
       y = (tile.values[0].values_at(:y)[0] / 16).to_i
       has[y][x] = 1
     end
-    f = File.new("out.txt", "w")
-    f.write(has)     #=> 10
-    f.close   
+    
+    # f = File.new("out.txt", "w")
+    # f.write(has)     #=> 10
+    # f.close   
 
-    # return has
+    return has
   end
   
   def current

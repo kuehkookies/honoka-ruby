@@ -57,6 +57,11 @@ class Scene < GameState
 		}
 		
 		@hud.update
+
+		every(60){
+			record_position(@player)
+			p @player.pos
+		}
 	end
 	
 	def draw
@@ -104,6 +109,12 @@ class Scene < GameState
 	def player_start
 		@player = $window.selected_actor.create
 		@player.reset_state($window.actor_temp_data)
+	end
+
+	def record_position(object)
+		x = (object.x / 16).to_i
+		y = (object.y / 16).to_i
+		object.save_pos [x,y]
 	end
 	
 	def to_next_block
