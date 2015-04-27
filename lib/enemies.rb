@@ -10,7 +10,7 @@
 # ==================================================================================
 
 class Enemy < GameObject
-	attr_reader :invincible, :hp, :damage, :harmful, :pathfinder
+	attr_reader :invincible, :hp, :damage, :harmful, :pathfinder, :pos
 	attr_accessor	:y_flag, :status, :action, :running, :character
 	trait :bounding_box, :debug => false
 	traits :collision_detection, :effect, :velocity, :timer
@@ -31,8 +31,20 @@ class Enemy < GameObject
 		
 	end
 
-	def search
-		@pathfinder.search
+	def record_pos
+		x = (@x / 16).to_i
+		y = (@y / 16).to_i
+		save_pos [x, y]
+	end
+
+	def save_pos(array)
+		@pos = array
+	end
+
+	def check_position(object, flip = false)
+		x = object.pos[0] - @pos[0]
+		y = object.pos[1] - @pos[1]
+		@factor_x = x >= 0 ? $window.factor : -$window.factor if flip
 	end
 
 	def enemy_parameters
@@ -54,6 +66,7 @@ class Enemy < GameObject
 		@gap_x = @x - @player.x
 		@gap_y = @y - @player.y
 		@last_x, @last_y = @x, @y
+		@pos = []
 	  $window.enemies << self
 	end
 

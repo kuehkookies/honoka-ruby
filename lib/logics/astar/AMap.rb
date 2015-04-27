@@ -29,33 +29,18 @@ module AStar
       end
     end
     
-    # def self.load(filename)
-    #   mmap=[]
-    #   File.open(filename) do |f|
-    #     f.each_line do |line|
-    #       linearr=[]
-    #       line.chomp.split(',').each do |e|
-    #         linearr.push(e.to_i)
-    #       end
-    #       mmap.push(linearr)
-    #     end
-    #   end
-    #   return AMap.new(mmap)
-    # end
-
-    def self.load(map)
+    def self.load(filename)
       mmap=[]
-      p map
-      # File.open(map) do |f|
-      #   f.each_line do |line|
-      #     linearr=[]
-      #     line.chomp.split(',').each do |e|
-      #       linearr.push(e.to_i)
-      #     end
-      #     mmap.push(linearr)
-      #   end
-      # end
-      # return AMap.new(mmap)
+      File.open(filename) do |f|
+        f.each_line do |line|
+          linearr=[]
+          line.chomp.split(',').each do |e|
+            linearr.push(e.to_i)
+          end
+          mmap.push(linearr)
+        end
+      end
+      return AMap.new(mmap)
     end
     
     def generate_successor_nodes(anode)

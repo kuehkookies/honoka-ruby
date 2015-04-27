@@ -112,6 +112,12 @@ class Actor < Chingu::GameObject
 		$window.clear_temp_data
 	end
 
+	def record_pos
+		x = (@x / 16).to_i
+		y = (@y / 16).to_i
+		save_pos [x,y]
+	end
+
 	def save_pos(array)
 		@pos = array
 	end

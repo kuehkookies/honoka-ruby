@@ -9,22 +9,13 @@
 class Chaser < Enemy
 	trait :bounding_box, :scale => [0.3, 0.8], :debug => false
 
-	# def setup
-	# 	super
-		# @astar = Astar.new
-		# every(60){
-		# 	start = {'x' => @x, 'y' => @y}
-		# 	goal = {'x' => @player.x, 'y' => @player.y}
-		# 	@astar.setup(start, goal)
-		# 	@astar.search
-
-		# 	if (result.size > 0)
-		# 	  result.each{|node|
-		# 	    p [node.x, node.y]
-		# 	  }
-		# 	end
-		# }
-	# end
+	def setup
+		super
+		every(60){
+			record_pos
+			check_position(@player, true)
+		}
+	end
 
 	def create_character_frame
 		@character = Chingu::Animation.new( :file => "player/mark.gif", :size => [32,32])

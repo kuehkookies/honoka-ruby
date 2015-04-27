@@ -59,8 +59,7 @@ class Scene < GameState
 		@hud.update
 
 		every(60){
-			record_position(@player)
-			p @player.pos
+			@player.record_pos
 		}
 	end
 	
@@ -113,11 +112,11 @@ class Scene < GameState
 		@player.reset_state($window.actor_temp_data)
 	end
 
-	def record_position(object)
-		x = (object.x / 16).to_i
-		y = (object.y / 16).to_i
-		object.save_pos [x,y]
-	end
+	# def record_position(object)
+	# 	x = (object.x / 16).to_i
+	# 	y = (object.y / 16).to_i
+	# 	object.save_pos [x,y]
+	# end
 	
 	def to_next_block
 		clear_game_terrains
