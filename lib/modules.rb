@@ -254,7 +254,7 @@ class Map
   def create_tiles(area, tiles)
     width = area[0] / 16 + 1
     height = area[1] / 16 + 1
-    has = Array.new(height) {Array.new(width) { 0 }}
+    has = Array.new(height) {Array.new(width) { 1 }}
     name = []
     $window.enemies.each do |enemy|
       name.push enemy.class.name
@@ -265,7 +265,7 @@ class Map
       next if name.include?(clas)
       x = (tile.values[0].values_at(:x)[0] / 16).to_i
       y = (tile.values[0].values_at(:y)[0] / 16).to_i
-      has[y][x] = 1
+      has[y][x] = 0
     end
     
     name = current.to_s.downcase!

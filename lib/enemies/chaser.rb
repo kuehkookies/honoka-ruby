@@ -11,6 +11,9 @@ class Chaser < Enemy
 
 	def setup
 		super
+		after(180){
+			la = parent.gridmap.find_path_astar @pos, @player.pos
+		}
 		every(60){
 			record_pos
 			check_position(@player, true)
@@ -44,6 +47,20 @@ class Chaser < Enemy
 		@hardened = false
 		@hp = 12
 		@damage = 0
+		@speed = 1
+	end
+
+	def move(x,y)
+		if x != 0 and not (jumping or on_wall)
+			@image = character_frame(:walk, :next)
+		end
+		
+		self.factor_x = self.factor_x.abs   if x > 0
+		self.factor_x = -self.factor_x.abs  if x < 0
+	
+		@x += x if !@vert_jump and not falling
+		@x = previous_x  if at_edge? and not in_event
+		@y += y
 	end
 
 	def die
@@ -60,5 +77,16 @@ class Chaser < Enemy
 			@invincible = true
 			after(Orange::INVULNERABLE_DURATION) { @invincible = false; } # unpause! }
 		end
+	end
+
+	def update
+		super
+		land?
+		destroy if self.parent.viewport.outside_game_area?(self)
+		# unless self.velocity_y > Orange::Environment::GRAV_WHEN_LAND or @invincible or die?
+		# 	@image = character_frame(:walk, :next)
+		# 	@x += @speed*@factor_x
+		# end
+		# @image = character_frame(:walk, :first) if @velocity_y > Orange::Environment::GRAV_WHEN_LAND
 	end
 end

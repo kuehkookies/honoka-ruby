@@ -21,7 +21,7 @@
 
 class Scene < GameState
 	traits :viewport, :timer
-	attr_reader :player, :terrain, :area, :backdrop, :hud
+	attr_reader :player, :terrain, :area, :backdrop, :hud, :gridmap
 
 	def initialize
 		super

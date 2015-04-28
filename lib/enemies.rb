@@ -53,6 +53,7 @@ class Enemy < GameObject
 		@hardened = false
 		@hp = 0
 		@damage = 0
+		@speed = 1
 	end
 
 	def enemy_properties
@@ -66,6 +67,7 @@ class Enemy < GameObject
 		@gap_x = @x - @player.x
 		@gap_y = @y - @player.y
 		@last_x, @last_y = @x, @y
+		@y_flag = @y
 		@pos = []
 	  $window.enemies << self
 	end
@@ -231,9 +233,14 @@ class Enemy < GameObject
 			end
 		end
 	end
+
+	def at_edge?
+		@x < (bb.width/2)  || @x > parent.area[0]-(bb.width/2)
+	end
 	
 	def update
 		@velocity_y = Orange::Environment::GRAV_CAP if @velocity_y > Orange::Environment::GRAV_CAP
+		@y_flag = @y if @velocity_y == Orange::Environment::GRAV_WHEN_LAND && !@jumping
 		check_collision
 	end
 end
