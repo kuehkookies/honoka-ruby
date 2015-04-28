@@ -62,7 +62,6 @@ class GridMap
   end
   
   def find_path_astar(from_position, to_position)
-    p @map_path
     # returns an array of [x, y]
     if to_position[0] < @map_width and to_position[1] < @map_height
       start = @map_path.co_ord(from_position[0], from_position[1])

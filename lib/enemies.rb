@@ -11,7 +11,7 @@
 
 class Enemy < GameObject
 	attr_reader :invincible, :hp, :damage, :harmful, :pathfinder, :pos
-	attr_accessor	:y_flag, :status, :action, :running, :character
+	attr_accessor	:y_flag, :status, :action, :moving, :character
 	trait :bounding_box, :debug => false
 	traits :collision_detection, :effect, :velocity, :timer
 	
@@ -47,6 +47,22 @@ class Enemy < GameObject
 		@factor_x = x >= 0 ? $window.factor : -$window.factor if flip
 	end
 
+	def find_position(target)
+		check_position(target, true)
+		parent.gridmap.find_path_astar @pos, target.pos
+		@status = :move
+	end
+
+	def move_to(target)
+		while not in_position target
+			@x += @speed * @factor_x
+		end
+	end
+
+	def in_position(pos)
+		@pos[0] != pos[0] and @pos[1] != pos[1]
+	end
+
 	def enemy_parameters
 		@invincible = false
 		@harmful = true
@@ -62,7 +78,7 @@ class Enemy < GameObject
 		@invincible = false
 		@jumping = false
 		@vert_jump = false
-		@running = false
+		@moving = false
 		self.zorder = 200
 		@gap_x = @x - @player.x
 		@gap_y = @y - @player.y
@@ -95,6 +111,7 @@ class Enemy < GameObject
 	end
 	
 	def standing;     @status == :stand;    end
+	def moving;       @status == :move;     end
 	def jumping;      @status == :jump;     end
 	def falling;      @status == :fall;     end
 	def damaged;      @status == :hurt; 	  end
@@ -131,7 +148,6 @@ class Enemy < GameObject
 		destroy
 		$window.enemies.delete(self) rescue nil
 	end
-	
 
 	def jump
 		if crouching_on_bridge
