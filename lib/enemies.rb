@@ -28,10 +28,18 @@ class Enemy < GameObject
 		enemy_properties
 
 		cache_bounding_box
-		
+
+		after(300){
+			record_pos
+		}
+		every(Orange::Environment::POS_RECORD_INTERVAL){
+			record_pos
+			find_position(@player)
+		}
 	end
 
 	def record_pos
+		return if self.destroyed?
 		x = (@x / 16).to_i
 		y = (@y / 16).to_i
 		save_pos [x, y]
@@ -42,14 +50,19 @@ class Enemy < GameObject
 	end
 
 	def check_position(object, flip = false)
-		x = object.pos[0] - @pos[0]
-		y = object.pos[1] - @pos[1]
-		@factor_x = x >= 0 ? $window.factor : -$window.factor if flip
+		return if self.destroyed?
+		# x = object.pos[0] - @pos[0]
+		# y = object.pos[1] - @pos[1]
+		# @factor_x = x >= 0 ? $window.factor : -$window.factor if flip
+		x = object.pos[0] > @pos[0]
+		y = object.pos[1] > @pos[1]
+		p [object.pos, @pos]
+		@factor_x = x ? $window.factor : -$window.factor if flip
 	end
 
 	def find_position(target)
 		check_position(target, true)
-		parent.gridmap.find_path_astar @pos, target.pos
+		x = parent.gridmap.find_path_astar @pos, target.pos
 		@status = :move
 	end
 

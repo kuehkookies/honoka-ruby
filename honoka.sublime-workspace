@@ -1,0 +1,408 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"list-",
+				"list-style-image"
+			],
+			[
+				"back",
+				"background"
+			],
+			[
+				"text",
+				"text-indent"
+			],
+			[
+				"backg",
+				"background-size"
+			],
+			[
+				"backl",
+				"background-color"
+			],
+			[
+				"tex",
+				"text-indent"
+			],
+			[
+				"font-s",
+				"font-size"
+			],
+			[
+				"inline",
+				"inline-block"
+			],
+			[
+				"listts",
+				"list-style"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "main.rb",
+			"settings":
+			{
+				"buffer_size": 3680,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "lib/logics/astar/Node.rb",
+			"settings":
+			{
+				"buffer_size": 1819,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "lib/logics/astar/AMap.rb",
+			"settings":
+			{
+				"buffer_size": 6393,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "lib/enemies.rb",
+			"settings":
+			{
+				"buffer_size": 6678,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/E/Ruby Box/honoka",
+		"/E/Ruby Box/honoka/lib",
+		"/E/Ruby Box/honoka/lib/enemies",
+		"/E/Ruby Box/honoka/lib/logics",
+		"/E/Ruby Box/honoka/lib/logics/astar"
+	],
+	"file_history":
+	[
+		"/C/Users/ryann/AppData/Local/Temp/Rar$DI01.102/readme.md",
+		"/C/Users/ryann/AppData/Local/Temp/fz3temp-1/data.xml",
+		"/D/xampp/htdocs/crescentsun/index.html",
+		"/D/xampp/htdocs/crescentsun/js/main.js",
+		"/D/ED Deployment/ed1.2 scenes.txt",
+		"/D/xampp/htdocs/monoxdesign/index.html",
+		"/C/Users/ryann/Documents/shop draft.txt",
+		"/D/Dropbox/ED - Groundhog/docs/maprequest.txt",
+		"/D/xampp/htdocs/crescentsun/js/viewportchecker.js",
+		"/C/Users/ryann/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/D/Dropbox/ED - Groundhog/docs/ed1.2 scenes.txt",
+		"/D/Dropbox/ED - Groundhog/docs/maprequest.tt",
+		"/E/Ruby Box/honoka/lib/logics/astar/PriorityQueue.rb",
+		"/D/xampp/htdocs/sixindo/css/main.css",
+		"/D/xampp/htdocs/sixindo/index.html",
+		"/C/Users/ryann/AppData/Local/Temp/fz3temp-1/index.php",
+		"/C/Users/ryann/AppData/Local/Temp/fz3temp-1/main.css",
+		"/D/xampp/htdocs/sixindo/humans.txt",
+		"/D/xampp/htdocs/crescentsun/css/main.css",
+		"/C/Users/ryann/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
+		"/C/Users/ryann/AppData/Roaming/Sublime Text 3/Packages/Default/Default (Windows).sublime-keymap",
+		"/C/Users/ryann/AppData/Roaming/Sublime Text 3/Packages/Default/Preferences.sublime-settings"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 90.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"tab",
+			"Node",
+			"manhatta",
+			"node_start",
+			"find_path_astar",
+			"to-w",
+			"footer",
+			"#footer",
+			"footer",
+			"#footer",
+			"footer",
+			"{\n",
+			"ctrl+d",
+			"ctrl+shift+d",
+			"shift+ctrl",
+			">\n",
+			"tab",
+			"font",
+			"ctrl+d",
+			"+d"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"#footer",
+			"footer"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "main.rb",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3680,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3377,
+								3377
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Ruby/Ruby.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 306.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "lib/logics/astar/Node.rb",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1819,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								444,
+								444
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Ruby/Ruby.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "lib/logics/astar/AMap.rb",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6393,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4182,
+								4182
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Ruby/Ruby.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1338.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "lib/enemies.rb",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6678,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1147,
+								1147
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Ruby/Ruby.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 588.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 26.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 118.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "honoka.sublime-project",
+	"replace":
+	{
+		"height": 48.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

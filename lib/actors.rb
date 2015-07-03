@@ -27,6 +27,10 @@ class Actor < Chingu::GameObject
 		# Trait feature that creates a bounding box for collision detection and stuffs.
 		# Without this, Actor can't stand on very ground.
 		cache_bounding_box
+
+		every(Orange::Environment::POS_RECORD_INTERVAL){
+			record_pos
+		}
 	end
 
 	def create_character_frame; end

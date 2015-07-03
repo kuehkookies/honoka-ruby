@@ -80,7 +80,7 @@ module AStar
         iterations+=1 #keep track of how many times this itersates
         node_current=open.find_best
         if node_current==node_goal then #found the solution
-          #~ puts "Iterations: #{iterations}"
+          # puts "Iterations: #{iterations}"
           return node_current 
         end       
         generate_successor_nodes(node_current) do |node_successor|

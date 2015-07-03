@@ -11,12 +11,6 @@ class Chaser < Enemy
 
 	def setup
 		super
-		after(180){
-			find_position(@player)
-		}
-		every(60){
-			record_pos
-		}
 	end
 
 	def create_character_frame
@@ -37,7 +31,7 @@ class Chaser < Enemy
 		}
 		@character[:stand].delay = 50
 		@character[:stand].bounce = true
-		@character[:walk].delay = 60
+		@character[:walk].delay = 100
 	end
 
 	def enemy_parameters

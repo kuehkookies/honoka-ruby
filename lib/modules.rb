@@ -15,6 +15,8 @@ module Orange
 		GRAV_CAP = 8
 		GRAV_ACC = 0.4
 		GRAV_WHEN_LAND = 1
+
+                POS_RECORD_INTERVAL = 12
 	end
 	
 	INVULNERABLE_DURATION = 24

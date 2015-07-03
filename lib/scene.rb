@@ -57,10 +57,6 @@ class Scene < GameState
 		}
 		
 		@hud.update
-
-		every(60){
-			@player.record_pos
-		}
 	end
 	
 	def draw
