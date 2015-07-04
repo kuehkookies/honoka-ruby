@@ -41,28 +41,51 @@ class Chaser < Enemy
 		@hp = 12
 		@damage = 0
 		@speed = 2
+
+		@color = Color.new(0xff00bbff)
+
+		@acceleration_y = Orange::Environment::GRAV_ACC
+		self.max_velocity = Orange::Environment::GRAV_CAP
+		self.rotation_center = :bottom_center
+	end
+
+	def find_position(target)
+		check_position(target, true)
+		# parent.gridmap.find_path_astar @pos, target.pos
+		@status = :move
 	end
 
 	def move(x,y)
-		if x != 0 and not (jumping or on_wall)
+		if x != 0 and not jumping
 			@image = character_frame(:walk, :next)
 		end
 		
 		self.factor_x = self.factor_x.abs   if x > 0
 		self.factor_x = -self.factor_x.abs  if x < 0
 	
-		@x += x if !@vert_jump and not falling
+		unless parent.gridmap.nil? or parent.gridmap.tiles.nil? or parent.gridmap.tiles[@pos].nil?
+			if (!parent.gridmap.tiles[[@pos[0]-1,@pos[1]]].nil? and parent.gridmap.tiles[[@pos[0]-1,@pos[1]]] > 1 and x < 0) or 
+			   (!parent.gridmap.tiles[[@pos[0]+1,@pos[1]]].nil? and parent.gridmap.tiles[[@pos[0]+1,@pos[1]]] > 1 and x > 0) or 
+			   parent.gridmap.tiles[[@pos[0],@pos[1]]] > 1 and 
+			   not @jumping
+				@velocity_y = -6
+				@velocity_x = self.factor_x
+				@jumping = true
+			end
+		end
+
+		@x += x
+		@x += x/2 if falling
 		@x = previous_x  if at_edge? and not in_event
 		@y += y
 	end
 
 	def move_to(target)
-		if @pos[0] != target.pos[0] and not jumping
+		if @pos[0] != target.pos[0] # and not jumping
 			@image = character_frame(:walk, :next)
 		end
 	
-		@x += @speed * @factor_x if !@vert_jump and not falling
-		@x = previous_x  if at_edge? and not in_event
+		move(@speed * self.factor_x , 0)
 	end
 
 	def die
@@ -84,12 +107,15 @@ class Chaser < Enemy
 	def update
 		super
 		land?
-		destroy if self.parent.viewport.outside_game_area?(self)
 		if moving
-			unless self.velocity_y > Orange::Environment::GRAV_WHEN_LAND or @invincible or die?
-				@image = character_frame(:walk, :next)
+			unless @invincible or die?
 				move_to @player
 			end
+		end
+		if @velocity_y > Orange::Environment::GRAV_WHEN_LAND + 1 && !jumping && idle
+			@status = :fall unless disabled
+			@image = character_frame(13) if @velocity_y <= 3
+			@image = character_frame(:jump, :last) if @velocity_y > 3
 		end
 		@image = character_frame(:walk, :first) if @velocity_y > Orange::Environment::GRAV_WHEN_LAND
 	end

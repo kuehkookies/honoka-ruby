@@ -1,4 +1,6 @@
 class GridMap
+  attr_reader :tiles
+
   def initialize
     filename = "lib/levels/" + $window.map.current.to_s + ".map"
     @map_path = AMap.load(filename)

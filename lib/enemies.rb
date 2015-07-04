@@ -12,7 +12,6 @@
 class Enemy < GameObject
 	attr_reader :invincible, :hp, :damage, :harmful, :pathfinder, :pos
 	attr_accessor	:y_flag, :status, :action, :moving, :character
-	trait :bounding_box, :debug => false
 	traits :collision_detection, :effect, :velocity, :timer
 	
 	def self.descendants
@@ -57,8 +56,8 @@ class Enemy < GameObject
 	end
 
 	def find_position(target)
+		parent.gridmap.find_path_astar @pos, target.pos
 		check_position(target, true)
-		x = parent.gridmap.find_path_astar @pos, target.pos
 		@status = :move
 	end
 
@@ -94,7 +93,7 @@ class Enemy < GameObject
 		@last_x, @last_y = @x, @y
 		@y_flag = @y
 		@pos = []
-	  $window.enemies << self
+	 	$window.enemies << self
 	end
 
 	def create_character_frame; end
@@ -180,6 +179,12 @@ class Enemy < GameObject
 			}
 		end
 	end
+
+	def crouch
+  		unless jumping or disabled or attacking or die? or disabled
+	  		@image = character_frame(:crouch, :first)
+	  	end
+	  end
 	
 	def land?
 		self.each_collision(*$window.terrains) do |me, stone_wall|
@@ -188,22 +193,14 @@ class Enemy < GameObject
 				me.velocity_y = 0
 				@jumping = false
 			else  # Land on ground
-				if damaged
-					hurt
-				else
-					land
-				end
+				land
 				me.velocity_y = Orange::Environment::GRAV_WHEN_LAND # 1
 				me.y = stone_wall.bb.top - 1 # unless me.y > stone_wall.y
 			end
 		end
 		self.each_collision(*$window.bridges) do |me, bridge|
 			if me.y <= bridge.y+2 && me.velocity_y > 0
-				if damaged
-					hurt
-				else
-					land
-				end
+				land
 				me.velocity_y = Orange::Environment::GRAV_WHEN_LAND # 1
 				me.y = bridge.bb.top - 1
 			end
@@ -213,7 +210,7 @@ class Enemy < GameObject
 	def land
 		delay = 18
 		delay = 24 if attacking
-		if (@y - @y_flag > 56 or (@y - @y_flag > 48 && jumping ) ) && !die?
+		if (@y - @y_flag > 48 or (@y - @y_flag > 32 && jumping ) ) && !die?
 			Sound["sfx/step.wav"].play
 			between(1,delay) { 
 				@status = :crouch; crouch
