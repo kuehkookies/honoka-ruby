@@ -254,6 +254,10 @@ class Map
   end
 
   def create_tiles(area, tiles)
+    # The navmesh of every area created here.
+    # Each point is always initialized with value 1 (free), and checked whether there is an obstacle such
+    # as wall or any other impassable objects. Here also cited the index for jump point and platform edges.
+    
     width = area[0] / 16 + 1
     height = area[1] / 16 + 1
     has = Array.new(height) {Array.new(width) { 1 }}
@@ -270,6 +274,36 @@ class Map
       has[y][x] = 0
     end
     
+    # And here the magic happens. To identify the jumping point, platform edges and free walkable
+    # paths, the navmesh will be reindexed depends on the tiles below.
+    # The index are:
+    #      0 = impassable
+    #      1 = passable, default
+    #      2 = passable, left edge
+    #      3 = passable, right edge
+    #      4 = passable, solo tile
+
+    platformstart = false
+    has.each_with_index do |row, id|
+      row.each_with_index do |col, id2|
+        next if id == 0
+        if platformstart
+          if has[id][id2] == 0 and has[id][id2-1] != 0
+            has[id-1][id2] = 2 unless id2 >= has[id].size - 1
+          elsif has[id][id2] == 0 and has[id][id2+1] != 0
+            has[id-1][id2] = 3 unless id2 >= has[id].size - 1
+          elsif has[id][id2] == 2 and has[id][id2+1] != 0
+            has[id-1][id2] = 4
+          end
+          platformstart = false if id2 >= has[id].size - 1
+        else
+          has[id][id2] = 0
+          has[id][id2] = 2 if has[id][id2] == 1
+          platformstart = true
+        end
+      end
+    end
+
     name = current.to_s.downcase!
     f = File.new("lib/levels/#{name}.map", "w")
     for i in 0...height

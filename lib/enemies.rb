@@ -51,12 +51,8 @@ class Enemy < GameObject
 
 	def check_position(object, flip = false)
 		return if self.destroyed?
-		# x = object.pos[0] - @pos[0]
-		# y = object.pos[1] - @pos[1]
-		# @factor_x = x >= 0 ? $window.factor : -$window.factor if flip
 		x = object.pos[0] > @pos[0]
 		y = object.pos[1] > @pos[1]
-		p [object.pos, @pos]
 		@factor_x = x ? $window.factor : -$window.factor if flip
 	end
 
