@@ -283,19 +283,29 @@ class Map
     #      3 = passable, right edge
     #      4 = passable, solo tile
 
+    # Initialize the iteration flag
     platformstart = false
     has.each_with_index do |row, id|
       row.each_with_index do |col, id2|
+        # We skip the topmost row; either it will be solid blocked, or it's free.
         next if id == 0
         if platformstart
+          # We start calculate the navlinks here.
+          # Every navlink identified will fall into impassable if there is another
+          # block on top of it; making itself flagged as impassable
           if has[id][id2] == 0 and has[id][id2-1] != 0
+            # Identify the leftmost platform edge
             has[id-1][id2] = 2 unless id2 >= has[id].size - 1
             has[id-1][id2] = 0 if has[id-2][id2] != 1
           elsif has[id][id2] == 0 and has[id][id2+1] != 0
+            # Identify the rightmost platform edge
             has[id-1][id2] = 3 unless id2 >= has[id].size - 1
             has[id-1][id2] = 0 if has[id-2][id2] != 1
           end
           if has[id-1][id2] == 1 and has[id][id2] == 0
+            # Identify the corners of every platform, either left or right.
+            # Every navlink identified will fall into impassable if there is another
+            # block on top of it; making itself flagged as impassable, too
             if has[id-1][id2-1] == 0
               has[id-1][id2] = 2 if has[id-2][id2] == 1
               has[id-1][id2] = 0 if has[id-2][id2] != 1
@@ -305,13 +315,20 @@ class Map
             end
           end
           if has[id-1][id2] == 2 and (has[id][id2+1] != 0 or has[id-1][id2] == 0)
+            # If the navlink has no neighboring passable navlinks, it will identify itself
+            # as a solo navlink, stood on its own with pride and dignity
             has[id-1][id2] = 4 if has[id-2][id2] == 1
             has[id-1][id2] = 0 if has[id-2][id2] != 1
           end
+          # Reset the iteration to next row
           platformstart = false if id2 >= has[id].size - 1
         else
+          # The first column of every rows identified here.
+          # Depending on the blocks, it could be identified as leftmost navlink
+          # or impassable.
           has[id][id2] = 0
           has[id][id2] = 2 if has[id][id2] == 1
+          # Flag the iteration so it repeats another code instead of this
           platformstart = true
         end
       end
