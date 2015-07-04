@@ -290,10 +290,23 @@ class Map
         if platformstart
           if has[id][id2] == 0 and has[id][id2-1] != 0
             has[id-1][id2] = 2 unless id2 >= has[id].size - 1
+            has[id-1][id2] = 0 if has[id-2][id2] != 1
           elsif has[id][id2] == 0 and has[id][id2+1] != 0
             has[id-1][id2] = 3 unless id2 >= has[id].size - 1
-          elsif has[id][id2] == 2 and has[id][id2+1] != 0
-            has[id-1][id2] = 4
+            has[id-1][id2] = 0 if has[id-2][id2] != 1
+          end
+          if has[id-1][id2] == 1 and has[id][id2] == 0
+            if has[id-1][id2-1] == 0
+              has[id-1][id2] = 2 if has[id-2][id2] == 1
+              has[id-1][id2] = 0 if has[id-2][id2] != 1
+            elsif has[id-1][id2+1] == 0
+              has[id-1][id2] = 3 if has[id-2][id2] == 1
+              has[id-1][id2] = 0 if has[id-2][id2] != 1
+            end
+          end
+          if has[id-1][id2] == 2 and (has[id][id2+1] != 0 or has[id-1][id2] == 0)
+            has[id-1][id2] = 4 if has[id-2][id2] == 1
+            has[id-1][id2] = 0 if has[id-2][id2] != 1
           end
           platformstart = false if id2 >= has[id].size - 1
         else

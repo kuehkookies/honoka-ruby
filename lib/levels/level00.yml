@@ -1063,27 +1063,59 @@
     :factor_x: 1.0
     :factor_y: 1.0
     :alpha: 255
-- Bridge_Wood:
-    :x: 360.0
-    :y: 88.0
+- Chaser:
+    :x: 456.0
+    :y: 200.0
+    :angle: 0
+    :zorder: 200
+    :factor_x: -1
+    :factor_y: 1.0
+    :alpha: 255
+- Chaser:
+    :x: 424.0
+    :y: 200.0
+    :angle: 0
+    :zorder: 200
+    :factor_x: -1
+    :factor_y: 1.0
+    :alpha: 255
+- GroundTiled:
+    :x: 216.0
+    :y: 208.0
     :angle: 0
     :zorder: 100
     :factor_x: 1.0
     :factor_y: 1.0
     :alpha: 255
-- Chaser:
-    :x: 288.0
-    :y: 200.0
+- GroundTiled:
+    :x: 232.0
+    :y: 208.0
     :angle: 0
-    :zorder: 200
+    :zorder: 100
     :factor_x: 1.0
     :factor_y: 1.0
     :alpha: 255
-- Chaser:
-    :x: 320.0
-    :y: 200.0
+- GroundTiled:
+    :x: 232.0
+    :y: 192.0
     :angle: 0
-    :zorder: 200
+    :zorder: 100
+    :factor_x: 1.0
+    :factor_y: 1.0
+    :alpha: 255
+- GroundTiled:
+    :x: 232.0
+    :y: 176.0
+    :angle: 0
+    :zorder: 100
+    :factor_x: 1.0
+    :factor_y: 1.0
+    :alpha: 255
+- Ground:
+    :x: 264.0
+    :y: 208.0
+    :angle: 0
+    :zorder: 100
     :factor_x: 1.0
     :factor_y: 1.0
     :alpha: 255
