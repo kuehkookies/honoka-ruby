@@ -30,6 +30,7 @@ class Actor < Chingu::GameObject
 
 		every(Orange::Environment::POS_RECORD_INTERVAL){
 			record_pos
+			p [ @status, @velocity_x ] 
 		}
 	end
 
@@ -74,7 +75,7 @@ class Actor < Chingu::GameObject
 		@ammo   = 0
 		@damage = 0
 		@level  = 0
-		@speed  = 2
+		@speed  = 1
 		@subweapon = :none
 	end
 
@@ -174,7 +175,6 @@ class Actor < Chingu::GameObject
 	def crouch
 		unless jumping or disabled or attacking or die? or disabled
 			@image = character_frame(:crouch, :first)
-			# @status = :crouch
 		end
 	end
 	
@@ -206,7 +206,6 @@ class Actor < Chingu::GameObject
 		end
 		@jumping = false if @jumping
 		@vert_jump = false if !@jumping
-		@velocity_x = 0
 		@y_flag = @y
 	end
 
@@ -226,6 +225,24 @@ class Actor < Chingu::GameObject
 		move(@speed, 0)
 	end
 
+	def adjust_speed
+		speed = @speed; speed *= 2 if holding?(:c)
+		if holding_any?(:left, :right)
+			@velocity_x -= 0.1 if holding?(:left)
+			@velocity_x += 0.1 if holding?(:right)
+			@velocity_x = speed if @velocity_x > speed; @velocity_x = -speed if @velocity_x < -speed
+		else
+			unless @velocity_x == 0.0
+				@velocity_x += 0.1 if @velocity_x < 0; @velocity_x -= 0.1 if @velocity_x > 0
+				if @velocity_x.abs < 0.1 #fix
+					@velocity_x = 0
+					@image = character_frame(:stand, :first)
+					stand
+				end
+			end
+		end
+	end
+
 	def move(x,y)
 		return if blinking
 		if x != 0 and not jumping
@@ -237,12 +254,14 @@ class Actor < Chingu::GameObject
 		@image = character_frame(:hurt, :first)  if damaged
 		
 		unless attacking or damaged
-			self.factor_x = self.factor_x.abs   if x > 0
-			self.factor_x = -self.factor_x.abs  if x < 0
+			self.factor_x = self.factor_x.abs   if holding?(:right)
+			self.factor_x = -self.factor_x.abs  if holding?(:left)
 		end
+
+		velocity = @velocity_x
 		
-		@x += x if !@vert_jump and not falling
-		@x += x/2 if @vert_jump or falling
+		@x += velocity if !@vert_jump and not falling
+		@x += velocity / 2 if @vert_jump or falling
 
 		self.each_collision(*$window.terrains) do |me, stone_wall|
 			@x = previous_x
@@ -250,7 +269,6 @@ class Actor < Chingu::GameObject
 		end
 		
 		@x = previous_x  if at_edge? and not in_event
-
 		@y += y
 	end
 	
@@ -369,6 +387,7 @@ class Actor < Chingu::GameObject
 
 	def update
 		land?
+		adjust_speed
 		@velocity_y = Orange::Environment::GRAV_CAP if @velocity_y > Orange::Environment::GRAV_CAP
 		if @x == @last_x
 			@running = false

@@ -88,54 +88,6 @@
     :factor_y: 1.0
     :alpha: 255
 - Ground:
-    :x: 176.0
-    :y: 224.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Ground:
-    :x: 192.0
-    :y: 224.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Ground:
-    :x: 208.0
-    :y: 224.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Ground:
-    :x: 224.0
-    :y: 224.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Ground:
-    :x: 240.0
-    :y: 224.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Ground:
-    :x: 256.0
-    :y: 224.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Ground:
     :x: 272.0
     :y: 224.0
     :angle: 0
@@ -153,46 +105,6 @@
     :alpha: 255
 - Ground:
     :x: 304.0
-    :y: 224.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Ground:
-    :x: 320.0
-    :y: 224.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Ground:
-    :x: 336.0
-    :y: 224.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Ground:
-    :x: 352.0
-    :y: 224.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Ground:
-    :x: 368.0
-    :y: 224.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Ground:
-    :x: 384.0
     :y: 224.0
     :angle: 0
     :zorder: 100
@@ -352,54 +264,6 @@
     :factor_y: 1.0
     :alpha: 255
 - GroundLower:
-    :x: 176.0
-    :y: 240.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- GroundLower:
-    :x: 192.0
-    :y: 240.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- GroundLower:
-    :x: 208.0
-    :y: 240.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- GroundLower:
-    :x: 224.0
-    :y: 240.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- GroundLower:
-    :x: 240.0
-    :y: 240.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- GroundLower:
-    :x: 256.0
-    :y: 240.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- GroundLower:
     :x: 272.0
     :y: 240.0
     :angle: 0
@@ -417,46 +281,6 @@
     :alpha: 255
 - GroundLower:
     :x: 304.0
-    :y: 240.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- GroundLower:
-    :x: 320.0
-    :y: 240.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- GroundLower:
-    :x: 336.0
-    :y: 240.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- GroundLower:
-    :x: 352.0
-    :y: 240.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- GroundLower:
-    :x: 368.0
-    :y: 240.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- GroundLower:
-    :x: 384.0
     :y: 240.0
     :angle: 0
     :zorder: 100
@@ -527,587 +351,67 @@
     :factor_x: 1.0
     :factor_y: 1.0
     :alpha: 255
-- Bridge_Wood:
-    :x: 32.0
-    :y: 176.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Bridge_Wood:
-    :x: 16.0
-    :y: 176.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Bridge_Wood:
-    :x: 496.0
-    :y: 176.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Bridge_Wood:
-    :x: 480.0
-    :y: 176.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick:
-    :x: 64.0
-    :y: 144.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick:
-    :x: 80.0
-    :y: 144.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick:
-    :x: 96.0
-    :y: 144.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick:
-    :x: 112.0
-    :y: 144.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick:
-    :x: 128.0
-    :y: 144.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick:
-    :x: 144.0
-    :y: 144.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick:
-    :x: 208.0
-    :y: 120.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick:
-    :x: 224.0
-    :y: 120.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick:
-    :x: 240.0
-    :y: 120.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick:
-    :x: 256.0
-    :y: 120.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick:
-    :x: 272.0
-    :y: 120.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick:
-    :x: 288.0
-    :y: 120.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick:
-    :x: 304.0
-    :y: 120.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick:
-    :x: 320.0
-    :y: 120.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick:
-    :x: 360.0
-    :y: 144.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick:
-    :x: 376.0
-    :y: 144.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick:
-    :x: 392.0
-    :y: 144.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick:
-    :x: 408.0
-    :y: 144.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick:
-    :x: 424.0
-    :y: 144.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick:
-    :x: 440.0
-    :y: 144.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick:
-    :x: 456.0
-    :y: 144.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick:
-    :x: 16.0
-    :y: 72.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick:
-    :x: 32.0
-    :y: 72.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick:
-    :x: 48.0
-    :y: 72.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick:
-    :x: 64.0
-    :y: 72.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick:
-    :x: 80.0
-    :y: 72.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Bridge_Wood:
-    :x: 104.0
-    :y: 104.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Bridge_Wood:
-    :x: 120.0
-    :y: 104.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick_Loop:
-    :x: 0.0
-    :y: 208.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick_Loop:
-    :x: 0.0
-    :y: 192.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick_Loop:
-    :x: 0.0
-    :y: 176.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick_Loop:
-    :x: 0.0
-    :y: 160.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick_Loop:
-    :x: 0.0
-    :y: 144.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick_Loop:
-    :x: 0.0
-    :y: 128.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick_Loop:
-    :x: 0.0
-    :y: 112.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick_Loop:
-    :x: 0.0
-    :y: 96.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick_Loop:
-    :x: 0.0
-    :y: 80.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick_Loop:
-    :x: 0.0
-    :y: 64.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick_Loop:
-    :x: 0.0
-    :y: 48.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick_Loop:
-    :x: 0.0
-    :y: 32.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick_Loop:
-    :x: 0.0
-    :y: 16.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick_Loop:
-    :x: 0.0
-    :y: 0.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick_Loop:
-    :x: 512.0
-    :y: 208.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick_Loop:
-    :x: 512.0
-    :y: 192.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick_Loop:
-    :x: 512.0
-    :y: 176.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick_Loop:
-    :x: 512.0
-    :y: 160.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick_Loop:
-    :x: 512.0
-    :y: 144.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick_Loop:
-    :x: 512.0
-    :y: 128.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick_Loop:
-    :x: 512.0
-    :y: 112.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick_Loop:
-    :x: 512.0
-    :y: 96.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick_Loop:
-    :x: 512.0
-    :y: 80.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick_Loop:
-    :x: 512.0
-    :y: 64.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick_Loop:
-    :x: 512.0
-    :y: 48.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick_Loop:
-    :x: 512.0
-    :y: 32.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick_Loop:
-    :x: 512.0
-    :y: 16.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick_Loop:
-    :x: 512.0
-    :y: 0.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick:
-    :x: 496.0
-    :y: 64.0
-    :angle: 360
-    :zorder: 98
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick:
-    :x: 480.0
-    :y: 64.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick:
-    :x: 464.0
-    :y: 64.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick:
-    :x: 448.0
-    :y: 64.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick:
-    :x: 432.0
-    :y: 64.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Brick:
-    :x: 416.0
-    :y: 64.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Bridge_Wood:
-    :x: 376.0
-    :y: 88.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
 - Chaser:
-    :x: 376.0
-    :y: 88.0
+    :x: 24.0
+    :y: 216.0
     :angle: 0
     :zorder: 200
     :factor_x: -1
     :factor_y: 1.0
     :alpha: 255
-- GroundTiled:
-    :x: 216.0
+- Brick:
+    :x: 192.0
     :y: 208.0
     :angle: 0
     :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
+    :factor_x: 1
+    :factor_y: 1
     :alpha: 255
-- GroundTiled:
-    :x: 232.0
+- Brick:
+    :x: 208.0
     :y: 208.0
     :angle: 0
     :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
+    :factor_x: 1
+    :factor_y: 1
     :alpha: 255
-- GroundTiled:
-    :x: 232.0
-    :y: 192.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- GroundTiled:
-    :x: 232.0
-    :y: 176.0
-    :angle: 0
-    :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
-    :alpha: 255
-- Ground:
-    :x: 264.0
+- Brick:
+    :x: 224.0
     :y: 208.0
     :angle: 0
     :zorder: 100
-    :factor_x: 1.0
-    :factor_y: 1.0
+    :factor_x: 1
+    :factor_y: 1
+    :alpha: 255
+- Brick:
+    :x: 240.0
+    :y: 208.0
+    :angle: 0
+    :zorder: 100
+    :factor_x: 1
+    :factor_y: 1
+    :alpha: 255
+- Bridge_Wood:
+    :x: 352.0
+    :y: 216.0
+    :angle: 0
+    :zorder: 100
+    :factor_x: 1
+    :factor_y: 1
+    :alpha: 255
+- Bridge_Wood:
+    :x: 336.0
+    :y: 216.0
+    :angle: 0
+    :zorder: 100
+    :factor_x: 1
+    :factor_y: 1
+    :alpha: 255
+- Bridge_Wood:
+    :x: 368.0
+    :y: 216.0
+    :angle: 0
+    :zorder: 100
+    :factor_x: 1
+    :factor_y: 1
     :alpha: 255

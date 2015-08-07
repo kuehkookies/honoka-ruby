@@ -25,7 +25,7 @@ class Runner < Actor
 		}
 		@character[:stand].delay = 50
 		@character[:stand].bounce = true
-		@character[:walk].delay = 60
+		@character[:walk].delay = 120
 	end
 
 	def actor_parameters
@@ -34,7 +34,7 @@ class Runner < Actor
 		@ammo   = 0
 		@damage = 0
 		@level  = 0
-		@speed  = 2
+		@speed  = 1
 		@subweapon = :none
 	end
 

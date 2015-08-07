@@ -42,6 +42,8 @@ class Chaser < Enemy
 		@damage = 0
 		@speed = 2
 
+		@debug = false
+
 		@color = Color.new(0xff00bbff)
 
 		@acceleration_y = Orange::Environment::GRAV_ACC
@@ -62,17 +64,6 @@ class Chaser < Enemy
 		
 		self.factor_x = self.factor_x.abs   if x > 0
 		self.factor_x = -self.factor_x.abs  if x < 0
-	
-		unless parent.gridmap.nil? or parent.gridmap.tiles.nil? or parent.gridmap.tiles[@pos].nil?
-			if (!parent.gridmap.tiles[[@pos[0]-1,@pos[1]]].nil? and parent.gridmap.tiles[[@pos[0]-1,@pos[1]]] > 1 and x < 0) or 
-			   (!parent.gridmap.tiles[[@pos[0]+1,@pos[1]]].nil? and parent.gridmap.tiles[[@pos[0]+1,@pos[1]]] > 1 and x > 0) or 
-			   parent.gridmap.tiles[[@pos[0],@pos[1]]] > 1 and 
-			   not @jumping
-				@velocity_y = -6
-				@velocity_x = self.factor_x
-				@jumping = true
-			end
-		end
 
 		@x += x
 		@x += x/2 if falling

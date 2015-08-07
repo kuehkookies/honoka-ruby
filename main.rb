@@ -53,7 +53,7 @@ class Game < Chingu::Window
 		
 		retrofy # THE classy command!
 		setup_stage
-		set_actor(Mark)
+		set_actor(Runner)
 		set_terrains
 		set_enemies
 		set_subweapons

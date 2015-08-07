@@ -16,7 +16,7 @@ module Orange
 		GRAV_ACC = 0.4
 		GRAV_WHEN_LAND = 1
 
-                POS_RECORD_INTERVAL = 24
+    POS_RECORD_INTERVAL = 24
 	end
 	
 	INVULNERABLE_DURATION = 24
@@ -334,11 +334,15 @@ class Map
       end
     end
 
-    # has.each_with_index do |row, id|
-    #   row.each_with_index do |col, id2|
-
-    #   end
-    # end
+    on_platform = false
+    has.each_with_index do |row, id|
+      row.each_with_index do |col, id2|
+        has[id][id2] = 3 if id2 == row.size - 1 and on_platform
+        on_platform = true if  has[id][id2] == 2
+        on_platform = false if  has[id][id2] == 3 or id2 == row.size - 1
+        has[id][id2] = 0 if has[id][id2] == 1 and not on_platform
+      end
+    end
 
     name = current.to_s.downcase!
     f = File.new("lib/levels/#{name}.map", "w")

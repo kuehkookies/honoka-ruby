@@ -47,7 +47,7 @@ class Mark < Actor
 		@ammo   = 0
 		@damage = 0
 		@level  = 0
-		@speed  = 2
+		@speed  = 1
 		@subweapon = :none
 	end
 

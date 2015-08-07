@@ -39,8 +39,8 @@ class Enemy < GameObject
 
 	def record_pos
 		return if self.destroyed?
-		x = (@x / 16).to_i
-		y = (@y / 16).to_i
+		x = (@x / 16).floor
+		y = (@y / 16).floor
 		save_pos [x, y]
 	end
 
@@ -58,10 +58,10 @@ class Enemy < GameObject
 	def find_position(target)
 		parent.gridmap.find_path_astar @pos, target.pos
 		check_position(target, true)
-		@status = :move
 	end
 
 	def move_to(target)
+		@status = :move
 		while not in_position target
 			@x += @speed * @factor_x
 		end
@@ -77,7 +77,7 @@ class Enemy < GameObject
 		@hardened = false
 		@hp = 0
 		@damage = 0
-		@speed = 1
+		@speed = 2
 	end
 
 	def enemy_properties
@@ -158,26 +158,17 @@ class Enemy < GameObject
 	end
 
 	def jump
-		if crouching_on_bridge
-			return if self.velocity_y > Orange::Environment::GRAV_WHEN_LAND # 1
-			return if jumping or damaged or die? or not idle
-			@status = :jump
-			@jumping = true
-			@velocity_y = -1
-			@y += 12
-		else
-			return if self.velocity_y > Orange::Environment::GRAV_WHEN_LAND # 1
-			return if crouching or jumping 
-			return if damaged or die? 
-			return unless idle 
-			@status = :jump
-			@jumping = true
-			Sound["sfx/jump.wav"].play
-			@velocity_y = -4
-			during(9){
-				@velocity_y = -4  unless @velocity_y <=  -Orange::Environment::GRAV_CAP || !@jumping
-			}
-		end
+		return if self.velocity_y > Orange::Environment::GRAV_WHEN_LAND # 1
+		return if jumping 
+		return if damaged or die? 
+		return unless idle 
+		@status = :jump
+		@jumping = true
+		Sound["sfx/jump.wav"].play
+		@velocity_y = -4
+		during(9){
+			@velocity_y = -4  unless @velocity_y <=  -Orange::Environment::GRAV_CAP || !@jumping
+		}
 	end
 
 	def crouch
@@ -208,8 +199,8 @@ class Enemy < GameObject
 	end
 
 	def land
-		delay = 18
-		delay = 24 if attacking
+		delay = 2
+		delay = 18 if attacking
 		if (@y - @y_flag > 48 or (@y - @y_flag > 32 && jumping ) ) && !die?
 			Sound["sfx/step.wav"].play
 			between(1,delay) { 
@@ -258,6 +249,13 @@ class Enemy < GameObject
 
 	def at_edge?
 		@x < (bb.width/2)  || @x > parent.area[0]-(bb.width/2)
+	end
+
+	def need_jump
+		(!parent.gridmap.tiles[[@pos[0]-1,@pos[1]]].nil? and parent.gridmap.tiles[[@pos[0]-1,@pos[1]]] > 1) or 
+	   	(!parent.gridmap.tiles[[@pos[0]+1,@pos[1]]].nil? and parent.gridmap.tiles[[@pos[0]+1,@pos[1]]] > 1) or
+	   	parent.gridmap.tiles[[@pos[0],@pos[1]]] > 1 and
+	   	not @jumping
 	end
 	
 	def update
