@@ -40,7 +40,7 @@ class Chaser < Enemy
 		@hardened = false
 		@hp = 12
 		@damage = 0
-		@speed = 2
+		@speed = 1
 
 		@debug = false
 
@@ -52,21 +52,23 @@ class Chaser < Enemy
 	end
 
 	def find_position(target)
-		check_position(target, true)
-		# parent.gridmap.find_path_astar @pos, target.pos
-		@status = :move
+		p [@damage, die?] unless self.disposed?
+		@damage += 1
+		unless die?
+			parent.gridmap.find_path_astar @pos, target.pos
+			check_position(target, true)
+			@status = :move
+		end
 	end
 
 	def move(x,y)
 		if x != 0 and not jumping
 			@image = character_frame(:walk, :next)
 		end
-		
-		self.factor_x = self.factor_x.abs   if x > 0
-		self.factor_x = -self.factor_x.abs  if x < 0
 
-		@x += x
-		@x += x/2 if falling
+		@velocity_x = x
+		@velocity_x = x/2 if falling
+		@x += @velocity_x 
 		@x = previous_x  if at_edge? and not in_event
 		@y += y
 	end
@@ -76,7 +78,7 @@ class Chaser < Enemy
 			@image = character_frame(:walk, :next)
 		end
 	
-		move(@speed * self.factor_x , 0)
+		move(@speed * @factor_x , 0)
 	end
 
 	def die

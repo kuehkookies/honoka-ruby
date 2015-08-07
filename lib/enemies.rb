@@ -30,10 +30,10 @@ class Enemy < GameObject
 
 		after(300){
 			record_pos
-		}
-		every(Orange::Environment::POS_RECORD_INTERVAL){
-			record_pos
-			find_position(@player)
+		}.then{every(Orange::Environment::POS_RECORD_INTERVAL){
+				record_pos
+				find_position(@player)
+			}
 		}
 	end
 
@@ -56,8 +56,10 @@ class Enemy < GameObject
 	end
 
 	def find_position(target)
-		parent.gridmap.find_path_astar @pos, target.pos
-		check_position(target, true)
+		unless die?
+			parent.gridmap.find_path_astar @pos, target.pos
+			check_position(target, true)
+		end
 	end
 
 	def move_to(target)
@@ -77,7 +79,7 @@ class Enemy < GameObject
 		@hardened = false
 		@hp = 0
 		@damage = 0
-		@speed = 2
+		@speed = 1
 	end
 
 	def enemy_properties
@@ -152,6 +154,7 @@ class Enemy < GameObject
 	end
 	
 	def die
+		@hp == 0
 		Misc_Flame.create(:x => self.x, :y => self.y)
 		destroy
 		$window.enemies.delete(self) rescue nil

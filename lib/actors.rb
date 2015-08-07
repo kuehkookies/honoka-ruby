@@ -30,7 +30,6 @@ class Actor < Chingu::GameObject
 
 		every(Orange::Environment::POS_RECORD_INTERVAL){
 			record_pos
-			p [ @status, @velocity_x ] 
 		}
 	end
 
@@ -253,7 +252,7 @@ class Actor < Chingu::GameObject
 		
 		@image = character_frame(:hurt, :first)  if damaged
 		
-		unless attacking or damaged
+		unless attacking or damaged or (jumping and @velocity_y < 0)
 			self.factor_x = self.factor_x.abs   if holding?(:right)
 			self.factor_x = -self.factor_x.abs  if holding?(:left)
 		end

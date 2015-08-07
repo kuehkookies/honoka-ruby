@@ -160,6 +160,10 @@ class Scene < GameState
 			torch.x < self.viewport.x or 
 			torch.x > self.viewport.x + $window.width/2
 		}
+		Enemy.destroy_if {|enemy| 
+			self.viewport.outside_game_area?(enemy) or
+			enemy.y > self.viewport.y + $window.height/2 + (2*enemy.height)
+		}
 		if @player.y > self.viewport.y + $window.height/2 + (2*@player.height)
 			@player.dead 
 		end

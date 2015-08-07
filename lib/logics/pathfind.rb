@@ -68,7 +68,7 @@ class GridMap
     if to_position[0] < @map_width and to_position[1] < @map_height
       start = @map_path.co_ord(from_position[0], from_position[1])
       finish = @map_path.co_ord(to_position[0], to_position[1])
-      goal = @map_path.astar(start, finish)
+      goal = @map_path.astar(start, finish) unless start.nil? or finish.nil?
       curr = goal
       path = Array.new
       if curr != nil
