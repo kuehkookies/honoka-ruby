@@ -28,11 +28,11 @@ class Enemy < GameObject
 
 		cache_bounding_box
 
-		after(300){
+		after(120){
 			record_pos
 		}.then{every(Orange::Environment::POS_RECORD_INTERVAL){
 				record_pos
-				find_position(@player)
+				find_position @player
 			}
 		}
 	end
@@ -69,8 +69,8 @@ class Enemy < GameObject
 		end
 	end
 
-	def in_position(pos)
-		@pos[0] != pos[0] and @pos[1] != pos[1]
+	def in_position(target)
+		@pos[0] == target.pos[0] and @pos[1] == target.pos[1]
 	end
 
 	def enemy_parameters
