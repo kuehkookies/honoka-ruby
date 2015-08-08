@@ -31,7 +31,7 @@ class Chaser < Enemy
 		}
 		@character[:stand].delay = 50
 		@character[:stand].bounce = true
-		@character[:walk].delay = 100
+		@character[:walk].delay = 200
 	end
 
 	def enemy_parameters
@@ -63,9 +63,6 @@ class Chaser < Enemy
 		if x != 0 and not jumping
 			@image = character_frame(:walk, :next)
 		end
-
-		@velocity_x = x
-		@velocity_x = x/2 if falling
 		@x += @velocity_x 
 		@x = previous_x  if at_edge? and not in_event
 		@y += y

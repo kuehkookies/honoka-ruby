@@ -222,7 +222,6 @@ class Enemy < GameObject
 		end
 		@jumping = false if @jumping
 		@vert_jump = false if !@jumping
-		@velocity_x = 0
 		@y_flag = @y
 	end
 	
@@ -260,8 +259,19 @@ class Enemy < GameObject
 	   	parent.gridmap.tiles[[@pos[0],@pos[1]]] > 1 and
 	   	not @jumping
 	end
+
+	def adjust_speed
+		if in_position @player
+			@velocity_x = 0
+		else
+			@velocity_x -= 0.1 if @player.pos[0] < @pos[0]
+			@velocity_x += 0.1 if @player.pos[0] > @pos[0]
+			@velocity_x = @speed if @velocity_x > @speed; @velocity_x = -@speed if @velocity_x < -@speed
+		end
+	end
 	
 	def update
+		adjust_speed unless @pos.empty?
 		@velocity_y = Orange::Environment::GRAV_CAP if @velocity_y > Orange::Environment::GRAV_CAP
 		@y_flag = @y if @velocity_y == Orange::Environment::GRAV_WHEN_LAND && !@jumping
 		check_collision
