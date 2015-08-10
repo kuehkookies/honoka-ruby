@@ -33,14 +33,14 @@ class Level00 < Scene
 	 
 	def update
 		super
-		if @player.x >= @area[0]-(@player.bb.width) - 2 and @player.idle
-			$window.start_event
-			@player.move(2,0)
-			if @player.x >= @area[0] + 32
-				to_next_block
-				$window.stop_event
-			end
-		end
+		# if @player.x >= @area[0]-(@player.bb.width) - 2 and @player.idle
+		# 	$window.start_event
+		# 	@player.move(2,0)
+		# 	if @player.x >= @area[0] + 32
+		# 		to_next_block
+		# 		$window.stop_event
+		# 	end
+		# end
 				
 		@backdrop.camera_x, @backdrop.camera_y = self.viewport.x.to_i, self.viewport.y.to_i 
 		@backdrop.update

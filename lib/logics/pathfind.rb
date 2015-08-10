@@ -70,12 +70,14 @@ class GridMap
       finish = @map_path.co_ord(to_position[0], to_position[1])
       goal = @map_path.astar(start, finish) unless start.nil? or finish.nil?
       curr = goal
+      p curr
       path = Array.new
       if curr != nil
-        while curr.parent do
-          path << [curr.x, curr.y]
-          curr = curr.parent
-        end
+        # while curr.parent do
+          # path << [curr.x, curr.y]
+          # curr = curr.parent
+        # end
+        path << curr
         return path
       else
         return nil

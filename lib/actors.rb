@@ -190,6 +190,7 @@ class Actor < Chingu::GameObject
 		if (@y - @y_flag > 56 or (@y - @y_flag > 48 && jumping ) ) && !die?
 			Sound["sfx/step.wav"].play
 			between(1,delay) { 
+				@velocity_x = 0
 				@status = :crouch; crouch
 			}.then { 
 				if !die?; @status = :stand; @image = character_frame(:stand, :first); end
@@ -233,13 +234,14 @@ class Actor < Chingu::GameObject
 		else
 			unless @velocity_x == 0.0
 				@velocity_x += 0.1 if @velocity_x < 0; @velocity_x -= 0.1 if @velocity_x > 0
-				if @velocity_x.abs < 0.1 #fix
+				if @velocity_x.abs < 0.1 and not (@jumping or falling) #fix
 					@velocity_x = 0
 					@image = character_frame(:stand, :first)
 					stand
 				end
 			end
 		end
+		@velocity_x = 0 if die?
 	end
 
 	def move(x,y)
@@ -259,8 +261,7 @@ class Actor < Chingu::GameObject
 
 		velocity = @velocity_x
 		
-		@x += velocity if !@vert_jump and not falling
-		@x += velocity / 2 if @vert_jump or falling
+		@x += velocity
 
 		self.each_collision(*$window.terrains) do |me, stone_wall|
 			@x = previous_x

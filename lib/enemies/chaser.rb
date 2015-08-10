@@ -31,7 +31,7 @@ class Chaser < Enemy
 		}
 		@character[:stand].delay = 50
 		@character[:stand].bounce = true
-		@character[:walk].delay = 200
+		@character[:walk].delay = 120
 	end
 
 	def enemy_parameters
@@ -40,7 +40,7 @@ class Chaser < Enemy
 		@hardened = false
 		@hp = 12
 		@damage = 0
-		@speed = 1
+		@speed = 2
 
 		@debug = false
 
@@ -65,15 +65,18 @@ class Chaser < Enemy
 		end
 		@x += @velocity_x 
 		@x = previous_x  if at_edge? and not in_event
+		self.each_collision(*$window.terrains) do |me, stone_wall|
+			@x = previous_x
+			break
+		end
 		@y += y
 	end
 
 	def move_to(target)
 		if @pos[0] != target.pos[0] # and not jumping
 			@image = character_frame(:walk, :next)
+			jump if need_jump
 		end
-	
-		move(@speed * @factor_x , 0)
 	end
 
 	def die

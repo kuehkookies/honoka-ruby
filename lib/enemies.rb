@@ -30,7 +30,8 @@ class Enemy < GameObject
 
 		after(120){
 			record_pos
-		}.then{every(Orange::Environment::POS_RECORD_INTERVAL){
+		}.then{
+			every(Orange::Environment::POS_RECORD_INTERVAL){
 				record_pos
 				find_position @player
 			}
@@ -95,6 +96,7 @@ class Enemy < GameObject
 		@last_x, @last_y = @x, @y
 		@y_flag = @y
 		@pos = []
+		@target_pos = []
 	 	$window.enemies << self
 	end
 
@@ -189,7 +191,7 @@ class Enemy < GameObject
 			else  # Land on ground
 				land
 				me.velocity_y = Orange::Environment::GRAV_WHEN_LAND # 1
-				me.y = stone_wall.bb.top - 1 # unless me.y > stone_wall.y
+				me.y = stone_wall.bb.top - 1
 			end
 		end
 		self.each_collision(*$window.bridges) do |me, bridge|
@@ -202,11 +204,12 @@ class Enemy < GameObject
 	end
 
 	def land
-		delay = 2
-		delay = 18 if attacking
+		delay = 18
+		delay = 24 if attacking
 		if (@y - @y_flag > 48 or (@y - @y_flag > 32 && jumping ) ) && !die?
 			Sound["sfx/step.wav"].play
 			between(1,delay) { 
+				@velocity_x = 0
 				@status = :crouch; crouch
 			}.then { 
 				@status = :stand unless die?
@@ -254,15 +257,19 @@ class Enemy < GameObject
 	end
 
 	def need_jump
-		(!parent.gridmap.tiles[[@pos[0]-1,@pos[1]]].nil? and parent.gridmap.tiles[[@pos[0]-1,@pos[1]]] > 1) or 
-	   	(!parent.gridmap.tiles[[@pos[0]+1,@pos[1]]].nil? and parent.gridmap.tiles[[@pos[0]+1,@pos[1]]] > 1) or
-	   	parent.gridmap.tiles[[@pos[0],@pos[1]]] > 1 and
-	   	not @jumping
+		!parent.gridmap.tiles[[@pos[0],@pos[1]]].nil? and
+		parent.gridmap.tiles[[@pos[0],@pos[1]]] != 1 and 
+		not in_position @player and not @jumping
 	end
 
 	def adjust_speed
 		if in_position @player
-			@velocity_x = 0
+			@velocity_x += 0.2 if @velocity_x < 0; @velocity_x -= 0.2 if @velocity_x > 0
+			if @velocity_x.abs < 0.2 #fix
+				@velocity_x = 0
+				@image = character_frame(:stand, :first)
+				@status = :stand
+			end
 		else
 			@velocity_x -= 0.1 if @player.pos[0] < @pos[0]
 			@velocity_x += 0.1 if @player.pos[0] > @pos[0]
