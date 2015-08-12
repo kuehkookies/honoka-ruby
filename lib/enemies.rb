@@ -40,7 +40,7 @@ class Enemy < GameObject
 
 	def record_pos
 		return if self.destroyed?
-		x = (@x / 16).floor
+		x = ((@x+8) / 16).floor
 		y = (@y / 16).floor
 		save_pos [x, y]
 	end
@@ -257,19 +257,9 @@ class Enemy < GameObject
 	end
 
 	def need_jump
-		# !parent.gridmap.tiles[[@pos[0],@pos[1]]].nil? and
-		# ((at_left_edge and not in_position(@player)) or (at_right_edge and not in_position(@player))) and 
-		# (parent.gridmap.tiles[[@pos[0],@pos[1]]] != 1  and @player.pos[1] != @pos[1]) and 
-		# not in_position @player and not @jumping
 		need = false 
 		if in_map and not @jumping
-			if in_left_of @player
-				need = true if at_left_edge and !is_above @player
-				need = true if at_right_edge and !is_above @player and in_front_of_impassable
-			elsif in_right_of @player
-				need = true if at_right_edge and !is_above @player
-				need = true if at_left_edge and !is_above @player and in_front_of_impassable
-			end
+			need = true if jump_is_necessary
 		end
 		return need
 	end
@@ -277,18 +267,39 @@ class Enemy < GameObject
 	def in_map
 		!parent.gridmap.tiles[[@pos[0],@pos[1]]].nil?
 	end
-	def at_left_edge
-		parent.gridmap.tiles[[@pos[0],@pos[1]]] == 2
+	def jump_is_necessary
+		# at_jump_point or in_front_of_impassable
+		in_front_of_impassable and at_jump_point
 	end
-	def at_right_edge
-		parent.gridmap.tiles[[@pos[0],@pos[1]]] == 3
-	end
-	def at_sole_platform
-		parent.gridmap.tiles[[@pos[0],@pos[1]]] == 4
+	def at_jump_point
+		if x == previous_x
+			for i in @pos[0]-2...@pos[0]+2
+				# for j in @pos[1]-2...@pos[1]+2
+					next if i > @pos[0] and in_left_of @player
+					next if i < @pos[0] and in_right_of @player
+					return true if parent.gridmap.tiles[[i,@pos[1]-1]] != 0
+				# end
+			end
+		else
+			(parent.gridmap.tiles[[@pos[0],@pos[1]]] == 2 and in_left_of @player) or
+			(parent.gridmap.tiles[[@pos[0],@pos[1]]] == 3 and in_right_of @player) or
+			parent.gridmap.tiles[[@pos[0],@pos[1]]] == 4
+		end
 	end
 	def in_front_of_impassable
-		(parent.gridmap.tiles[[@pos[0]-1,@pos[1]]] == 0 and @factor_x < 0) or
-		(parent.gridmap.tiles[[@pos[0]+1,@pos[1]]] == 0 and @factor_x > 0)
+		return false if parent.gridmap.tiles[[@pos[0]-1,@pos[1]]].nil?
+		return false if parent.gridmap.tiles[[@pos[0]-2,@pos[1]]].nil?
+		return false if parent.gridmap.tiles[[@pos[0]+1,@pos[1]]].nil?
+		return false if parent.gridmap.tiles[[@pos[0]+2,@pos[1]]].nil?
+		return false if is_below @player
+		for i in @pos[0]-2...@pos[0]+2
+			# for j in @pos[1]-2...@pos[1]+2
+				next if i > @pos[0] and in_left_of @player
+				next if i < @pos[0] and in_right_of @player
+				return true if parent.gridmap.tiles[[i,@pos[1]]] == 0
+			# end
+		end
+		return false
 	end
 
 	def in_left_of(target)
@@ -298,10 +309,10 @@ class Enemy < GameObject
 		target.pos[0] > @pos[0]
 	end
 	def is_above(target)
-		target.pos[1] > @pos[1]
+		target.pos[1] < @pos[1]
 	end
 	def is_below(target)
-		target.pos[1] < @pos[1]
+		target.pos[1] > @pos[1]
 	end
 
 	def adjust_speed
@@ -313,8 +324,8 @@ class Enemy < GameObject
 				@status = :stand
 			end
 		else
-			@velocity_x -= 0.1 if @player.pos[0] < @pos[0]
-			@velocity_x += 0.1 if @player.pos[0] > @pos[0]
+			@velocity_x -= 0.1 if in_left_of @player
+			@velocity_x += 0.1 if in_right_of @player
 			@velocity_x = @speed if @velocity_x > @speed; @velocity_x = -@speed if @velocity_x < -@speed
 		end
 	end

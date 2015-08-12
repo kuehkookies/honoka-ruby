@@ -245,6 +245,7 @@ end
 
 class Map
   attr_reader :row, :col
+  attr_reader :width, :height
   attr_accessor :map
   
   def initialize(options = {})
@@ -260,6 +261,7 @@ class Map
     
     width = area[0] / 16 + 1
     height = area[1] / 16 + 1
+    @width = width; @height = height
     has = Array.new(height) {Array.new(width) { 1 }}
     name = []
     $window.enemies.each do |enemy|
@@ -338,9 +340,10 @@ class Map
     has.each_with_index do |row, id|
       row.each_with_index do |col, id2|
         has[id][id2] = 3 if id2 == row.size - 1 and on_platform
-        on_platform = true if  has[id][id2] == 2
-        on_platform = false if  has[id][id2] == 3 or id2 == row.size - 1
+        on_platform = true if has[id][id2] == 2
+        on_platform = false if has[id][id2] == 3 or id2 == row.size - 1
         has[id][id2] = 0 if has[id][id2] == 1 and not on_platform
+        has[id-1][id2] = 0 if has[id][id2] == 2
       end
     end
 

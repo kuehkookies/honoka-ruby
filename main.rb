@@ -151,7 +151,7 @@ class Game < Chingu::Window
 	end
 
 	def clear_cache
-		@enemies = []
+		@enzemies = []
 		@hazards = []
 		@items = []
 	end

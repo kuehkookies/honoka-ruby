@@ -480,7 +480,7 @@
     :factor_y: 1.0
     :alpha: 255
 - Brick:
-    :x: 280.0
+    :x: 272.0
     :y: 208.0
     :angle: 0
     :zorder: 100
@@ -624,7 +624,7 @@
     :factor_y: 1.0
     :alpha: 255
 - Brick:
-    :x: 296.0
+    :x: 288.0
     :y: 208.0
     :angle: 0
     :zorder: 100
@@ -632,7 +632,7 @@
     :factor_y: 1.0
     :alpha: 255
 - Brick:
-    :x: 312.0
+    :x: 304.0
     :y: 208.0
     :angle: 0
     :zorder: 100
@@ -641,9 +641,9 @@
     :alpha: 255
 - Chaser:
     :x: 232.0
-    :y: 168.0
+    :y: 167.8
     :angle: 0
     :zorder: 200
-    :factor_x: 1
-    :factor_y: 1
+    :factor_x: 1.0
+    :factor_y: 1.0
     :alpha: 255
