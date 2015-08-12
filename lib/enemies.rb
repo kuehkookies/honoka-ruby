@@ -40,7 +40,7 @@ class Enemy < GameObject
 
 	def record_pos
 		return if self.destroyed?
-		x = ((@x+8) / 16).floor
+		x = (@x / 16).floor
 		y = (@y / 16).floor
 		save_pos [x, y]
 	end
@@ -54,7 +54,6 @@ class Enemy < GameObject
 		x = object.pos[0] > @pos[0]
 		y = object.pos[1] > @pos[1]
 		@factor_x = x ? $window.factor : -$window.factor if flip
-		p [x ? "in right" : "in left", y ? "below" : "above" ]
 	end
 
 	def find_position(target)

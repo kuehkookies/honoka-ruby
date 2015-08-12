@@ -7,7 +7,7 @@
 # ==================================================================================
 
 class Chaser < Enemy
-	trait :bounding_box, :scale => [0.3, 0.8], :debug => false
+	trait :bounding_box, :scale => [0.5, 0.8], :debug => false
 
 	def setup
 		super
@@ -54,7 +54,6 @@ class Chaser < Enemy
 	def find_position(target)
 		unless die?
 			parent.gridmap.find_path_astar @pos, target.pos
-			p parent.gridmap.find_path_astar @pos, target.pos
 			check_position(target, true)
 			@status = :move
 		end

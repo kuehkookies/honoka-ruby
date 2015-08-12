@@ -11,7 +11,7 @@ class Actor < Chingu::GameObject
 	attr_accessor :maxhp, :hp, :damage, :level, :ammo
 	attr_accessor	:y_flag, :sword, :status, :action, :running, :character, :subweapon
 	attr_reader 	:direction, :invincible, :last_x, :pos
-	trait :bounding_box, :scale => [0.3, 0.8], :debug => false
+	trait :bounding_box, :scale => [0.5, 0.8], :debug => false
 	traits :timer, :collision_detection, :velocity
 	
 	def setup
@@ -117,7 +117,7 @@ class Actor < Chingu::GameObject
 	end
 
 	def record_pos
-		x = ((@x+8) / 16).to_i
+		x = (@x / 16).to_i
 		y = (@y / 16).to_i
 		save_pos [x,y]
 	end

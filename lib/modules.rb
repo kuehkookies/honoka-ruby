@@ -328,7 +328,7 @@ class Map
           # The first column of every rows identified here.
           # Depending on the blocks, it could be identified as leftmost navlink
           # or impassable.
-          has[id][id2] = 0
+          has[id][id2] = 1
           has[id][id2] = 2 if has[id][id2] == 1
           # Flag the iteration so it repeats another code instead of this
           platformstart = true
@@ -343,7 +343,7 @@ class Map
         has[id][id2] = 4 if has[id][id2] == 2 and has[id][id2-1] == 0 and has[id][id2+1] == 0
         on_platform = true if has[id][id2] == 2
         on_platform = false if has[id][id2] == 3 or id2 == row.size - 1
-        has[id][id2] = 0 if has[id][id2] == 1 and (not on_platform or has[id][id2-1] == 0)
+        # has[id][id2] = 0 if has[id][id2] == 1 and (not on_platform or has[id][id2-1] == 0)
         # has[id-1][id2] = 0 if has[id][id2] == 2
       end
     end
