@@ -259,7 +259,7 @@ class Enemy < GameObject
 	def need_jump
 		need = false 
 		if in_map and not @jumping
-			need = true if jump_is_necessary
+			need = true if jump_is_necessary and @velocity_x.abs > 0.5
 		end
 		return need
 	end
@@ -268,15 +268,15 @@ class Enemy < GameObject
 		!parent.gridmap.tiles[[@pos[0],@pos[1]]].nil?
 	end
 	def jump_is_necessary
-		# at_jump_point or in_front_of_impassable
-		in_front_of_impassable and at_jump_point
+		in_front_of_impassable and at_jump_point and
+		(is_above @player or is_in_same_level_with @player)
 	end
 	def at_jump_point
 		if x == previous_x
-			for i in @pos[0]-2...@pos[0]+2
+			for i in @pos[0]-1...@pos[0]+1
 				# for j in @pos[1]-2...@pos[1]+2
-					next if i > @pos[0] and in_left_of @player
-					next if i < @pos[0] and in_right_of @player
+					next if i >= @pos[0] and in_left_of @player
+					next if i <= @pos[0] and in_right_of @player
 					return true if parent.gridmap.tiles[[i,@pos[1]-1]] != 0
 				# end
 			end
@@ -291,15 +291,16 @@ class Enemy < GameObject
 		return false if parent.gridmap.tiles[[@pos[0]-2,@pos[1]]].nil?
 		return false if parent.gridmap.tiles[[@pos[0]+1,@pos[1]]].nil?
 		return false if parent.gridmap.tiles[[@pos[0]+2,@pos[1]]].nil?
-		return false if is_below @player
+		need = false
 		for i in @pos[0]-2...@pos[0]+2
-			# for j in @pos[1]-2...@pos[1]+2
+			for j in @pos[1]-2...@pos[1]+2
 				next if i > @pos[0] and in_left_of @player
 				next if i < @pos[0] and in_right_of @player
-				return true if parent.gridmap.tiles[[i,@pos[1]]] == 0
-			# end
+				need = true if parent.gridmap.tiles[[i,j]] == 0
+				break if need
+			end
 		end
-		return false
+		return need
 	end
 
 	def in_left_of(target)
@@ -307,6 +308,9 @@ class Enemy < GameObject
 	end
 	def in_right_of(target)
 		target.pos[0] > @pos[0]
+	end
+	def is_in_same_level_with(target)
+		target.pos[1] == @pos[1]
 	end
 	def is_above(target)
 		target.pos[1] < @pos[1]
