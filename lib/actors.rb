@@ -288,11 +288,11 @@ class Actor < Chingu::GameObject
 			@status = :jump
 			@jumping = true
 			Sound["sfx/jump.wav"].play
-			@velocity_y = -4
+			@velocity_y = -4.5
 			during(9){
 				@vert_jump = true if !holding_any?(:left, :right)
 				if holding?(:z) && @jumping && !disabled
-					@velocity_y = -4  unless @velocity_y <=  -Orange::Environment::GRAV_CAP || !@jumping
+					@velocity_y = -4.5  unless @velocity_y <=  -Orange::Environment::GRAV_CAP || !@jumping
 				else
 					@velocity_y = -1 unless !@jumping
 				end

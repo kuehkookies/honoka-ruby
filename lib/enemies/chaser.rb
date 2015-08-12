@@ -54,6 +54,7 @@ class Chaser < Enemy
 	def find_position(target)
 		unless die?
 			parent.gridmap.find_path_astar @pos, target.pos
+			p parent.gridmap.find_path_astar @pos, target.pos
 			check_position(target, true)
 			@status = :move
 		end

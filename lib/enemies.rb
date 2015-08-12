@@ -54,6 +54,7 @@ class Enemy < GameObject
 		x = object.pos[0] > @pos[0]
 		y = object.pos[1] > @pos[1]
 		@factor_x = x ? $window.factor : -$window.factor if flip
+		p [x ? "in right" : "in left", y ? "below" : "above" ]
 	end
 
 	def find_position(target)
@@ -170,9 +171,9 @@ class Enemy < GameObject
 		@status = :jump
 		@jumping = true
 		Sound["sfx/jump.wav"].play
-		@velocity_y = -4
+		@velocity_y = -4.5
 		during(9){
-			@velocity_y = -4  unless @velocity_y <=  -Orange::Environment::GRAV_CAP || !@jumping
+			@velocity_y = -4.5  unless @velocity_y <=  -Orange::Environment::GRAV_CAP || !@jumping
 		}
 	end
 
