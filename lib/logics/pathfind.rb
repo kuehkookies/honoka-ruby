@@ -72,10 +72,10 @@ class GridMap
       curr = goal
       path = Array.new
       if curr != nil
-        # while curr.parent do
-          # path << [curr.x, curr.y]
-          # curr = curr.parent
-        # end
+        while curr.parent do
+          path << [curr.x, curr.y]
+          curr = curr.parent
+        end
         path << curr
         return path
       else

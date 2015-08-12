@@ -28,19 +28,15 @@ class Enemy < GameObject
 
 		cache_bounding_box
 
-		after(120){
+	
+		every(Orange::Environment::POS_RECORD_INTERVAL){
 			record_pos
-		}.then{
-			every(Orange::Environment::POS_RECORD_INTERVAL){
-				record_pos
-				find_position @player
-			}
 		}
 	end
 
 	def record_pos
 		return if self.destroyed?
-		x = (@x / 16).floor
+		x = ((@x+8) / 16).floor
 		y = (@y / 16).floor
 		save_pos [x, y]
 	end
@@ -49,29 +45,8 @@ class Enemy < GameObject
 		@pos = array
 	end
 
-	def check_position(object, flip = false)
-		return if self.destroyed?
-		x = object.pos[0] > @pos[0]
-		y = object.pos[1] > @pos[1]
-		@factor_x = x ? $window.factor : -$window.factor if flip
-	end
-
-	def find_position(target)
-		unless die?
-			parent.gridmap.find_path_astar @pos, target.pos
-			check_position(target, true)
-		end
-	end
-
-	def move_to(target)
-		@status = :move
-		while not in_position target
-			@x += @speed * @factor_x
-		end
-	end
-
-	def in_position(target)
-		@pos[0] == target.pos[0] and @pos[1] == target.pos[1]
+	def gridmap
+		parent.gridmap
 	end
 
 	def enemy_parameters
@@ -255,87 +230,8 @@ class Enemy < GameObject
 	def at_edge?
 		@x < (bb.width/2)  || @x > parent.area[0]-(bb.width/2)
 	end
-
-	def need_jump
-		need = false 
-		if in_map and not @jumping
-			need = true if jump_is_necessary and @velocity_x.abs > 0.5
-		end
-		return need
-	end
-
-	def in_map
-		!parent.gridmap.tiles[[@pos[0],@pos[1]]].nil?
-	end
-	def jump_is_necessary
-		in_front_of_impassable and at_jump_point and
-		(is_above @player or is_in_same_level_with @player)
-	end
-	def at_jump_point
-		if x == previous_x
-			for i in @pos[0]-1...@pos[0]+1
-				# for j in @pos[1]-2...@pos[1]+2
-					next if i >= @pos[0] and in_left_of @player
-					next if i <= @pos[0] and in_right_of @player
-					return true if parent.gridmap.tiles[[i,@pos[1]-1]] != 0
-				# end
-			end
-		else
-			(parent.gridmap.tiles[[@pos[0],@pos[1]]] == 2 and in_left_of @player) or
-			(parent.gridmap.tiles[[@pos[0],@pos[1]]] == 3 and in_right_of @player) or
-			parent.gridmap.tiles[[@pos[0],@pos[1]]] == 4
-		end
-	end
-	def in_front_of_impassable
-		return false if parent.gridmap.tiles[[@pos[0]-1,@pos[1]]].nil?
-		return false if parent.gridmap.tiles[[@pos[0]-2,@pos[1]]].nil?
-		return false if parent.gridmap.tiles[[@pos[0]+1,@pos[1]]].nil?
-		return false if parent.gridmap.tiles[[@pos[0]+2,@pos[1]]].nil?
-		need = false
-		for i in @pos[0]-2...@pos[0]+2
-			for j in @pos[1]-2...@pos[1]+2
-				next if i > @pos[0] and in_left_of @player
-				next if i < @pos[0] and in_right_of @player
-				need = true if parent.gridmap.tiles[[i,j]] == 0
-				break if need
-			end
-		end
-		return need
-	end
-
-	def in_left_of(target)
-		target.pos[0] < @pos[0]
-	end
-	def in_right_of(target)
-		target.pos[0] > @pos[0]
-	end
-	def is_in_same_level_with(target)
-		target.pos[1] == @pos[1]
-	end
-	def is_above(target)
-		target.pos[1] < @pos[1]
-	end
-	def is_below(target)
-		target.pos[1] > @pos[1]
-	end
-
-	def adjust_speed
-		if in_position @player
-			@velocity_x += 0.2 if @velocity_x < 0; @velocity_x -= 0.2 if @velocity_x > 0
-			if @velocity_x.abs < 0.2 #fix
-				@velocity_x = 0
-				@image = character_frame(:stand, :first)
-				@status = :stand
-			end
-		else
-			@velocity_x -= 0.1 if in_left_of @player
-			@velocity_x += 0.1 if in_right_of @player
-			@velocity_x = @speed if @velocity_x > @speed; @velocity_x = -@speed if @velocity_x < -@speed
-		end
-	end
 	
 	def update
-		adjust_speed unless @pos.empty?
 		@velocity_y = Orange::Environment::GRAV_CAP if @velocity_y > Orange::Environment::GRAV_CAP
 		@y_flag = @y if @velocity_y == Orange::Environment::GRAV_WHEN_LAND && !@jumping
 		check_collision
