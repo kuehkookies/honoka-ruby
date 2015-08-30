@@ -1,5 +1,7 @@
 class GridMap
   attr_reader :tiles
+  attr_reader :map_width
+  attr_reader :map_height
 
   def initialize
     filename = "lib/levels/" + $window.map.current.to_s + ".map"
@@ -17,6 +19,20 @@ class GridMap
       end
       @map_height += 1  
     end
+  end
+
+  def jump_points
+    result = []
+    @tiles.each_with_index do |point, id|
+      next if point.nil?
+      next if point.empty?
+      result.push point[0] if point[1] > 1 and point[1] < 5
+    end
+    return result
+  end
+
+  def on_move_route(obj)
+    @tiles[obj.pos] > 0 and @tiles[obj.pos] < 5
   end
 
   def find_path_dijkstra(from_position, to_position)

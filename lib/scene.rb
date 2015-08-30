@@ -66,6 +66,7 @@ class Scene < GameState
 			@tiles.each &:draw
 			$window.map.create_tiles(@area, @map)
 			@gridmap = GridMap.new
+			# p @gridmap.jump_points
 		end
 		@recorded_tilemap.draw 0, 0, 0
 		super

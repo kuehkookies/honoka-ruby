@@ -329,7 +329,7 @@ class Map
           # Depending on the blocks, it could be identified as leftmost navlink
           # or impassable.
           has[id][id2] = 1
-          has[id][id2] = 2 if has[id][id2] == 1
+          # has[id][id2] = 2 if has[id][id2] == 1
           # Flag the iteration so it repeats another code instead of this
           platformstart = true
         end
@@ -339,10 +339,12 @@ class Map
     on_platform = false
     has.each_with_index do |row, id|
       row.each_with_index do |col, id2|
+        has[id][id2] = 5 if has[id][id2] == 1
         has[id][id2] = 3 if id2 >= has[id].size - 1 and on_platform
         has[id][id2] = 4 if has[id][id2] == 2 and has[id][id2-1] == 0 and has[id][id2+1] == 0
         on_platform = true if has[id][id2] == 2
         on_platform = false if has[id][id2] == 3 or id2 == row.size - 1
+        has[id-1][id2] = 1 if has[id-1][id2] == 5 and has[id][id2] == 0
         # has[id][id2] = 0 if has[id][id2] == 1 and (not on_platform or has[id][id2-1] == 0)
         # has[id-1][id2] = 0 if has[id][id2] == 2
       end

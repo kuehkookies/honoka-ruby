@@ -36,7 +36,7 @@ class Enemy < GameObject
 
 	def record_pos
 		return if self.destroyed?
-		x = ((@x+8) / 16).floor
+		x = ((@x+4) / 16).floor
 		y = (@y / 16).floor
 		save_pos [x, y]
 	end
@@ -152,10 +152,10 @@ class Enemy < GameObject
 	end
 
 	def crouch
-  		unless jumping or disabled or attacking or die? or disabled
+		unless jumping or disabled or attacking or die? or disabled
 	  		@image = character_frame(:crouch, :first)
 	  	end
-	  end
+	end
 	
 	def land?
 		self.each_collision(*$window.terrains) do |me, stone_wall|

@@ -11,6 +11,14 @@ class Chaser < Enemy
 
 	def setup
 		super
+		after(15){
+			every(15){
+				find_position @player
+			}
+		}
+		every(180){
+			@target_pos = nil if !in_position @target_pos
+		}
 	end
 
 	def create_character_frame
@@ -53,6 +61,15 @@ class Chaser < Enemy
 		self.rotation_center = :bottom_center
 	end
 
+	def stand_still
+		@velocity_x += 0.2 if @velocity_x < 0; @velocity_x -= 0.2 if @velocity_x > 0
+		if @velocity_x.abs <= 0.2
+			@velocity_x = 0
+			@image = character_frame(:stand, :first)
+			@status = :stand
+		end
+	end
+
 	def move(x,y)
 		if x != 0 and not jumping
 			@image = character_frame(:walk, :next)
@@ -90,39 +107,79 @@ class Chaser < Enemy
 	# ==============================================================================
 
 	def find_position(target)
+		return if parent.gridmap.nil?
 		unless die?
 			path = parent.gridmap.find_path_astar @pos, target.pos
-			@target_pos = get_nearest_waypoint path
+			@target_pos = get_nearest_waypoint path, target if (@target_pos.nil? or @target_pos.empty?) and
+															   parent.gridmap.on_move_route target
+			p @target_pos
 			check_position(@target_pos, true)
 			@status = :move
 		end
 	end
 
-	def get_nearest_waypoint(path)
+	def get_nearest_waypoint(path, target)
 		return if path.nil?
 		return if path.empty?
+		return if @pos == target.pos
 		path.pop
-		result = [0,0]
-		path.each_with_index do |point, id|
+		result = path[0]
+		nearest_x = result[0]
+		nearest_y = result[1]
+		path.each do |point|
 			next if point.nil?
 			next if point.empty?
-			result = point if result[0] < point[0] and result[1] < point[1]
+			if get_nearest(@pos[0], point[0]) < nearest_x and
+			   get_nearest(@pos[1], point[1]) < nearest_y
+			   	next if point[0] == 0 or point[0] == parent.gridmap.map_width
+			   	next if point[1] == 0 or point[1] == parent.gridmap.map_height
+				result = point if waypoint_in_course? point, target.pos
+			end
+		end
+		# Check nearest waypoints
+		# Checking whether target is above
+		if target.pos[1] != result[1]
+			nearest_x = get_nearest result[0], @pos[0]
+			nearest_y = get_nearest result[1], @pos[1]
+			parent.gridmap.jump_points.each_with_index do |point, id|
+				next if point.nil?
+				next if point.empty?
+				if get_nearest(result[0], point[0]) < nearest_x and
+				   get_nearest(result[1], point[1]) < nearest_y
+				   	next if point[0] == 0 or point[0] == parent.gridmap.map_width
+				   	next if point[1] == 0 or point[1] == parent.gridmap.map_height
+					result = point if waypoint_in_course? point, result
+				end
+			end
 		end
 		return result
+	end
+
+	def get_nearest(a, b)
+		return (a - b).abs
+	end
+
+	def waypoint_in_course?(target, point)
+		return true if in_left_of target and @pos[0] < point[0] and point[0] < target[0]
+		return true if in_right_of target and @pos[0] > point[0] and point[0] > target[0]
+		return false
 	end
 	
 	def check_position(pos, flip = false)
 		return if self.destroyed?
+		return if pos.nil?
+		return if pos.empty?
 		x = pos[0] > @pos[0]
 		y = pos[1] > @pos[1]
 		@factor_x = x ? $window.factor : -$window.factor if flip
 	end
 
 	def in_position(target)
+		return true if target.nil?
 		if target.is_a?(Actor)
 			@pos[0] == target.pos[0] and @pos[1] == target.pos[1]
 		else
-			@pos[0] == @target_pos[0] and @pos[1] == target_pos[1]
+			@pos[0] == target[0] and @pos[1] == target[1]
 		end
 	end
 
@@ -143,8 +200,7 @@ class Chaser < Enemy
 		!parent.gridmap.tiles[[@pos[0],@pos[1]]].nil?
 	end
 	def jump_is_necessary
-		in_front_of_impassable and at_jump_point and
-		(is_above @target_pos or is_in_same_level_with @target_pos)
+		in_front_of_impassable and at_jump_point
 	end
 	def at_jump_point
 		if x == previous_x
@@ -154,9 +210,11 @@ class Chaser < Enemy
 				return true if parent.gridmap.tiles[[i,@pos[1]-1]] != 0
 			end
 		else
-			(parent.gridmap.tiles[[@pos[0],@pos[1]]] == 2 and in_left_of @target_pos) or
-			(parent.gridmap.tiles[[@pos[0],@pos[1]]] == 3 and in_right_of @target_pos) or
-			parent.gridmap.tiles[[@pos[0],@pos[1]]] == 4
+			# (parent.gridmap.tiles[[@pos[0],@pos[1]]] == 2 and in_left_of @target_pos) or
+			# (parent.gridmap.tiles[[@pos[0],@pos[1]]] == 3 and in_right_of @target_pos) or
+			# parent.gridmap.tiles[[@pos[0],@pos[1]]] == 4
+			return true if parent.gridmap.jump_points.include? @pos and 
+						   is_above @target_pos
 		end
 	end
 	def in_front_of_impassable
@@ -178,38 +236,34 @@ class Chaser < Enemy
 
 	def in_left_of(pos)
 		return if pos.nil?
-		return if pos.empty?
+		return if pos.is_a?(Array) and pos.empty?
 		pos[0] < @pos[0]
 	end
 	def in_right_of(pos)
 		return if pos.nil?
-		return if pos.empty?
+		return if pos.is_a?(Array) and pos.empty?
 		pos[0] > @pos[0]
 	end
 	def is_in_same_level_with(pos)
 		return if pos.nil?
-		return if pos.empty?
+		return if pos.is_a?(Array) and pos.empty?
 		pos[1] == @pos[1]
 	end
 	def is_above(pos)
 		return if pos.nil?
-		return if pos.empty?
+		return if pos.is_a?(Array) and pos.empty?
 		pos[1] < @pos[1]
 	end
 	def is_below(pos)
 		return if pos.nil?
-		return if pos.empty?
+		return if pos.is_a?(Array) and pos.empty?
 		pos[1] > @pos[1]
 	end
 
 	def adjust_speed
 		if in_position @player
 			@velocity_x += 0.2 if @velocity_x < 0; @velocity_x -= 0.2 if @velocity_x > 0
-			if @velocity_x.abs < 0.2 #fix
-				@velocity_x = 0
-				@image = character_frame(:stand, :first)
-				@status = :stand
-			end
+			stand_still if @velocity_x.abs < 0.2 #fix
 		else
 			@velocity_x -= 0.1 if in_left_of @target_pos
 			@velocity_x += 0.1 if in_right_of @target_pos
@@ -221,8 +275,10 @@ class Chaser < Enemy
 		super
 		land?
 		adjust_speed unless @pos.empty?
-		if !@pos.empty? and (@target_pos.nil? or !in_position @player)
-			find_position @player
+		if @target_pos.nil? or in_position @target_pos
+			@target_pos = nil if in_position @target_pos
+			# find_position @player
+		else
 			if moving
 				unless @invincible or die?
 					move_to @target_pos
@@ -235,5 +291,6 @@ class Chaser < Enemy
 			@image = character_frame(:jump, :last) if @velocity_y > 3
 		end
 		@image = character_frame(:walk, :first) if @velocity_y > Orange::Environment::GRAV_WHEN_LAND
+		stand_still if @target_pos.nil?
 	end
 end
