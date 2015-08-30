@@ -4,20 +4,36 @@
 		"selected_items":
 		[
 			[
-				"veloc",
-				"velocity_x"
+				"neares",
+				"nearest_y"
 			],
 			[
-				"veloci",
-				"velocity_x"
+				"stand",
+				"stand_still"
+			],
+			[
+				"target",
+				"target_pos"
+			],
+			[
+				"targ",
+				"target_pos"
+			],
+			[
+				"wa",
+				"waypoint_in_course"
+			],
+			[
+				"velocity",
+				"velocity_y"
 			],
 			[
 				"vel",
 				"velocity_x"
 			],
 			[
-				"des",
-				"destroyed"
+				"veloc",
+				"velocity"
 			],
 			[
 				"list-",
@@ -68,6 +84,14 @@
 			}
 		},
 		{
+			"file": "lib/logics/pathfind.rb",
+			"settings":
+			{
+				"buffer_size": 2683,
+				"line_ending": "Windows"
+			}
+		},
+		{
 			"file": "lib/logics/astar/AMap.rb",
 			"settings":
 			{
@@ -76,26 +100,18 @@
 			}
 		},
 		{
-			"file": "lib/modules.rb",
-			"settings":
-			{
-				"buffer_size": 13260,
-				"line_ending": "Windows"
-			}
-		},
-		{
 			"file": "lib/actors.rb",
 			"settings":
 			{
-				"buffer_size": 10412,
+				"buffer_size": 10451,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "lib/scene.rb",
+			"file": "lib/actors/runner.rb",
 			"settings":
 			{
-				"buffer_size": 5015,
+				"buffer_size": 1321,
 				"line_ending": "Windows"
 			}
 		},
@@ -103,7 +119,7 @@
 			"file": "lib/enemies.rb",
 			"settings":
 			{
-				"buffer_size": 8821,
+				"buffer_size": 6114,
 				"line_ending": "Windows"
 			}
 		},
@@ -111,7 +127,31 @@
 			"file": "lib/enemies/chaser.rb",
 			"settings":
 			{
-				"buffer_size": 2766,
+				"buffer_size": 8013,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "lib/scene.rb",
+			"settings":
+			{
+				"buffer_size": 5043,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "lib/misc/hud.rb",
+			"settings":
+			{
+				"buffer_size": 2410,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "lib/modules.rb",
+			"settings":
+			{
+				"buffer_size": 13553,
 				"line_ending": "Windows"
 			}
 		},
@@ -156,43 +196,37 @@
 	},
 	"expanded_folders":
 	[
-		"/E/Ruby Box/honoka",
-		"/E/Ruby Box/honoka/lib",
-		"/E/Ruby Box/honoka/lib/actors",
-		"/E/Ruby Box/honoka/lib/levels",
-		"/E/Ruby Box/honoka/lib/logics",
-		"/E/Ruby Box/honoka/lib/logics/astar"
+		"/F/share/rian nitip/honoka",
+		"/F/share/rian nitip/honoka/lib",
+		"/F/share/rian nitip/honoka/lib/actors",
+		"/F/share/rian nitip/honoka/lib/enemies",
+		"/F/share/rian nitip/honoka/lib/levels",
+		"/F/share/rian nitip/honoka/lib/logics",
+		"/F/share/rian nitip/honoka/lib/misc"
 	],
 	"file_history":
 	[
-		"/E/Ruby Box/honoka/lib/logics/astar/Node.rb",
-		"/E/Ruby Box/honoka/lib/logics/pathfind.rb",
-		"/E/Ruby Box/honoka/lib/logics/astar/PriorityQueue.rb",
-		"/E/Ruby Box/honoka/lib/scene.rb",
-		"/E/Ruby Box/honoka/lib/levels/level00.rb",
-		"/E/Ruby Box/honoka/	from E",
-		"/E/Ruby Box/honoka/lib/actors/runner.rb",
-		"/C/Users/ryann/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
-		"/C/Users/ryann/AppData/Roaming/Sublime Text 3/Packages/Default/Default (Windows).sublime-keymap",
-		"/C/Users/ryann/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
-		"/E/Ruby Box/honoka/lib/levels/level00.map",
-		"/C/Users/ryann/.ssh/id_rsa.pub",
-		"/C/Users/ryann/.ssh/id_rsa",
-		"/C/NetworkCfg.xml",
-		"/C/Ruby193/lib/ruby/gems/1.9.1/gems/chingu-0.9rc9/examples/example17_gosu_tutorial.rb",
-		"/C/Ruby193/lib/ruby/gems/1.9.1/gems/gosu-0.8.7.2-x86-mingw32/examples/Tutorial.rb",
-		"/C/Ruby193/lib/ruby/gems/1.9.1/gems/chingu-0.9rc9/examples/example25_fibers_state_machine.rb",
-		"/C/Ruby193/lib/ruby/gems/1.9.1/gems/chingu-0.9rc9/examples/example29_asynchronous.rb",
-		"/E/Ruby Box/honoka/lib/actors/mark.rb",
-		"/D/xampp/htdocs/monoxdesign/css/stylefab.css",
-		"/C/Users/ryann/AppData/Roaming/FileZilla/filters.xml",
-		"/C/Users/ryann/AppData/Roaming/FileZilla/trustedcerts.xml",
-		"/C/Users/ryann/AppData/Roaming/FileZilla/filezilla.xml",
-		"/C/Users/ryann/AppData/Roaming/FileZilla/queue.xml",
-		"/D/xampp/htdocs/monoxdesign/js/fab.js",
-		"/E/Ruby Box/honoka/lib/logics/astar/AMap.rb",
-		"/E/Ruby Box/honoka/lib/terrains.rb",
-		"/C/Users/ryann/AppData/Roaming/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
+		"/F/share/rian nitip/honoka/lib/enemies/chaser.rb",
+		"/F/share/rian nitip/_app/Ruby193/lib/ruby/gems/1.9.1/gems/chingu-0.9rc9/lib/chingu/text.rb",
+		"/F/share/rian nitip/honoka/	from F",
+		"/F/share/rian nitip/honoka/lib/levels/level00.map",
+		"/F/share/rian nitip/_backups/xampp/htdocs/crescentsun/css/main.css",
+		"/F/share/rian nitip/honoka/lib/logics/astar/Node.rb",
+		"/C/Users/xoiruda/.ssh/github_rsa.pub",
+		"/C/Users/xoiruda/.ssh/id_rsa",
+		"/C/Users/xoiruda/.ssh/id_rsa.pub",
+		"/F/share/rian nitip/planpathplat-master/src/PlanMap.as",
+		"/F/share/rian nitip/planpathplat-master/src/PlanActionMoveToEvent.as",
+		"/F/share/rian nitip/planpathplat-master/src/PlanActionJumpEvent.as",
+		"/F/share/rian nitip/planpathplat-master/src/PlanAction.as",
+		"/F/share/rian nitip/planpathplat-master/README.md",
+		"/F/share/rian nitip/planpathplat-master/src/Actor.as",
+		"/F/share/rian nitip/planpathplat-master/src/Main.as",
+		"/F/share/rian nitip/planpathplat-master/src/Player.as",
+		"/F/share/rian nitip/_app/sublimetext/Data/Packages/User/Default (Windows).sublime-keymap",
+		"/F/share/rian nitip/_app/sublimetext/Data/Packages/Default/Default (Windows).sublime-keymap",
+		"/F/share/rian nitip/_app/sublimetext/Data/Packages/User/Preferences.sublime-settings",
+		"/F/share/rian nitip/_app/sublimetext/Data/Packages/Default/Preferences.sublime-settings",
 		"/C/Users/ryann/AppData/Local/Temp/Rar$DI01.102/readme.md",
 		"/C/Users/ryann/AppData/Local/Temp/fz3temp-1/data.xml",
 		"/D/xampp/htdocs/crescentsun/index.html",
@@ -202,14 +236,19 @@
 		"/C/Users/ryann/Documents/shop draft.txt",
 		"/D/Dropbox/ED - Groundhog/docs/maprequest.txt",
 		"/D/xampp/htdocs/crescentsun/js/viewportchecker.js",
+		"/C/Users/ryann/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
 		"/D/Dropbox/ED - Groundhog/docs/ed1.2 scenes.txt",
 		"/D/Dropbox/ED - Groundhog/docs/maprequest.tt",
+		"/E/Ruby Box/honoka/lib/logics/astar/PriorityQueue.rb",
 		"/D/xampp/htdocs/sixindo/css/main.css",
 		"/D/xampp/htdocs/sixindo/index.html",
 		"/C/Users/ryann/AppData/Local/Temp/fz3temp-1/index.php",
 		"/C/Users/ryann/AppData/Local/Temp/fz3temp-1/main.css",
 		"/D/xampp/htdocs/sixindo/humans.txt",
-		"/D/xampp/htdocs/crescentsun/css/main.css"
+		"/D/xampp/htdocs/crescentsun/css/main.css",
+		"/C/Users/ryann/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
+		"/C/Users/ryann/AppData/Roaming/Sublime Text 3/Packages/Default/Default (Windows).sublime-keymap",
+		"/C/Users/ryann/AppData/Roaming/Sublime Text 3/Packages/Default/Preferences.sublime-settings"
 	],
 	"find":
 	{
@@ -228,89 +267,66 @@
 		"case_sensitive": false,
 		"find_history":
 		[
-			"map",
-			"gridmap",
-			"create_tiles",
+			"stand_still",
+			"on_platform",
+			"[1]",
+			"== 1",
+			"?jumping?",
 			"jumping",
-			"def to_s",
-			"def parent",
-			"def co_ord",
-			"def coord",
-			"def astar",
+			"target_",
+			"target",
+			"= nil",
+			" = nil",
+			"jump_",
+			"find_position",
+			"setup_stage",
+			"@level",
+			"block",
+			"colu",
+			"width",
+			"stand",
+			"@target_pos = ",
+			"p ",
+			"gridmap",
+			"def find_position",
+			"find_position",
+			"\"",
+			"\\\"",
+			"\"",
+			"land?",
+			"land",
+			"@vel",
+			"p in_",
 			".astar",
-			"find_path_astar",
-			"die?",
-			"def land",
+			"die",
+			"check",
+			"move_to",
+			"move_to\n",
+			"in_position",
+			"move_to",
+			"crouch",
+			"stand",
+			"land",
+			"adjust",
+			"velocity_x",
+			" = :move",
+			"jumping",
+			"adjust_speed",
+			"moving",
+			"adjust_speed",
+			"move",
+			"Nirvanne",
+			"parent",
+			"set_actor",
+			"need_jump",
+			"in_position",
 			"ctrl+d",
 			"ctrl+shift+d",
-			"		((!parent.gridmap.tiles[[@pos[0]-1,@pos[1]]].nil? and parent.gridmap.tiles[[@pos[0]-1,@pos[1]]] > 1) or \n	   	(!parent.gridmap.tiles[[@pos[0]+1,@pos[1]]].nil? and parent.gridmap.tiles[[@pos[0]+1,@pos[1]]] > 1)) or\n",
-			"tiles",
-			"jump",
-			"need_jump",
-			".map",
-			"move",
-			"adjust",
-			".map",
-			"class GridMap",
-			"gridmap",
-			"find",
-			"dinf",
-			"find_position",
-			"check_position",
-			"moved?",
-			"move",
-			"fall",
-			"land",
-			"velocity_x",
-			"speed",
-			"land",
-			"jumping",
-			"map_path",
-			"map_parth",
-			"gridma",
-			"find_path_astar",
-			"gridmap",
-			"Map.new",
-			"map",
-			"create_tiles",
-			"def jump",
-			"find_pos",
-			"hurt",
-			"def hurt",
-			"hurt",
-			"move",
-			"def move",
-			"fall",
-			"falling",
-			"		@status = :move",
-			"p ",
-			"@status = :stand",
-			"@status = :stand ",
-			"stand",
-			"@status",
-			"falling",
-			"crou",
-			"crouch",
-			"fall",
-			"falling",
-			"vert_jump",
-			"acceleration",
-			".map",
-			"AMap",
-			"show_path",
-			"costmap",
-			".open",
-			".yml",
-			".ymp",
-			"costmap",
-			"destroy",
-			"self.destroyed",
-			"Orange::Environment",
-			"record_pos",
-			"120",
-			"find_position",
-			"check_position",
-			"ruler",
+			"end",
+			"size",
+			"ctrl+d",
+			"ctrl+shift+d",
+			")\n",
 			"tab",
 			"Node",
 			"manhatta",
@@ -338,6 +354,10 @@
 		"regex": false,
 		"replace_history":
 		[
+			"\\\"",
+			"\"",
+			"\\\"",
+			"Nirvane",
 			"#footer",
 			"footer"
 		],
@@ -350,7 +370,7 @@
 	"groups":
 	[
 		{
-			"selected": 5,
+			"selected": 6,
 			"sheets":
 			[
 				{
@@ -366,29 +386,55 @@
 						"selection":
 						[
 							[
-								3343,
-								3343
+								458,
+								458
 							]
 						],
 						"settings":
 						{
-							"rulers":
-							[
-								100
-							],
 							"spell_check": false,
 							"syntax": "Packages/Ruby/Ruby.tmLanguage",
-							"translate_tabs_to_spaces": true
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1756.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
 					"buffer": 1,
+					"file": "lib/logics/pathfind.rb",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2683,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								782,
+								782
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Ruby/Ruby.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": -0.0,
+						"translation.y": 90.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
 					"file": "lib/logics/astar/AMap.rb",
 					"semi_transient": false,
 					"settings":
@@ -400,8 +446,8 @@
 						"selection":
 						[
 							[
-								2647,
-								2647
+								2712,
+								2712
 							]
 						],
 						"settings":
@@ -409,6 +455,180 @@
 							"syntax": "Packages/Ruby/Ruby.tmLanguage",
 							"tab_size": 2,
 							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1651.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "lib/actors.rb",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 10451,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2817,
+								2817
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Ruby/Ruby.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1474.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "lib/actors/runner.rb",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1321,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1084,
+								1089
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Ruby/Ruby.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 258.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "lib/enemies.rb",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6114,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1076,
+								1076
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Ruby/Ruby.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1305.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "lib/enemies/chaser.rb",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 8013,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								7097,
+								7097
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Ruby/Ruby.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 3689.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "lib/scene.rb",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5043,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1401,
+								1401
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Ruby/Ruby.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1260.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "lib/misc/hud.rb",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2410,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1948,
+								1948
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Ruby/Ruby.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -418,20 +638,20 @@
 					"type": "text"
 				},
 				{
-					"buffer": 2,
+					"buffer": 9,
 					"file": "lib/modules.rb",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 13260,
+						"buffer_size": 13553,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								8488,
-								8488
+								12388,
+								12388
 							]
 						],
 						"settings":
@@ -441,130 +661,14 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 3558.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "lib/actors.rb",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 10412,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								6785,
-								6785
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Ruby/Ruby.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 4095.0,
+						"translation.y": 4711.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 5,
 					"type": "text"
 				},
 				{
-					"buffer": 4,
-					"file": "lib/scene.rb",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5015,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2171,
-								2171
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Ruby/Ruby.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 585.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "lib/enemies.rb",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 8821,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								7224,
-								7224
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Ruby/Ruby.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 4388.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "lib/enemies/chaser.rb",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2766,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1678,
-								1678
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Ruby/Ruby.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 765.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 7,
+					"buffer": 10,
 					"file": "lib/levels/level00.map",
 					"semi_transient": false,
 					"settings":
@@ -576,8 +680,8 @@
 						"selection":
 						[
 							[
-								889,
-								889
+								807,
+								807
 							]
 						],
 						"settings":
@@ -637,7 +741,7 @@
 	"project": "honoka.sublime-project",
 	"replace":
 	{
-		"height": 42.0
+		"height": 62.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -675,7 +779,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 186.0,
+	"side_bar_width": 150.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

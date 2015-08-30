@@ -36,7 +36,7 @@ class Enemy < GameObject
 
 	def record_pos
 		return if self.destroyed?
-		x = ((@x+4) / 16).floor
+		x = ((@x+8) / 16).floor
 		y = (@y / 16).floor
 		save_pos [x, y]
 	end

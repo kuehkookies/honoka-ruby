@@ -8,7 +8,6 @@
 # ==================================================================================
 
 class HUD < GameObject
-	traits :timer
 	attr_reader :gap, :rect
 	def initialize(options={})
 		super
@@ -17,21 +16,23 @@ class HUD < GameObject
 		@old_hp = @player.maxhp
 		@image = Image["misc/hud.gif"]
 		get_subweapon
-		get_time
-		@second = @minute = 0
-		@time = Text.new("#{@minute} : #{@second}", :x => $window.width / 2 - 112, :y => 16, 
+		@second = 0
+		@minute = 0
+		@time = Text.new("Time: #{@minute} : #{@second}", :x => $window.width / 2 - 112, :y => 20, 
 										 :align => :right, :max_width => 108, :size => 12, 
 										 :color => Color.new(0xFFDADADA), :factor => 1)
 		@ammo = Text.new(@player.ammo, :x => 27, :y => 30, :zorder => 300, 
 										 :align => :right, :max_width => 12, :size => 12, 
 										 :color => Color.new(0xFFDADADA), :factor => 1)
-		@level = Text.new("Stage #{$window.level} - #{$window.block}",
-										 :x => $window.width / 2 - 64, :y => $window.height / 2 - 16, 
+		@level = Text.new("Stage: #{$window.level} - #{$window.block}",
+										 # :x => $window.width / 2 - 64, :y => $window.height / 2 - 16, 
+										 :x => $window.width / 2 - 112, :y => 8, 
 										 :zorder => 500, 
-										 :align => :right, :max_width => 60, :size => 12, 
+										 :align => :right, :max_width => 108, :size => 12, 
 										 :color => Color.new(0xFFDADADA), :factor => 1)
 		@rect = Rect.new(32,16,84*@player.hp/@player.maxhp,5)
 		@gap = (@rect.width - 168*@player.hp/@player.maxhp).to_f
+
 	end
 	
 	def draw
@@ -53,15 +54,20 @@ class HUD < GameObject
 	end
 
 	def get_time
-		sec = ($window.frame / 60).to_i
-		@second = sec
+		sec = ($window.frame % 60).to_i
+		min = ($window.frame % 3600).to_i
+		@second += 1 if sec == 0 and $window.frame > 59
+		if min == 0 and $window.frame > 3599
+			@minute += 1 
+			@second = 0
+		end
 	end
 	
 	def update
 		get_subweapon
 		get_time
 		@ammo.text = @player.ammo.to_s unless @player.ammo.to_s == @ammo.text
-		@time.text = "#{@minute} : #{@second}"
+		@time.text = sprintf("Time: %02d : %02d", @minute, @second)  # "#{@minute} : #{@second}"
 		unless @rect.width <= 84*@player.hp/@player.maxhp
 			@rect.width -= 1 # if @gap <= 2
 		end

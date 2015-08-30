@@ -32,7 +32,7 @@ class GridMap
   end
 
   def on_move_route(obj)
-    @tiles[obj.pos] > 0 and @tiles[obj.pos] < 5
+    @tiles[obj.pos] > 0 # and @tiles[obj.pos] < 5
   end
 
   def find_path_dijkstra(from_position, to_position)
