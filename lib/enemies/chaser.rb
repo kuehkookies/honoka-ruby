@@ -11,8 +11,12 @@ class Chaser < Enemy
 
 	def setup
 		super
-		every(180){
-			@target_pos = nil if !in_position @target_pos
+		every(15){ 
+			if @moving and is_current_command? :move_to_target 
+				@target_pos = nil
+				check_position @player, true
+				record_position @player
+			end
 		}
 	end
 
@@ -34,7 +38,7 @@ class Chaser < Enemy
 		}
 		@character[:stand].delay = 50
 		@character[:stand].bounce = true
-		@character[:walk].delay = 120
+		@character[:walk].delay = 60
 	end
 
 	def enemy_parameters
@@ -46,8 +50,6 @@ class Chaser < Enemy
 		@speed = 2
 
 		@debug = false
-
-		@target_pos = nil
 
 		@color = Color.new(0xff00bbff)
 
@@ -94,199 +96,18 @@ class Chaser < Enemy
 		end
 	end
 
-	# ==============================================================================
-	# Pathfinding stuffs
-	# These methods are used for pathfinding, meaning the automated 
-	# movements are predefined and executed on the go.
-	# Utilizes pathfind module, using A* as macro-level planner
-	# ==============================================================================
-
-	def find_position(target)
-		return if parent.gridmap.nil?
-		unless die?
-			path = parent.gridmap.find_path_astar @pos, target.pos
-			@target_pos = get_nearest_waypoint path, target if (@target_pos.nil? or @target_pos.empty?) and
-															   parent.gridmap.on_move_route target
-			check_position(@target_pos, true)
-			@status = :move
-		end
-	end
-
-	def get_nearest_waypoint(path, target)
-		return if path.nil?
-		return if path.empty?
-		return if @pos == target.pos
-		path.pop
-		result = path[0]
-		nearest_x = result[0]
-		nearest_y = result[1]
-		# Checking whether target is above
-		if target.pos[1] != @pos[1]
-			parent.gridmap.jump_points.each_with_index do |point, id|
-				next if point.nil?
-				next if point.empty?
-				next if (point[1] - @pos[1]).abs > 4
-			   	next if point[0] == 0 or point[0] == parent.gridmap.map_width
-			   	next if point[1] == 0 or point[1] == parent.gridmap.map_height
-				if get_nearest(@pos[0], point[0]) < nearest_x and
-				   get_nearest(@pos[1], point[1]) < nearest_y
-					nearest_x = get_nearest(@pos[0], point[0])
-					nearest_y = get_nearest(@pos[1], point[1])
-					result = point if waypoint_in_course? point, target.pos
-				end
-			end
-		else
-			path.each do |point|
-				next if point.nil?
-				next if point.empty?
-			   	next if point[0] == 0 or point[0] == parent.gridmap.map_width
-			   	next if point[1] == 0 or point[1] == parent.gridmap.map_height
-				result = point if waypoint_in_course? point, target.pos
-			end
-		end
-		return result
-	end
-
-	def get_nearest(a, b)
-		return (a - b).abs
-	end
-
-	def waypoint_in_course?(target, point)
-		return true if in_left_of target and point[0] < target[0]
-		return true if in_right_of target and point[0] > target[0]
-		return false
-	end
-	
-	def check_position(pos, flip = false)
-		return if self.destroyed?
-		return if pos.nil?
-		return if pos.empty?
-		x = pos[0] > @pos[0]
-		y = pos[1] > @pos[1]
-		@factor_x = x ? $window.factor : -$window.factor if flip
-	end
-
-	def in_position(target)
-		return true if target.nil?
-		if target.is_a?(Actor)
-			@pos[0] == target.pos[0] and @pos[1] == target.pos[1]
-		else
-			@pos[0] == target[0] # and @pos[1] == target[1]
-		end
-	end
-
-	def move_to(pos)
-		@image = character_frame(:walk, :next)
-		jump if need_jump
-		stand_still if in_position pos
-	end
-
-	def need_jump
-		need = false 
-		if in_map and not @jumping
-			need = true if jump_is_necessary and @velocity_x.abs > 0.8
-		end
-		return need
-	end
-
-	def in_map
-		!parent.gridmap.tiles[[@pos[0],@pos[1]]].nil?
-	end
-
-	def in_sight(target)
-		return false if @pos.nil?
-		return false if @pos.empty?
-		return false if target.nil?
-		(@pos[0] - target.pos[0]).abs <= 8 and (@pos[1] - target.pos[1]).abs <= 4
-	end
-
-	def jump_is_necessary
-		in_front_of_impassable and at_jump_point
-	end
-	
-	def at_jump_point
-		if x == previous_x
-			for i in @pos[0]-1...@pos[0]+1
-				next if i >= @pos[0] and in_left_of @target_pos
-				next if i <= @pos[0] and in_right_of @target_pos
-				return true if parent.gridmap.tiles[[i,@pos[1]-1]] != 0
-			end
-		else
-			# (parent.gridmap.tiles[[@pos[0],@pos[1]]] == 2 and in_left_of @target_pos) or
-			# (parent.gridmap.tiles[[@pos[0],@pos[1]]] == 3 and in_right_of @target_pos) or
-			# parent.gridmap.tiles[[@pos[0],@pos[1]]] == 4
-			return true if parent.gridmap.jump_points.include? @pos and 
-						   (@x >= (@pos[0]-1) * 16 and @x <= (@pos[0]+1) * 16) and
-						   is_above @target_pos
-		end
-	end
-	
-	def in_front_of_impassable
-		return false if parent.gridmap.tiles[[@pos[0]-1,@pos[1]]].nil?
-		return false if parent.gridmap.tiles[[@pos[0]-2,@pos[1]]].nil?
-		return false if parent.gridmap.tiles[[@pos[0]+1,@pos[1]]].nil?
-		return false if parent.gridmap.tiles[[@pos[0]+2,@pos[1]]].nil?
-		need = false
-		for i in @pos[0]-2...@pos[0]+2
-			for j in @pos[1]-2...@pos[1]+2
-				next if i > @pos[0] and in_left_of @target_pos
-				next if i < @pos[0] and in_right_of @target_pos
-				need = true if parent.gridmap.tiles[[i,j]] == 0
-				break if need
-			end
-		end
-		return need
-	end
-
-	def in_left_of(pos)
-		return if pos.nil?
-		return if pos.is_a?(Array) and pos.empty?
-		pos[0] < @pos[0]
-	end
-	def in_right_of(pos)
-		return if pos.nil?
-		return if pos.is_a?(Array) and pos.empty?
-		pos[0] > @pos[0]
-	end
-	def is_in_same_level_with(pos)
-		return if pos.nil?
-		return if pos.is_a?(Array) and pos.empty?
-		pos[1] == @pos[1]
-	end
-	def is_above(pos)
-		return if pos.nil?
-		return if pos.is_a?(Array) and pos.empty?
-		pos[1] < @pos[1]
-	end
-	def is_below(pos)
-		return if pos.nil?
-		return if pos.is_a?(Array) and pos.empty?
-		pos[1] > @pos[1]
-	end
-
-	def adjust_speed
-		if in_position @player
-			@velocity_x += 0.2 if @velocity_x < 0; @velocity_x -= 0.2 if @velocity_x > 0
-			stand_still if @velocity_x.abs < 0.2 #fix
-		else
-			@velocity_x -= 0.1 if in_left_of @target_pos
-			@velocity_x += 0.1 if in_right_of @target_pos
-			@velocity_x = @speed if @velocity_x > @speed; @velocity_x = -@speed if @velocity_x < -@speed
-		end
-	end
-
 	def update
 		super
 		land?
 		adjust_speed unless @pos.empty?
-		if in_position @target_pos
-			@target_pos = nil 
-			stand_still 
-		end
-		find_position @player if @target_pos.nil? and in_sight @player
-		unless @target_pos.nil? or in_position @target_pos
-			if moving and !(@invincible or die?)
-				move_to @target_pos
+		push_command([:check_position, @player]) if in_sight @player and @target_pos.nil? and !is_current_command? :idle
+		unless @target_pos.nil?
+			if is_current_command? :move_to_target and in_position @target_pos
+				push_command([:stop]) 
+				pull_command
+			else
+				push_command([:move_to_target, @player])
+				move_to @target_pos if @moving
 			end
 		end
 		if @velocity_y > Orange::Environment::GRAV_WHEN_LAND + 1 && !jumping && idle
