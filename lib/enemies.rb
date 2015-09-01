@@ -503,8 +503,8 @@ class Enemy < GameObject
 		return if @current_command == @command[0][0]
 		case @command[0][0]
 			when :check_position
-				check_position @command[0][1], true
 				record_position @command[0][1] # produces @target_pos value
+				check_position @target_pos, true
 			when :move_to_target
 				@moving = true
 			when :stop

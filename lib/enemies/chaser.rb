@@ -14,8 +14,8 @@ class Chaser < Enemy
 		every(15){ 
 			if @moving and is_current_command? :move_to_target 
 				@target_pos = nil
-				check_position @player, true
 				record_position @player
+				check_position @target_pos, true
 			end
 		}
 	end
