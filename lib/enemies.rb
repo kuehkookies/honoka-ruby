@@ -189,7 +189,7 @@ class Enemy < GameObject
 	end
 
 	def land
-		delay = 18
+		delay = 0
 		delay = 24 if attacking
 		if (@y - @y_flag > 48 or (@y - @y_flag > 32 && jumping ) ) && !die?
 			Sound["sfx/step.wav"].play
@@ -262,11 +262,20 @@ class Enemy < GameObject
 		return if path.empty?
 		return target.pos if @pos == target.pos
 		path.pop
-		result = get_farthest_waypoint(path)
-		presult = get_alternate_waypoint(target)
-		result = presult if result[1] != presult[1] # and
-							# (get_nearest(presult[1], result[1]) < 2 and
-							#  get_nearest(presult[1], result[1]) != 0 )
+		result = path[0]
+		if result[1] != @pos[1] and (get_nearest(result[0], @pos[0]) > 8 or get_nearest(result[1], @pos[1]) > 1)
+			a = get_farthest_waypoint(path)
+			b = get_alternate_waypoint(target)
+			if a.empty?
+				result = b
+			else
+				result = get_nearest(a[1], @pos[1]) < get_nearest(b[1], @pos[1]) ? a : b
+			end
+			p path, "#{get_farthest_waypoint(path)} : #{get_alternate_waypoint(target)}", result
+		end
+		# result = presult if result[1] != presult[1] and
+		# 					(get_nearest(presult[1], result[1]) < 2 and
+		# 					 get_nearest(presult[1], result[1]) != 0 )
 		return result
 	end
 
@@ -284,7 +293,7 @@ class Enemy < GameObject
 				end
 			end
 		end
-		p result
+		return result
 	end
 
 	def get_alternate_waypoint(target)
@@ -297,7 +306,7 @@ class Enemy < GameObject
 			# next if (point[1] - result[1]).abs > 3
 		   	next if point[0] == 0 or point[0] == parent.gridmap.map_width
 		   	next if point[1] == 0 or point[1] == parent.gridmap.map_height
-			if get_nearest(@pos[0], point[0]) < 12 and
+			if get_nearest(@pos[0], point[0]) < 16 and
 			   get_nearest(@pos[1], point[1]) < 4
 				presult.push point
 			end
@@ -394,7 +403,7 @@ class Enemy < GameObject
 	def need_jump(target)
 		need = false 
 		if in_map and not @jumping
-			need = true if jump_is_necessary and @velocity_x.abs > 0.8
+			need = true if jump_is_necessary and @velocity_x.abs > 0.5
 			need = true if target.is_a? Actor and target.jumping and in_position @target_pos
 		end
 		return need
@@ -428,7 +437,7 @@ class Enemy < GameObject
 			end
 		else
 			return true if parent.gridmap.jump_points.include? @pos and 
-						   (@x >= (@pos[0] * 16) - 16 and @x <= (@pos[0] * 16) + 16) and
+						   (@x >= (@pos[0] * 16) - 24 and @x <= (@pos[0] * 16) + 24) and
 						   ((facing_left and in_left_of @target_pos) or 
 						   	(facing_right and in_right_of @target_pos)) and
 						   is_above @target_pos

@@ -139,7 +139,7 @@ class Chaser < Enemy
 					push_command([:stop]) 
 					pull_command
 				else
-					push_command([:move_to_target, @player])
+					push_command([:move_to_target, @target_pos])
 					move_to @target_pos if @moving
 				end
 			end
@@ -147,10 +147,6 @@ class Chaser < Enemy
 			if in_sight @target_pos # @moving
 				push_command([:move_to_target, @target_pos])
 				move_to @target_pos
-			# else
-			# 	push_command([:stop])
-			# 	pull_command
-			# 	push_command([:idle]) 
 			end
 		end
 		if @velocity_y > Orange::Environment::GRAV_WHEN_LAND + 1 && !jumping && idle
