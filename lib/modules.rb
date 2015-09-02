@@ -336,19 +336,98 @@ class Map
       end
     end
 
+    # Remaps the grids
     on_platform = false
     has.each_with_index do |row, id|
       row.each_with_index do |col, id2|
-        has[id][id2] = 5 if has[id][id2] == 1
+        has[id][id2] = 6 if has[id][id2] == 1
         has[id][id2] = 3 if id2 >= has[id].size - 1 and on_platform
         has[id][id2] = 4 if has[id][id2] == 2 and has[id][id2-1] == 0 and has[id][id2+1] == 0
         on_platform = true if has[id][id2] == 2
         on_platform = false if has[id][id2] == 3 or id2 == row.size - 1
-        has[id-1][id2] = 1 if has[id-1][id2] == 5 and has[id][id2] == 0
+        has[id-1][id2] = 1 if has[id-1][id2] == 6 and has[id][id2] == 0
         # has[id][id2] = 0 if has[id][id2] == 1 and (not on_platform or has[id][id2-1] == 0)
         # has[id-1][id2] = 0 if has[id][id2] == 2
       end
     end
+
+    # Make fall links
+    landpoint = []
+    has.each_with_index do |row, id|
+      row.each_with_index do |col, id2|
+        next if id <= 1
+        next if id2 <= 1
+
+        if has[id][id2] > 1 and has[id][id2] < 5 and
+          # p "#{id2}, #{id} : #{has[id][id2]} -> #{has[id][id2] == 2 ? 'left' : 'right'}" 
+          # @navpoint.push [id, id2]
+
+          case has[id][id2]
+          when 2 # at left
+            i = id
+            j = id2 - 1
+            next if j <= 1
+            if has[i][j] > 0
+              while i < row.size
+                p "Checking: #{[i,j]} -> #{has[i][j] > 0 and has[i][j] < 6 ? 'Found' : 'Not'}"
+                if has[i][j] < 6
+                  # landpoint.push [i, j]
+                  has[i][j] = 5 if has[i][j] == 1
+                  break
+                end
+                i += 1
+              end
+            end
+          when 3
+            i = id
+            j = id2 + 1
+            next if j >= col.size - 1
+            if has[i][j] > 0
+              while i < row.size
+                p "Checking: #{[i,j]} -> #{has[i][j] > 0 and has[i][j] < 6 ? 'Found' : 'Not'}"
+                if has[i][j] > 0 and has[i][j] < 6
+                  # landpoint.push [i, j]
+                  has[i][j] = 5 if has[i][j] == 1
+                  break
+                end
+                i += 1
+              end
+            end
+          when 4
+            i = id
+            j = id2 - 1
+            next if j <= 1
+            if has[i][j] > 0
+              while i < row.size
+                p "Checking: #{[i,j]} -> #{has[i][j] > 0 and has[i][j] < 6 ? 'Found' : 'Not'}"
+                if has[i][j] < 6
+                  # landpoint.push [i, j]
+                  has[i][j] = 5 if has[i][j] == 1
+                  break
+                end
+                i += 1
+              end
+            end
+            i = id
+            j = id2 + 1
+            next if j >= col.size - 1
+            if has[i][j] > 0
+              while i < row.size
+                p "Checking: #{[i,j]} -> #{has[i][j] > 0 and has[i][j] < 6 ? 'Found' : 'Not'}"
+                if has[i][j] > 0 and has[i][j] < 6
+                  # landpoint.push [i, j]
+                  has[i][j] = 5 if has[i][j] == 1
+                  break
+                end
+                i += 1
+              end
+            end
+          end
+        end
+      end
+    end
+    # @navpoint += landpoint
+    # @navpoint.uniq!
 
     name = current.to_s.downcase!
     f = File.new("lib/levels/#{name}.map", "w")
@@ -359,6 +438,10 @@ class Map
     f.close   
 
     return has
+  end
+
+  def navpoint
+    @navpoint
   end
   
   def current
