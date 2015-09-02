@@ -8,7 +8,7 @@
 
 class Runner < Actor	
 	def create_character_frame
-		@character = Chingu::Animation.new( :file => "player/mark.gif", :size => [32,32])
+		@character = Chingu::Animation.new( :file => "player/sutisna.gif", :size => [32,32])
 		@character.frame_names = {
 			:stand => 0..2,
 			:step => 3..3,

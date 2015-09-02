@@ -12,10 +12,20 @@ class Chaser < Enemy
 	def setup
 		super
 		every(15){ 
-			if @moving and is_current_command? :move_to_target 
-				@target_pos = nil
-				record_position @player
-				check_position @target_pos, true
+			if is_current_command? :move_to_target 
+				if in_sight @player and @moving
+					@target_pos = nil
+					record_position @player
+					check_position @target_pos, true
+				elsif in_sight @target_pos and @target_pos and @moving
+					@target_pos = nil
+					record_position @target_pos
+					check_position @target_pos, true
+				else
+					push_command([:stop])
+					pull_command
+					push_command([:idle]) 
+				end
 			end
 		}
 	end
@@ -51,7 +61,7 @@ class Chaser < Enemy
 
 		@debug = false
 
-		@color = Color.new(0xff00bbff)
+		# @color = Color.new(0xff00bbff)
 
 		@acceleration_y = Orange::Environment::GRAV_ACC
 		self.max_velocity = Orange::Environment::GRAV_CAP
@@ -100,14 +110,47 @@ class Chaser < Enemy
 		super
 		land?
 		adjust_speed unless @pos.empty?
-		push_command([:check_position, @player]) if in_sight @player and @target_pos.nil? and !is_current_command? :idle
-		unless @target_pos.nil?
-			if is_current_command? :move_to_target and in_position @target_pos
-				push_command([:stop]) 
-				pull_command
+		# push_command([:idle]) unless in_sight @player # and is_current_command? :idle
+		# push_command([:check_position, @player]) if in_sight @player and @target_pos.nil? 
+		# if in_position @target_pos and !is_current_command? :idle
+		# 	push_command([:stop]) 
+		# 	pull_command
+		# else
+		# 	# if is_current_command? :move_to_target and in_position @target_pos
+		# 	if in_position @target_pos
+		# 		push_command([:stop]) 
+		# 		pull_command
+		# 	else
+		# 		push_command([:move_to_target, @player])
+		# 		move_to @target_pos if @moving
+		# 	end
+		# end
+		# p "#{in_sight @player} : #{@moving} - #{@target_pos}"
+		if in_sight @player
+			if @target_pos.nil?
+				if in_position @player and !is_current_command? :idle
+					push_command([:idle])
+				else
+					# pull_command if is_current_command? :idle
+					push_command([:check_position, @player])
+				end
 			else
-				push_command([:move_to_target, @player])
-				move_to @target_pos if @moving
+				if in_position @target_pos
+					push_command([:stop]) 
+					pull_command
+				else
+					push_command([:move_to_target, @player])
+					move_to @target_pos if @moving
+				end
+			end
+		else
+			if in_sight @target_pos # @moving
+				push_command([:move_to_target, @target_pos])
+				move_to @target_pos
+			# else
+			# 	push_command([:stop])
+			# 	pull_command
+			# 	push_command([:idle]) 
 			end
 		end
 		if @velocity_y > Orange::Environment::GRAV_WHEN_LAND + 1 && !jumping && idle
