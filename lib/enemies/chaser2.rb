@@ -118,7 +118,7 @@
 # 		nearest_y = result[1]
 # 		# Checking whether target is above
 # 		if target.pos[1] != @pos[1]
-# 			parent.gridmap.jump_points.each_with_index do |point, id|
+# 			parent.gridmap.navpoints.each_with_index do |point, id|
 # 				next if point.nil?
 # 				next if point.empty?
 # 				next if (point[1] - @pos[1]).abs > 4
@@ -150,7 +150,7 @@
 # 		nearest_x = result[0]
 # 		nearest_y = result[1]
 # 		# Checking whether target is above
-# 		parent.gridmap.jump_points.each_with_index do |point, id|
+# 		parent.gridmap.navpoints.each_with_index do |point, id|
 # 			next if point.nil?
 # 			next if point.empty?
 # 		   	next if point[0] == 0 or point[0] == parent.gridmap.map_width
@@ -237,7 +237,7 @@
 # 			# (parent.gridmap.tiles[[@pos[0],@pos[1]]] == 2 and in_left_of @target_pos) or
 # 			# (parent.gridmap.tiles[[@pos[0],@pos[1]]] == 3 and in_right_of @target_pos) or
 # 			# parent.gridmap.tiles[[@pos[0],@pos[1]]] == 4
-# 			return true if parent.gridmap.jump_points.include? @pos and 
+# 			return true if parent.gridmap.navpoints.include? @pos and 
 # 						   (@x >= (@pos[0]-1) * 16 and @x <= (@pos[0]+1) * 16) and
 # 						   is_above @target_pos
 # 		end

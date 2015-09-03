@@ -11,27 +11,29 @@ class Chaser < Enemy
 
 	def setup
 		super
-		every(15){ 
-			if is_current_command? :move_to_target 
-				if in_sight @player and @moving
-					@target_pos = nil
-					record_position @player
-					check_position @target_pos, true
-				elsif in_sight @target_pos and @target_pos and @moving
-					@target_pos = nil
-					record_position @target_pos
-					check_position @target_pos, true
-				else
-					push_command([:stop])
-					pull_command
-					push_command([:idle]) 
-				end
-			end
-		}
+		# every(15){ 
+		# 	if @target_pos.nil?
+		# 		if is_current_command? :move_to_target 
+		# 			if in_sight @player and @moving
+		# 				@target_pos = nil
+		# 				record_position @player
+		# 				check_position @target_pos, true
+		# 			elsif in_sight @target_pos and @target_pos and @moving
+		# 				@target_pos = nil
+		# 				record_position @target_pos
+		# 				check_position @target_pos, true
+		# 			else
+		# 				push_command([:stop])
+		# 				pull_command
+		# 				push_command([:idle]) 
+		# 			end
+		# 		end
+		# 	end
+		# }
 	end
 
 	def create_character_frame
-		@character = Chingu::Animation.new( :file => "player/mark.gif", :size => [32,32])
+		@character = Chingu::Animation.new( :file => "enemies/pcandi.png", :size => [32,32])
 		@character.frame_names = {
 			:stand => 0..2,
 			:step => 3..3,
@@ -110,39 +112,24 @@ class Chaser < Enemy
 		super
 		land?
 		adjust_speed unless @pos.empty?
-		# push_command([:idle]) unless in_sight @player # and is_current_command? :idle
-		# push_command([:check_position, @player]) if in_sight @player and @target_pos.nil? 
-		# if in_position @target_pos and !is_current_command? :idle
-		# 	push_command([:stop]) 
-		# 	pull_command
-		# else
-		# 	# if is_current_command? :move_to_target and in_position @target_pos
-		# 	if in_position @target_pos
-		# 		push_command([:stop]) 
-		# 		pull_command
-		# 	else
-		# 		push_command([:move_to_target, @player])
-		# 		move_to @target_pos if @moving
-		# 	end
-		# end
-		# p "#{in_sight @player} : #{@moving} - #{@target_pos}"
 		if in_sight @player
-			if @target_pos.nil?
-				if in_position @player and !is_current_command? :idle
-					push_command([:idle])
-				else
-					# pull_command if is_current_command? :idle
-					push_command([:check_position, @player])
-				end
-			else
+			# if @target_pos == @pos
+			# 	if in_position @player and !is_current_command? :idle
+			# 		push_command([:idle])
+			# 	else
+			# 		# pull_command if is_current_command? :idle
+			# 		push_command([:check_position, @player])
+			# 	end
+			# else
 				if in_position @target_pos
 					push_command([:stop]) 
 					pull_command
 				else
+					push_command([:check_position, @player])
 					push_command([:move_to_target, @target_pos])
 					move_to @target_pos if @moving
 				end
-			end
+			# end
 		else
 			if in_sight @target_pos # @moving
 				push_command([:move_to_target, @target_pos])

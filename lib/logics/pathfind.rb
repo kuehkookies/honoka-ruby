@@ -21,18 +21,18 @@ class GridMap
     end
   end
 
-  def jump_points
+  def navpoints
     result = []
     @tiles.each_with_index do |point, id|
       next if point.nil?
       next if point.empty?
-      result.push point[0] if point[1] > 1 and point[1] < 5
+      result.push point[0] if point[1] > 1 and point[1] < 6
     end
     return result
   end
 
-  def on_move_route(obj)
-    @tiles[obj.pos] > 0 # and @tiles[obj.pos] < 5
+  def on_move_route(pos)
+    @tiles[pos] > 0 and @tiles[pos] < 6
   end
 
   def find_path_dijkstra(from_position, to_position)

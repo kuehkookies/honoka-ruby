@@ -1,0 +1,1 @@
+ocra main.rb --console gfx/* fonts/* lib/* media/* ./*

@@ -4,6 +4,14 @@
 		"selected_items":
 		[
 			[
+				"res",
+				"result"
+			],
+			[
+				"velo",
+				"velocity_x"
+			],
+			[
 				"tar",
 				"target"
 			],
@@ -111,7 +119,7 @@
 			"file": "lib/logics/pathfind.rb",
 			"settings":
 			{
-				"buffer_size": 2685,
+				"buffer_size": 2683,
 				"line_ending": "Windows"
 			}
 		},
@@ -119,15 +127,15 @@
 			"file": "lib/modules.rb",
 			"settings":
 			{
-				"buffer_size": 13553,
+				"buffer_size": 16018,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "lib/logics/astar/AMap.rb",
+			"file": "lib/levels/level00.map",
 			"settings":
 			{
-				"buffer_size": 6393,
+				"buffer_size": 0,
 				"line_ending": "Windows"
 			}
 		},
@@ -143,7 +151,7 @@
 			"file": "lib/actors/runner.rb",
 			"settings":
 			{
-				"buffer_size": 1321,
+				"buffer_size": 1324,
 				"line_ending": "Windows"
 			}
 		},
@@ -151,7 +159,7 @@
 			"file": "lib/enemies.rb",
 			"settings":
 			{
-				"buffer_size": 14156,
+				"buffer_size": 16467,
 				"line_ending": "Windows"
 			}
 		},
@@ -159,15 +167,15 @@
 			"file": "lib/enemies/chaser.rb",
 			"settings":
 			{
-				"buffer_size": 3236,
+				"buffer_size": 4259,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "lib/scene.rb",
+			"file": "lib/enemies/chaser2.rb",
 			"settings":
 			{
-				"buffer_size": 5043,
+				"buffer_size": 10105,
 				"line_ending": "Windows"
 			}
 		},
@@ -176,14 +184,6 @@
 			"settings":
 			{
 				"buffer_size": 2648,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "lib/levels/level00.map",
-			"settings":
-			{
-				"buffer_size": 1056,
 				"line_ending": "Windows"
 			}
 		}
@@ -230,10 +230,14 @@
 	],
 	"file_history":
 	[
+		"/F/share/rian nitip/honoka/build.bat",
+		"/F/share/rian nitip/honoka/lib/logics/astar/AMap.rb",
+		"/F/share/rian nitip/honoka/lib/scene.rb",
+		"/F/share/rian nitip/honoka/\"Checking",
+		"/F/share/rian nitip/honoka/	from F",
 		"/F/share/rian nitip/honoka/lib/enemies/chaser2.rb",
 		"/F/share/rian nitip/honoka/lib/enemies/chaser.rb",
 		"/F/share/rian nitip/_app/Ruby193/lib/ruby/gems/1.9.1/gems/chingu-0.9rc9/lib/chingu/text.rb",
-		"/F/share/rian nitip/honoka/	from F",
 		"/F/share/rian nitip/honoka/lib/levels/level00.map",
 		"/F/share/rian nitip/_backups/xampp/htdocs/crescentsun/css/main.css",
 		"/F/share/rian nitip/honoka/lib/logics/astar/Node.rb",
@@ -292,6 +296,16 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"at_jump_point",
+			"calculate_speed",
+			"p ",
+			"nav",
+			"jump_points",
+			"5",
+			"\"",
+			"def on_move",
+			"jump_po",
+			"need_",
 			"alternat",
 			"move_t",
 			"@image = character_frame(:walk, :next)",
@@ -406,6 +420,7 @@
 		"regex": false,
 		"replace_history":
 		[
+			"navpoints",
 			"\\\"",
 			"\"",
 			"\\\"",
@@ -422,7 +437,7 @@
 	"groups":
 	[
 		{
-			"selected": 7,
+			"selected": 0,
 			"sheets":
 			[
 				{
@@ -438,8 +453,8 @@
 						"selection":
 						[
 							[
-								1710,
-								1710
+								983,
+								983
 							]
 						],
 						"settings":
@@ -449,10 +464,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 555.0,
+						"translation.y": 120.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 0,
 					"type": "text"
 				},
 				{
@@ -461,15 +476,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2685,
+						"buffer_size": 2683,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								804,
-								804
+								725,
+								725
 							]
 						],
 						"settings":
@@ -479,7 +494,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 90.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 6,
@@ -491,15 +506,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 13553,
+						"buffer_size": 16018,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								989,
-								989
+								13846,
+								13846
 							]
 						],
 						"settings":
@@ -509,7 +524,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 5251.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 5,
@@ -517,32 +532,30 @@
 				},
 				{
 					"buffer": 3,
-					"file": "lib/logics/astar/AMap.rb",
+					"file": "lib/levels/level00.map",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 6393,
+						"buffer_size": 0,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2712,
-								2712
+								0,
+								0
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Ruby/Ruby.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
+							"syntax": "Packages/Text/Plain text.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 1651.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 10,
+					"stack_index": 4,
 					"type": "text"
 				},
 				{
@@ -571,7 +584,7 @@
 						"translation.y": 1474.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 9,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
@@ -580,15 +593,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1321,
+						"buffer_size": 1324,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1084,
-								1089
+								455,
+								455
 							]
 						],
 						"settings":
@@ -597,10 +610,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 258.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
@@ -609,15 +622,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 14156,
+						"buffer_size": 16467,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								9600,
-								9600
+								8565,
+								8565
 							]
 						],
 						"settings":
@@ -626,10 +639,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 5049.0,
+						"translation.y": 4422.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
@@ -638,15 +651,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3236,
+						"buffer_size": 4259,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2547,
-								2547
+								3738,
+								3738
 							]
 						],
 						"settings":
@@ -655,39 +668,38 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1276.0,
+						"translation.y": 1896.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 7,
 					"type": "text"
 				},
 				{
 					"buffer": 8,
-					"file": "lib/scene.rb",
+					"file": "lib/enemies/chaser2.rb",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5043,
+						"buffer_size": 10105,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2968,
-								2968
+								379,
+								379
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Ruby/Ruby.tmLanguage",
-							"translate_tabs_to_spaces": false
+							"syntax": "Packages/Ruby/Ruby.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 2059.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 8,
 					"type": "text"
 				},
 				{
@@ -716,35 +728,7 @@
 						"translation.y": 675.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
-					"buffer": 10,
-					"file": "lib/levels/level00.map",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1056,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								904,
-								904
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 8,
+					"stack_index": 9,
 					"type": "text"
 				}
 			]
