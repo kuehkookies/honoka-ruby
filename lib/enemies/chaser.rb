@@ -7,7 +7,7 @@
 # ==================================================================================
 
 class Chaser < Enemy
-	trait :bounding_box, :scale => [0.5, 0.8], :debug => false
+	trait :bounding_box, :scale => [0.4, 0.8], :debug => false
 
 	def setup
 		super
@@ -30,6 +30,13 @@ class Chaser < Enemy
 		# 		end
 		# 	end
 		# }
+	end
+
+	def record_pos
+		return if self.destroyed?
+		x = (@x / 16).round
+		y = (@y / 16).round
+		save_pos [x, y]
 	end
 
 	def create_character_frame

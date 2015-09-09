@@ -117,8 +117,8 @@ class Actor < Chingu::GameObject
 	end
 
 	def record_pos
-		x = ((@x+8) / 16).to_i
-		y = (@y / 16).to_i
+		x = ((@x+8) / 16).round
+		y = (@y / 16).round
 		save_pos [x,y]
 	end
 

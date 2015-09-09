@@ -36,8 +36,8 @@ class Enemy < GameObject
 
 	def record_pos
 		return if self.destroyed?
-		x = ((@x+8) / 16).floor
-		y = (@y / 16).floor
+		x = ((@x+8) / 16).round
+		y = (@y / 16).round
 		save_pos [x, y]
 	end
 
@@ -401,9 +401,9 @@ class Enemy < GameObject
 		return false if @pos.empty?
 		return false if target.nil?
 		if target.is_a? Array
-			(@pos[0] - target[0]).abs < 12 and (@pos[1] - target[1]).abs <= 4
+			(@pos[0] - target[0]).abs < 8 and (@pos[1] - target[1]).abs <= 4
 		else
-			(@pos[0] - target.pos[0]).abs < 12 and (@pos[1] - target.pos[1]).abs <= 4
+			(@pos[0] - target.pos[0]).abs < 8 and (@pos[1] - target.pos[1]).abs <= 4
 		end
 	end
 
@@ -422,8 +422,7 @@ class Enemy < GameObject
 				end
 			end
 		else
-			return true if at_jumpable_point and is_above @target_pos
-						   
+			return true if at_jumpable_point and !is_below @target_pos
 		end
 		return false
 	end
