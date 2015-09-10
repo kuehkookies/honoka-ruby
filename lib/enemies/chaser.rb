@@ -7,7 +7,7 @@
 # ==================================================================================
 
 class Chaser < Enemy
-	trait :bounding_box, :scale => [0.4, 0.8], :debug => false
+	trait :bounding_box, :scale => [0.5, 0.8], :debug => false
 
 	def setup
 		super
@@ -34,7 +34,7 @@ class Chaser < Enemy
 
 	def record_pos
 		return if self.destroyed?
-		x = (@x / 16).round
+		x = ((@x+8) / 16).round
 		y = (@y / 16).round
 		save_pos [x, y]
 	end
@@ -120,23 +120,14 @@ class Chaser < Enemy
 		land?
 		adjust_speed unless @pos.empty?
 		if in_sight @player
-			# if @target_pos == @pos
-			# 	if in_position @player and !is_current_command? :idle
-			# 		push_command([:idle])
-			# 	else
-			# 		# pull_command if is_current_command? :idle
-			# 		push_command([:check_position, @player])
-			# 	end
-			# else
-				if in_position @target_pos
-					push_command([:stop]) 
-					pull_command
-				else
-					push_command([:check_position, @player])
-					push_command([:move_to_target, @target_pos])
-					move_to @target_pos if @moving
-				end
-			# end
+			if in_position @target_pos
+				push_command([:stop]) 
+				pull_command
+			else
+				push_command([:get_waypoint, @player])
+				push_command([:move_to_target, @target_pos])
+				move_to @target_pos if @moving
+			end
 		else
 			if in_sight @target_pos # @moving
 				push_command([:move_to_target, @target_pos])

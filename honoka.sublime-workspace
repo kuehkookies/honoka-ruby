@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"veloc",
+				"velocity_x"
+			],
+			[
 				"vl",
 				"velocity_x"
 			],
@@ -70,10 +74,6 @@
 			[
 				"vel",
 				"velocity_x"
-			],
-			[
-				"veloc",
-				"velocity"
 			],
 			[
 				"list-",
@@ -167,7 +167,7 @@
 			"file": "lib/enemies.rb",
 			"settings":
 			{
-				"buffer_size": 16536,
+				"buffer_size": 16995,
 				"line_ending": "Windows"
 			}
 		},
@@ -175,7 +175,7 @@
 			"file": "lib/enemies/chaser.rb",
 			"settings":
 			{
-				"buffer_size": 3803,
+				"buffer_size": 3653,
 				"line_ending": "Windows"
 			}
 		},
@@ -304,6 +304,17 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"> 8",
+			"@status = :jump",
+			"in_pos",
+			":check_position",
+			"check_position",
+			"record_position",
+			"def check_position",
+			"pull_command",
+			"@status = :move",
+			"moving",
+			"moving?",
 			"\\\"",
 			"facing_le",
 			"facing",
@@ -420,18 +431,7 @@
 			"to-w",
 			"footer",
 			"#footer",
-			"footer",
-			"#footer",
-			"footer",
-			"{\n",
-			"ctrl+d",
-			"ctrl+shift+d",
-			"shift+ctrl",
-			">\n",
-			"tab",
-			"font",
-			"ctrl+d",
-			"+d"
+			"footer"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -473,13 +473,13 @@
 						"selection":
 						[
 							[
-								29,
-								29
+								410,
+								410
 							]
 						],
 						"settings":
 						{
-							"spell_check": false,
+							"spell_check": true,
 							"syntax": "Packages/Ruby/Ruby.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
@@ -517,7 +517,7 @@
 						"translation.y": 241.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 4,
 					"type": "text"
 				},
 				{
@@ -563,8 +563,8 @@
 						"selection":
 						[
 							[
-								653,
-								653
+								807,
+								807
 							]
 						],
 						"settings":
@@ -575,7 +575,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 6,
+					"stack_index": 5,
 					"type": "text"
 				},
 				{
@@ -591,8 +591,8 @@
 						"selection":
 						[
 							[
-								694,
-								694
+								2829,
+								2825
 							]
 						],
 						"settings":
@@ -601,10 +601,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 538.0,
+						"translation.y": 1490.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 6,
 					"type": "text"
 				},
 				{
@@ -642,15 +642,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 16536,
+						"buffer_size": 16995,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								10924,
-								10924
+								16950,
+								16950
 							]
 						],
 						"settings":
@@ -660,10 +660,10 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 5704.0,
+						"translation.y": 8632.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
@@ -672,15 +672,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3803,
+						"buffer_size": 3653,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								452,
-								963
+								3178,
+								3143
 							]
 						],
 						"settings":
@@ -689,10 +689,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1695.0,
+						"translation.y": 1651.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
