@@ -7,29 +7,10 @@
 # ==================================================================================
 
 class Chaser < Enemy
-	trait :bounding_box, :scale => [0.5, 0.8], :debug => false
+	trait :bounding_box, :scale => [0.4, 0.8], :debug => false
 
 	def setup
 		super
-		# every(15){ 
-		# 	if @target_pos.nil?
-		# 		if is_current_command? :move_to_target 
-		# 			if in_sight @player and @moving
-		# 				@target_pos = nil
-		# 				record_position @player
-		# 				check_position @target_pos, true
-		# 			elsif in_sight @target_pos and @target_pos and @moving
-		# 				@target_pos = nil
-		# 				record_position @target_pos
-		# 				check_position @target_pos, true
-		# 			else
-		# 				push_command([:stop])
-		# 				pull_command
-		# 				push_command([:idle]) 
-		# 			end
-		# 		end
-		# 	end
-		# }
 	end
 
 	def record_pos
@@ -156,20 +137,16 @@ class Chaser < Enemy
 		land?
 		adjust_speed unless @pos.empty? or @knocked or dead
 		unless @knocked or dead
-			if in_sight @player
-				if in_position @target_pos
-					push_command([:stop]) 
-					pull_command
-				else
-					push_command([:get_waypoint, @player])
-					push_command([:move_to_target, @target_pos])
-					move_to @target_pos if @moving
-				end
-			else
-				if in_sight @target_pos # @moving
-					push_command([:move_to_target, @target_pos])
-					move_to @target_pos
-				end
+			if in_position @target_pos
+				push_command([:stop]) 
+				pull_command
+			elsif in_sight @player
+				push_command([:get_waypoint, @player])
+				push_command([:move_to_target, @target_pos])
+				move_to @target_pos
+			elsif in_sight @target_pos
+				push_command([:move_to_target, @target_pos])
+				move_to @target_pos
 			end
 			@image = character_frame(:walk, :first) if @velocity_y > Orange::Environment::GRAV_WHEN_LAND
 			@image = character_frame(:crouch, :first) if @velocity_y > Orange::Environment::GRAV_WHEN_LAND and disabled
