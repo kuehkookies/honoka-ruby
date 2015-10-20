@@ -18,9 +18,15 @@
 #      That's it. Don't forget the Solid superclass' name
 # ==================================================================================
 
-class Ground < Solid; end
-class GroundLower < Solid; end
-class GroundLoop < Solid; end
-class GroundTiled < Solid; end
 class Brick < Solid; end
-class Brick_Loop < Solid; end
+
+class Door < GameObject
+	trait :bounding_box, :scale => [1, 1],:debug => false
+	traits :collision_detection, :timer, :velocity
+	def setup
+		@door = Chingu::Animation.new( :file => "misc/door.gif", :size => [64,48])
+		@image = @door.first
+		cache_bounding_box
+		self.rotation_center = :bottom_center
+	end
+end

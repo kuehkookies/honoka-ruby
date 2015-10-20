@@ -65,7 +65,7 @@ class Enemy < GameObject
 		@jumping = false
 		@vert_jump = false
 		@moving = false
-		self.zorder = 200
+		@knocked = false
 		@gap_x = @x - @player.x
 		@gap_y = @y - @player.y
 		@last_x, @last_y = @x, @y
@@ -112,6 +112,7 @@ class Enemy < GameObject
 	def jumping;      @status == :jump;     end
 	def falling;      @status == :fall;     end
 	def damaged;      @status == :hurt;     end
+	def dead;         @status == :dead;     end
 	def attacking;    @action == :attack;   end
 	def idle;         @action == :stand;    end
 	def die?;         @hp <= 0;             end
@@ -145,6 +146,16 @@ class Enemy < GameObject
 		Misc_Flame.create(:x => self.x, :y => self.y)
 		destroy
 		$window.enemies.delete(self) rescue nil
+	end
+
+	def knockback
+		return if @invincible
+		@invincible = true
+		@status = :hurt
+		@action = :stand
+		self.velocity_x = (self.factor_x*-1)
+		self.velocity_y = -4
+		land?
 	end
 
 	def jump
@@ -225,6 +236,10 @@ class Enemy < GameObject
 					weapon.lit_fire if weapon.is_a?(Torch) and not die?
 					weapon.die if weapon.is_a?(Knife) and !@hardened
 					weapon.deflect if weapon.is_a?(Axe) or weapon.is_a?(Knife) and @hardened
+					if weapon.is_a?(Batu)
+						weapon.deflect
+						@knocked = true
+					end
 				end
 			end
 		end
@@ -282,7 +297,7 @@ class Enemy < GameObject
 				result = get_nearest(a[1], @pos[1]) < get_nearest(b[1], target.pos[1]) ? a : b
 			end
 		end
-		p "#{get_farthest_waypoint(path)} | #{get_alternate_waypoint(target)} | #{get_nearest_alternate_waypoint(path)} [Result : #{result}], pos = #{@pos} #{parent.gridmap.tiles[@pos]} : #{@player.pos} #{parent.gridmap.tiles[@player.pos]}"
+		# p "#{get_farthest_waypoint(path)} | #{get_alternate_waypoint(target)} | #{get_nearest_alternate_waypoint(path)} [Result : #{result}], pos = #{@pos} #{parent.gridmap.tiles[@pos]} : #{@player.pos} #{parent.gridmap.tiles[@player.pos]}"
 		return result
 	end
 
@@ -401,7 +416,7 @@ class Enemy < GameObject
 				end
 			end
 		else
-			return true if at_jumpable_point and is_above @target_pos
+			return true if at_jumpable_point and !is_below @target_pos
 		end
 		return false
 	end
@@ -541,6 +556,9 @@ class Enemy < GameObject
 	def pull_command
 		@command.shift
 	end
+	def empty_command
+		@command.clear
+	end
 	def is_current_command?(command)
 		return false if @command.empty?
 		return false if @current_command.nil?
@@ -587,6 +605,7 @@ class Enemy < GameObject
 	def update
 		@velocity_y = Orange::Environment::GRAV_CAP if @velocity_y > Orange::Environment::GRAV_CAP
 		@y_flag = @y if @velocity_y == Orange::Environment::GRAV_WHEN_LAND && !@jumping
+		self.zorder = (@x / 16 * 2).to_i + ((parent.area[1] - @y) / 16).to_i + 4
 		if jumping and idle
 			if @last_y > @y 
 				@image = character_frame(:jump, :first)

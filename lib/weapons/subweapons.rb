@@ -24,6 +24,44 @@ class Subweapons < GameObject
 	end
 end
 
+class Batu < Subweapons
+	attr_accessor :damage
+	
+	def setup
+		super
+		@image = Image["weapons/batu.gif"]
+		@zorder = 300
+		@velocity_x *= 4
+		@velocity_y -= 2
+		@max_velocity = 8
+		@rotation = 0
+		@damage = 0
+		cache_bounding_box
+	end
+	
+	def deflect
+		@velocity_x *= -0.15
+		@velocity_y = -6
+		@rotation = 25*@velocity_x
+		@acceleration_y = Orange::Environment::GRAV_ACC
+		@collidable = false
+	end
+	
+	def update
+		@angle += @rotation
+		@velocity_y += 0.25
+		self.each_collision(*$window.terrains) do |knife, wall|
+			knife.deflect
+		end
+	end
+	
+	def die
+		self.collidable = false
+		@velocity_x = 0
+		#~ after(100){super}
+		after(3){super}
+	end
+end
 
 # ==================================================================================
 # And here goes the samples. Make the Belmonts proud, Orange!

@@ -18,7 +18,7 @@
 # ==================================================================================
 
 class Block < GameObject
-  trait :bounding_box, :scale => [1,0.9], :debug => false
+  trait :bounding_box, :scale => [0.5,0.5], :debug => false
   trait :collision_detection
   
   def self.solid

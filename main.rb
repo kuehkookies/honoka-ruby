@@ -12,6 +12,8 @@ Dir[File.dirname(__FILE__) + '/lib/*/*/*.rb'].each {|file| require file }
 
 include AStar
 
+SCALE = 3
+
 # ==================================================================================
 # Main stage is here!
 #
@@ -24,19 +26,23 @@ class Game < Chingu::Window
 								:map, :transfer
 	attr_accessor :bgm, :enemies, :hazards, :terrains, :bridges, :decorations, 
 								:items, :subweapons
-	attr_accessor :paused, :waiting, :passing_door
+	attr_accessor :paused, :waiting, :passing_door, :playing
 	attr_accessor :frame, :frame_last_tick
 	attr_accessor :selected_actor, :actor_temp_data
+	attr_reader   :minute, :second
 	attr_reader   :in_event
 	
 	def initialize
-		super(640,480)
+		super(800,600)
 		
 		@frame = 0
 		@frame_last_tick = 0
 		
 		@selected_actor = nil
 		@actor_temp_data = []
+
+		@second = 0
+		@minute = 0
 
 		@bgm = nil
 		@enemies = []
@@ -46,6 +52,7 @@ class Game < Chingu::Window
 		@decorations = []
 		@items = []
 		@subweapons = []
+		@playing = false
 		@paused = false
 		@waiting = false
 		@in_event = false
@@ -60,11 +67,11 @@ class Game < Chingu::Window
 		@transfer = true
 		transitional_game_state(Transitional, :speed => 32)
 		blocks = [
-			[Level00, Level01]
+			[Level01, Level01]
 		]
 		@map = Map.new(:map =>blocks, :row => @level-1, :col => @block-1)
 		switch_game_state(@map.current)
-		self.caption = "Scene0"
+		self.caption = "Pangaburan 0.2"
 	end
 
   # --------------------------------------------------------------------------------
@@ -142,7 +149,8 @@ class Game < Chingu::Window
 				actor.ammo,
 				actor.level,
 				actor.damage, 
-				actor.subweapon
+				actor.subweapon,
+				actor.factor_x
 			]
 	end
 	
@@ -150,20 +158,39 @@ class Game < Chingu::Window
 		@actor_temp_data.clear
 	end
 
+	def clear_terrains
+		@terrains.clear
+		@bridges.clear
+		@decorations.clear
+	end
+
 	def clear_cache
-		@enzemies = []
-		@hazards = []
-		@items = []
+		@enemies.clear
+		@hazards.clear
+		@items.clear
+	end
+
+	def get_time
+		sec = (@frame % 60).to_i
+		min = (@frame % 3600).to_i
+		@second += 1 if sec == 0 and @frame > 59
+		if min == 0 and @frame > 3599
+			@minute += 1 
+			@second = 0
+		end
 	end
 	
 	def draw
-		scale(2) do
+		scale(SCALE) do
 		   super
 		end
 	end
 	
 	def update
-		@frame += 1 unless @paused
+		unless @paused
+			@frame += 1 
+			get_time
+		end
 		super
 	end
 end

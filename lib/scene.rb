@@ -33,8 +33,7 @@ class Scene < GameState
 		$window.clear_cache
 		@file = File.join(ROOT, "lib/levels/#{self.class.to_s.downcase}.yml")
 		player_start
-		@hud = HUD.create(:player => @player) # if @hud == nil
-
+		@hud = HUD.create(:player => @player)
 		# Orange::Music.start!
 
 		clear_game_terrains
@@ -42,16 +41,6 @@ class Scene < GameState
 
 		game_objects.select { |game_object| !game_object.is_a? Actor }.each { |game_object| game_object.destroy }
 		@map = load_game_objects(:file => @file) unless self.class.to_s == "Zero"
-		# for i in 0..$window.terrains.size
-		# 	@tiles += game_objects.grep($window.terrains[i])
-		# end
-		# for i in 0..$window.bridges.size
-		# 	@tiles += game_objects.grep($window.bridges[i])
-		# end
-		# for i in 0..$window.decorations.size
-		# 	@tiles += game_objects.grep($window.decorations[i])
-		# end
-		# game_objects.subtract_with(@tiles)
 		after(15) { 
 			$window.stop_transfer
 		}
@@ -66,18 +55,18 @@ class Scene < GameState
 			@tiles.each &:draw
 			$window.map.create_tiles(@area, @map)
 			@gridmap = GridMap.new
-			# p @gridmap.navpoints
 		end
 		@recorded_tilemap.draw 0, 0, 0
 		super
 	end
 	
 	def edit
-		push_game_state(GameStates::Edit.new(:file => @file, :grid => [8,8], :classes => [Chaser, Ground, GroundTiled, GroundLower, GroundLoop, Brick, Brick_Loop, Brick_Loop_Back, Brick_Window, Brick_Window_Small, Bridge_Wood] ))
+		push_game_state(Orange::Editor.new(:file => @file, :grid => [16,16], :area => @area, :classes => [Chaser, Brick, Pillar, Pillar_Back, Door] ))
 	end
 	
 	def clear_game_terrains
 		@tiles.each {|me| me.destroy}
+		$window.terrains.each {|me|me.destroy_all}
 		$window.hazards.each {|me|me.destroy_all}
 		$window.items.each {|me|me.destroy}
 	end
@@ -89,8 +78,8 @@ class Scene < GameState
 	
 	def restart
 		$window.start_event
+		$window.playing = false
 		clear_subweapon_projectile
-		clear_game_terrains
 		$window.reset_stage
 		$window.stop_event
 	end
@@ -108,14 +97,16 @@ class Scene < GameState
 		@player.reset_state($window.actor_temp_data)
 	end
 
-	# def record_position(object)
-	# 	x = (object.x / 16).to_i
-	# 	y = (object.y / 16).to_i
-	# 	object.save_pos [x,y]
-	# end
-	
+	def to_prev_block
+		@player.status = :blink
+		@player.sword.die if @player.sword != nil
+		$window.make_temp_data(@player)
+		$window.transfer
+		switch_game_state($window.map.prev_block)
+		$window.block += 1
+	end
+
 	def to_next_block
-		clear_game_terrains
 		@player.status = :blink
 		@player.sword.die if @player.sword != nil
 		$window.make_temp_data(@player)
@@ -127,12 +118,11 @@ class Scene < GameState
 	def to_next_level
 		@player.status = :blink
 		@player.sword.die if @player.sword != nil
-		clear_game_terrains
 		$window.make_temp_data(@player)
 		$window.transfer
 		switch_game_state($window.map.next_level)
 		$window.level += 1
-		$window.block  = 1
+		$window.block = 1
 	end
 	
 	def update
@@ -140,6 +130,11 @@ class Scene < GameState
 		super
 		@hud.update
 		self.viewport.center_around(@player) unless $window.passing_door
+		Batu.destroy_if {|knife| 
+			knife.x > self.viewport.x + $window.width/2 or 
+			knife.x < self.viewport.x or 
+			self.viewport.outside_game_area?(knife)
+		}
 		Knife.destroy_if {|knife| 
 			knife.x > self.viewport.x + $window.width/2 or 
 			knife.x < self.viewport.x or 

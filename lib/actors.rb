@@ -64,18 +64,19 @@ class Actor < Chingu::GameObject
 			:holding_down => :crouch,
 			:holding_up => :steady,
 			[:released_left, :released_right, :released_down, :released_up] => :stand,
-			:z => :jump
+			:z => :jump,
+			:x => :fire
 		}
 	end
 
 	def actor_parameters
 		@maxhp  = 16
 		@hp     = 0
-		@ammo   = 0
+		@ammo   = 10
 		@damage = 0
 		@level  = 0
 		@speed  = 1
-		@subweapon = :none
+		@subweapon = :batu
 	end
 
 	def actor_properties
@@ -104,7 +105,8 @@ class Actor < Chingu::GameObject
 		@ammo      = value[1] || 10
 		@level     = value[2] || 1
 		@damage    = value[3] || 1
-		@subweapon = value[4] || :none
+		@subweapon = value[4] || :batu
+		self.factor_x = value[5] || 1
 
 		@status = :stand; @action = :stand
 		@invincible = false
@@ -114,6 +116,14 @@ class Actor < Chingu::GameObject
 		@subattack = false
 
 		$window.clear_temp_data
+	end
+
+	def limit_subweapon
+		Batu.size >= Orange::ALLOWED_SUBWEAPON_THROWN || 
+		Knife.size >= Orange::ALLOWED_SUBWEAPON_THROWN || 
+		Axe.size >= Orange::ALLOWED_SUBWEAPON_THROWN || 
+		Torch.size >= Orange::ALLOWED_SUBWEAPON_THROWN || 
+		Rang.size >= Orange::ALLOWED_SUBWEAPON_THROWN
 	end
 
 	def record_pos
@@ -159,7 +169,7 @@ class Actor < Chingu::GameObject
 	end
 	
 	def at_edge?
-		@x < (bb.width/2)  || @x > parent.area[0]-(bb.width/2) unless blinking
+		@x < (bb.width/4)  || @x > parent.area[0]-(bb.width/4) unless blinking
 	end
 
 	def stand
@@ -374,8 +384,8 @@ class Actor < Chingu::GameObject
 			game_state.after(90) { 
 				@sword.die if @sword != nil
 				reset_state
+				$window.playing = false
 				$window.reset_stage
-				parent.clear_game_terrains
 			}
 		}
 	end
@@ -392,6 +402,7 @@ class Actor < Chingu::GameObject
 	def update
 		land?
 		adjust_speed
+		self.zorder = (@x / 16 * 2).to_i + ((parent.area[1] - @y) / 16).to_i + 4
 		@velocity_y = Orange::Environment::GRAV_CAP if @velocity_y > Orange::Environment::GRAV_CAP
 		if @x == @last_x
 			@running = false

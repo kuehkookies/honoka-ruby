@@ -40,7 +40,7 @@ class Chaser < Enemy
 	end
 
 	def create_character_frame
-		@character = Chingu::Animation.new( :file => "enemies/pcandi.png", :size => [32,32])
+		@character = Chingu::Animation.new( :file => "enemies/pcandi.png", :size => [40,32])
 		@character.frame_names = {
 			:stand => 0..2,
 			:step => 3..3,
@@ -64,7 +64,7 @@ class Chaser < Enemy
 		@invincible = false
 		@harmful = false
 		@hardened = false
-		@hp = 12
+		@hp = 3
 		@damage = 0
 		@speed = 2
 
@@ -99,8 +99,30 @@ class Chaser < Enemy
 		@y += y
 	end
 
+	def hit(weapon, x, y, side)
+		@status = :hurt
+		@action = :stand
+		unless die?
+			y -= 16 if weapon.is_a? Torch_Fire
+			Spark.create(:x => x, :y => y, :angle => rand(30)*side)
+			Sound["sfx/hit.wav"].play(0.5) if !@hardened
+			Sound["sfx/klang.wav"].play(0.3) if @hardened
+			@hp -= weapon.damage
+			knockback
+			after(4){die}
+		end
+	end
+
+	def knockback
+		return if @invincible
+		@invincible = true
+		@status = :hurt
+		@action = :stand
+		self.velocity_x = (self.factor_x*-1)
+		land?
+	end
+
 	def die
-		# pause!
 		if @hp <= 0
 			Misc_Flame.create(:x => self.x-6*self.factor_x, :y => self.y-(self.height/4) )
 			after(1){ Misc_Flame.create(:x => self.x+6*self.factor_x, :y => self.y-(self.height)/2) }
@@ -108,37 +130,59 @@ class Chaser < Enemy
 			@x += 0
 			@y += 0
 			@color.alpha = 128
-			after(5){destroy}
+			after(5){
+				@status = :dead
+				@image = character_frame(:die, :first)
+				@color.alpha = 255 
+			}
 		else
 			@invincible = true
-			after(Orange::INVULNERABLE_DURATION) { @invincible = false; } # unpause! }
+			empty_command
+			@velocity_x = 0
+			@velocity_y = 0
+			@image = character_frame(:crouch, :first)
+			after(300){
+				stand_still
+				@knocked = false
+				after(Orange::INVULNERABLE_DURATION) { 
+					@invincible = false; 
+				}
+			}
 		end
 	end
 
 	def update
 		super
 		land?
-		adjust_speed unless @pos.empty?
-		if in_sight @player
-			if in_position @target_pos
-				push_command([:stop]) 
-				pull_command
+		adjust_speed unless @pos.empty? or @knocked or dead
+		unless @knocked or dead
+			if in_sight @player
+				if in_position @target_pos
+					push_command([:stop]) 
+					pull_command
+				else
+					push_command([:get_waypoint, @player])
+					push_command([:move_to_target, @target_pos])
+					move_to @target_pos if @moving
+				end
 			else
-				push_command([:get_waypoint, @player])
-				push_command([:move_to_target, @target_pos])
-				move_to @target_pos if @moving
+				if in_sight @target_pos # @moving
+					push_command([:move_to_target, @target_pos])
+					move_to @target_pos
+				end
 			end
-		else
-			if in_sight @target_pos # @moving
-				push_command([:move_to_target, @target_pos])
-				move_to @target_pos
-			end
+			@image = character_frame(:walk, :first) if @velocity_y > Orange::Environment::GRAV_WHEN_LAND
+			@image = character_frame(:crouch, :first) if @velocity_y > Orange::Environment::GRAV_WHEN_LAND and disabled
 		end
 		if @velocity_y > Orange::Environment::GRAV_WHEN_LAND + 1 && !jumping && idle
 			@status = :fall unless disabled
 			@image = character_frame(13) if @velocity_y <= 3
 			@image = character_frame(:jump, :last) if @velocity_y > 3
 		end
-		@image = character_frame(:walk, :first) if @velocity_y > Orange::Environment::GRAV_WHEN_LAND
+		if dead
+			@image = character_frame(:die, :first)
+			@velocity_x = 0
+			@velocity_y = Orange::Environment::GRAV_WHEN_LAND
+		end
 	end
 end

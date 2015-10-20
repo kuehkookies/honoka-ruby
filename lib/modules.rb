@@ -76,26 +76,49 @@ module Chingu
 
 	class Viewport
 		def center_around(object)
-			self.x = object.x - ($window.width/2) / 2
-			self.y = object.y - ($window.height/2) / 2
+      if SCALE > 1
+        self.x = object.x - ($window.width/SCALE) / 2
+        self.y = object.y - ($window.height/SCALE) / 2
+      else
+        self.x = object.x - ($window.width/2) / 2
+        self.y = object.y - ($window.height/2) / 2
+      end
 		end
 		def x=(x)
 			@x = x
-      l_edge = @game_area.x
-      r_edge = @game_area.width-$window.width/2
-			if @game_area
-				@x = @game_area.x                     if @x < l_edge
-				@x = @game_area.width-$window.width/2 if @x > r_edge
-			end 
+      if SCALE <= 1
+        l_edge = @game_area.x
+        r_edge = @game_area.width-$window.width/2
+        if @game_area
+          @x = @game_area.x     if @x < l_edge
+          @x = @game_area.width-$window.width/2 if @x > r_edge
+        end 
+      else
+        l_edge = @game_area.x
+        r_edge = @game_area.width-$window.width/SCALE
+        if @game_area
+          @x = @game_area.x                         if @x < l_edge
+          @x = @game_area.width-$window.width/SCALE if @x > r_edge
+        end 
+      end 
 		end
 
 		def y=(y)
 			@y = y
-      u_edge = @game_area.y
-      d_edge = @game_area.height-$window.height/2
-			if @game_area
-				@y = @game_area.y                       if @y < u_edge
-				@y = @game_area.height-$window.height/2 if @y > d_edge
+      if SCALE <= 1
+        u_edge = @game_area.y
+        d_edge = @game_area.height-$window.height/2
+        if @game_area
+          @y = @game_area.y      if @y < u_edge
+          @y = @game_area.height-$window.height/2 if @y > d_edge
+        end
+      else
+        u_edge = @game_area.y
+        d_edge = @game_area.height-$window.height/SCALE
+  			if @game_area
+  				@y = @game_area.y                           if @y < u_edge
+  				@y = @game_area.height-$window.height/SCALE if @y > d_edge
+        end
 			end
 		end
 	end
@@ -367,6 +390,7 @@ class Map
             i = id
             j = id2 - 1
             next if j <= 1
+            next if j >= col.size - 1
             if has[i][j] > 0
               while i < row.size
                 p "Checking: #{[i,j]} -> #{has[i][j] > 0 and has[i][j] < 6 ? 'Found' : 'Not'}"

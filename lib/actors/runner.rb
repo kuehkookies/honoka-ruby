@@ -31,11 +31,58 @@ class Runner < Actor
 	def actor_parameters
 		@maxhp  = 16
 		@hp     = 0
-		@ammo   = 0
+		@ammo   = 10
 		@damage = 0
 		@level  = 0
 		@speed  = 1
-		@subweapon = :none
+		@subweapon = :batu
+	end
+
+	def fire
+		unless disabled or die?
+			if holding?(:up) and holding_subweapon?
+				unless attacking || crouching || limit_subweapon
+					# attack_sword if @ammo == 0
+					attack_subweapon if @ammo != 0
+				end
+			# else
+			# 	unless Sword.size >= 1
+			# 		attack_sword
+			# 	end
+			end
+		end
+	end
+	
+
+	def attack_subweapon
+		@action = :attack
+		@subattack = true
+		@image = character_frame(:shoot, 0)
+		between(6,12) { 
+			@image = character_frame(:shoot, 1)
+		}.then{
+			@image = character_frame(:shoot, 2)
+			@ammo -= 1
+			case @subweapon
+				when :batu
+					Batu.create(:x => @x+(10*factor_x), :y => @y-(self.height/2), :velocity => @direction, :factor_x => factor_x) unless Batu.size >= Orange::ALLOWED_SUBWEAPON_THROWN
+			end
+			Sound["sfx/swing.wav"].play
+		}
+		between(12,32) { 
+			@image = character_frame(:shoot, :last)
+			@image = character_frame(:crouch_shoot, :reset) if crouching
+		}.then {
+			@action = :stand
+			@status = :stand if steading
+			unless disabled
+				@image = character_frame(:stand, :first) if standing or steading
+				@image = character_frame(:crouch, :first) if crouching
+				@image = character_frame(:jump, :last) if jumping
+			end
+			character_frame(:shoot, :reset)
+			character_frame(:crouch_shoot, :reset)
+		}
 	end
 
 	def make_idle_animation
