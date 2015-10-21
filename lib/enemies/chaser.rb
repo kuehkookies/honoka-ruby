@@ -7,7 +7,7 @@
 # ==================================================================================
 
 class Chaser < Enemy
-	trait :bounding_box, :scale => [0.4, 0.8], :debug => false
+	trait :bounding_box, :scale => [0.5, 0.8], :debug => false
 
 	def setup
 		super
@@ -64,6 +64,7 @@ class Chaser < Enemy
 			@velocity_x = 0
 			@image = character_frame(:stand, :first)
 			@status = :stand
+			@action = :stand
 		end
 	end
 
@@ -132,21 +133,47 @@ class Chaser < Enemy
 		end
 	end
 
+	def attack
+		@action = :attack
+		between(0,6){
+			unless die?
+				@image = character_frame(:shoot, 0)
+			end
+		}.then{
+			unless die?
+				@image = character_frame(:shoot, 1)
+			end
+		}
+		between(9,30){
+			unless die?
+				@image = character_frame(:shoot, 2)
+			end
+		}.then{
+			unless die?
+				@image = character_frame(:shoot, 3)
+			end
+		}
+		after(60){ stand_still }
+	end
+
 	def update
 		super
 		land?
 		adjust_speed unless @pos.empty? or @knocked or dead
-		unless @knocked or dead
+		unless @knocked or dead or near_of @player
 			if in_position @target_pos
 				push_command([:stop]) 
 				pull_command
-			elsif in_sight @player
+			elsif in_sight @player and !near_of @player and
 				push_command([:get_waypoint, @player])
 				push_command([:move_to_target, @target_pos])
 				move_to @target_pos
-			elsif in_sight @target_pos
+			elsif in_sight @target_pos and !near_of @target_pos
 				push_command([:move_to_target, @target_pos])
 				move_to @target_pos
+			elsif near_of @player
+				push_command([:attack])
+				pull_command
 			end
 			@image = character_frame(:walk, :first) if @velocity_y > Orange::Environment::GRAV_WHEN_LAND
 			@image = character_frame(:crouch, :first) if @velocity_y > Orange::Environment::GRAV_WHEN_LAND and disabled

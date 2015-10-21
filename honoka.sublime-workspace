@@ -132,34 +132,18 @@
 			}
 		},
 		{
+			"file": "lib/levels/level01.map",
+			"settings":
+			{
+				"buffer_size": 676,
+				"line_ending": "Windows"
+			}
+		},
+		{
 			"file": "lib/level_editor.rb",
 			"settings":
 			{
 				"buffer_size": 22746,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "lib/misc/hud.rb",
-			"settings":
-			{
-				"buffer_size": 2420,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "lib/terrains.rb",
-			"settings":
-			{
-				"buffer_size": 1529,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "lib/misc/effects.rb",
-			"settings":
-			{
-				"buffer_size": 954,
 				"line_ending": "Windows"
 			}
 		},
@@ -176,14 +160,6 @@
 			"settings":
 			{
 				"buffer_size": 1148,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "lib/logics/pathfind.rb",
-			"settings":
-			{
-				"buffer_size": 2673,
 				"line_ending": "Windows"
 			}
 		},
@@ -215,7 +191,7 @@
 			"file": "lib/enemies.rb",
 			"settings":
 			{
-				"buffer_size": 17410,
+				"buffer_size": 17572,
 				"line_ending": "Windows"
 			}
 		},
@@ -223,7 +199,7 @@
 			"file": "lib/enemies/chaser.rb",
 			"settings":
 			{
-				"buffer_size": 4680,
+				"buffer_size": 4613,
 				"line_ending": "Windows"
 			}
 		},
@@ -281,6 +257,10 @@
 	],
 	"file_history":
 	[
+		"/F/share/rian nitip/honoka/lib/misc/hud.rb",
+		"/F/share/rian nitip/honoka/lib/terrains.rb",
+		"/F/share/rian nitip/honoka/lib/logics/pathfind.rb",
+		"/F/share/rian nitip/honoka/lib/misc/effects.rb",
 		"/F/share/rian nitip/honoka/lib/levels/level01.map",
 		"/F/share/rian nitip/honoka/lib/levels/level01.yml",
 		"/F/share/rian nitip/honoka/lib/level_editor.rb",
@@ -290,17 +270,14 @@
 		"/F/share/rian nitip/honoka/lib/weapons/subweapons.rb",
 		"/F/share/rian nitip/honoka/lib/levels/level00.yml",
 		"/F/share/rian nitip/honoka/lib/levels/level00.rb",
-		"/F/share/rian nitip/honoka/lib/misc/hud.rb",
 		"/F/share/rian nitip/honoka/lib/terrains/decorations.rb",
 		"/F/share/rian nitip/honoka/lib/terrains/solids.rb",
-		"/F/share/rian nitip/honoka/lib/terrains.rb",
 		"/F/share/rian nitip/honoka/lib/actors/runner.rb",
 		"/F/share/rian nitip/honoka/lib/enemies/chaser.rb",
 		"/F/share/rian nitip/honoka/lib/enemies.rb",
 		"/F/share/rian nitip/honoka/	from F",
 		"/F/share/rian nitip/_app/Ruby193/lib/ruby/gems/1.9.1/gems/chingu-0.9rc9/lib/chingu/traits/bounding_box.rb",
 		"/F/share/rian nitip/_app/Ruby193/lib/ruby/gems/1.9.1/gems/chingu-0.9rc9/lib/chingu/game_states/edit.rb",
-		"/F/share/rian nitip/honoka/lib/logics/pathfind.rb",
 		"/F/share/rian nitip/honoka/lib/enemies/chaser2.rb",
 		"/F/share/rian nitip/honoka/lib/logics/astar/AMap.rb",
 		"/F/share/rian nitip/_app/Ruby193/lib/ruby/gems/1.9.1/gems/chingu-0.9rc9/lib/chingu/helpers/game_object.rb",
@@ -368,6 +345,11 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"def in_pos",
+			"attacking",
+			"get_waypoint",
+			"target_pos",
+			"execute_command",
 			"dead",
 			"knockback",
 			"knock",
@@ -490,12 +472,7 @@
 			"== 1",
 			"?jumping?",
 			"jumping",
-			"target_",
-			"target",
-			"= nil",
-			" = nil",
-			"jump_",
-			"find_position"
+			"target_"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -538,8 +515,8 @@
 						"selection":
 						[
 							[
-								438,
-								438
+								661,
+								661
 							]
 						],
 						"settings":
@@ -549,7 +526,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 112.0,
+						"translation.y": 105.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -557,6 +534,34 @@
 				},
 				{
 					"buffer": 1,
+					"file": "lib/levels/level01.map",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 676,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								332,
+								332
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
 					"file": "lib/level_editor.rb",
 					"semi_transient": false,
 					"settings":
@@ -586,95 +591,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 2,
-					"file": "lib/misc/hud.rb",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2420,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								627,
-								627
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Ruby/Ruby.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
 					"buffer": 3,
-					"file": "lib/terrains.rb",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1529,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1352,
-								1393
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Ruby/Ruby.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 194.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "lib/misc/effects.rb",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 954,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								954,
-								954
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Ruby/Ruby.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 495.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 10,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
 					"file": "lib/weapons/subweapons.rb",
 					"semi_transient": false,
 					"settings":
@@ -699,11 +616,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
+					"stack_index": 5,
 					"type": "text"
 				},
 				{
-					"buffer": 6,
+					"buffer": 4,
 					"file": "lib/terrains/solids.rb",
 					"semi_transient": false,
 					"settings":
@@ -727,41 +644,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 4,
 					"type": "text"
 				},
 				{
-					"buffer": 7,
-					"file": "lib/logics/pathfind.rb",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2673,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								86,
-								86
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Ruby/Ruby.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 8,
-					"type": "text"
-				},
-				{
-					"buffer": 8,
+					"buffer": 5,
 					"file": "lib/modules.rb",
 					"semi_transient": false,
 					"settings":
@@ -791,7 +678,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 9,
+					"buffer": 6,
 					"file": "lib/actors.rb",
 					"semi_transient": false,
 					"settings":
@@ -816,11 +703,11 @@
 						"translation.y": 39.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 10,
 					"type": "text"
 				},
 				{
-					"buffer": 10,
+					"buffer": 7,
 					"file": "lib/actors/runner.rb",
 					"semi_transient": false,
 					"settings":
@@ -832,8 +719,8 @@
 						"selection":
 						[
 							[
-								1071,
-								1071
+								658,
+								658
 							]
 						],
 						"settings":
@@ -846,24 +733,24 @@
 						"translation.y": 275.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 9,
+					"stack_index": 8,
 					"type": "text"
 				},
 				{
-					"buffer": 11,
+					"buffer": 8,
 					"file": "lib/enemies.rb",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 17410,
+						"buffer_size": 17572,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								5649,
-								5649
+								13274,
+								13274
 							]
 						],
 						"settings":
@@ -872,27 +759,27 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 7062.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 12,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
-					"buffer": 12,
+					"buffer": 9,
 					"file": "lib/enemies/chaser.rb",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4680,
+						"buffer_size": 4613,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3507,
-								3507
+								3865,
+								3865
 							]
 						],
 						"settings":
@@ -901,14 +788,14 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1762.0,
+						"translation.y": 2301.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 13,
+					"stack_index": 7,
 					"type": "text"
 				},
 				{
-					"buffer": 13,
+					"buffer": 10,
 					"file": "lib/scene.rb",
 					"semi_transient": false,
 					"settings":
@@ -934,7 +821,7 @@
 						"translation.y": 719.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 11,
+					"stack_index": 9,
 					"type": "text"
 				}
 			]

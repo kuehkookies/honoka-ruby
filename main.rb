@@ -12,7 +12,7 @@ Dir[File.dirname(__FILE__) + '/lib/*/*/*.rb'].each {|file| require file }
 
 include AStar
 
-SCALE = 3
+SCALE = 1
 
 # ==================================================================================
 # Main stage is here!
