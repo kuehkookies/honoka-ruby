@@ -72,6 +72,7 @@ class Enemy < GameObject
 		@y_flag = @y
 		
 		@pos = []
+		@paths = nil
 		@target_pos = nil
 
 		@command = []
@@ -272,8 +273,21 @@ class Enemy < GameObject
 		return if parent.gridmap.tiles[@pos] == 6
 		unless die?
 			path = parent.gridmap.find_path_astar @pos, target.pos
-			@target_pos = get_nearest_waypoint path, target # if parent.gridmap.on_move_route target
+			@paths = get_waypoints path, target
+			@target_pos = get_nearest_waypoint path, target
+			# @target_pos = get_nearest_waypoint path, target # if parent.gridmap.on_move_route target
 		end
+	end
+
+	def get_waypoints(path, target)
+		return if path.nil?
+		return if path.empty?
+		prath = []
+		prath.push target.pos
+		path.each do |pa|
+			prath.push pa if parent.gridmap.navpoints.include? pa
+		end
+		return prath.uniq
 	end
 
 	def get_nearest_waypoint(path, target)
@@ -283,38 +297,49 @@ class Enemy < GameObject
 		return target.pos if @pos == target.pos
 		path.pop
 		result = path[0]
-		# path.each_with_index do |pa, i|
-		# 	if parent.gridmap.on_move_route pa
-		# 		result = pa
-		# 		break
-		# 	end
-		# end
-		# if result[1] != @pos[1] and (get_nearest(result[0], @pos[0]) > 8 or get_nearest(result[1], @pos[1]) > 2)
-		# 	a = get_farthest_waypoint(path)
-		# 	b = get_alternate_waypoint(target)
-		# 	if parent.gridmap.tiles[target.pos] == 6
-		# 		result = a
-		# 	elsif a.empty? or b.empty?
-		# 		result = a if b.empty?
-		# 		result = b if a.empty?
-		# 	else
-		# 		result = get_nearest(a[1], @pos[1]) < get_nearest(b[1], target.pos[1]) ? a : b
-		# 	end
-		# end
+		alt1 = get_farthest_waypoint(path, target)
+		alt2 = get_alternate_waypoint(target)
 		if get_nearest(result[0], @pos[0]) > 8 or get_nearest(result[1], @pos[1]) > 2
-			result = get_farthest_waypoint(path, target)
-			result = get_alternate_waypoint(target) if result[1] > 2
-		else
-			path.each_with_index do |pa, i|
-				if parent.gridmap.on_move_route pa
-					result = pa
-					break
-				end
+			return alt1 if alt2.nil? or alt2.empty?
+			return alt2 if alt1.nil? or alt1.empty?
+			if parent.gridmap.tiles[target.pos] == 6
+				result = alt1
+			else
+				result = get_nearest(alt1[1], @pos[1]) < get_nearest(alt2[1], @pos[1]) ? alt1 : alt2
 			end
 		end
-		# p "#{a} | #{b} | [Result : #{result}], pos = #{@pos} #{parent.gridmap.tiles[@pos]} : #{@player.pos} #{parent.gridmap.tiles[@player.pos]}"
+		p "#{path} -> #{result} | #{alt1} | #{alt2} | #{@pos}, #{jump_is_necessary}"
 		return result
 	end
+
+	# def get_nearest_waypoint(path, target)
+	# 	return if path.nil?
+	# 	return if path.empty?
+	# 	return if parent.gridmap.tiles[target.pos] == 0
+	# 	return target.pos if @pos == target.pos
+	# 	path.pop
+	# 	result = path[0]
+	# 	path.each_with_index do |pa, i|
+	# 		if parent.gridmap.on_move_route pa
+	# 			result = pa
+	# 			break
+	# 		end
+	# 	end
+	# 	if result[1] != @pos[1] and (get_nearest(result[0], @pos[0]) > 8 or get_nearest(result[1], @pos[1]) > 2)
+	# 		a = get_farthest_waypoint(path, target)
+	# 		b = get_alternate_waypoint(target)
+	# 		if parent.gridmap.tiles[target.pos] == 6
+	# 			result = a
+	# 		elsif a.empty? or b.empty?
+	# 			result = a if b.empty?
+	# 			result = b if a.empty?
+	# 		else
+	# 			result = get_nearest(a[1], @pos[1]) < get_nearest(b[1], @pos[1]) ? a : b
+	# 		end
+	# 	end
+	# 	p "#{a} | #{b} | [Result : #{result}], pos = #{@pos} #{parent.gridmap.tiles[@pos]} : #{@player.pos} #{parent.gridmap.tiles[@player.pos]}"
+	# 	return result
+	# end
 
 	def get_farthest_waypoint(path, target)
 		farthest = nil
@@ -356,7 +381,7 @@ class Enemy < GameObject
 			next if point.empty?
 		   	next if point[0] == 0 or point[0] == parent.gridmap.map_width
 		   	next if point[1] == 0 or point[1] == parent.gridmap.map_height
-			if get_nearest(@pos[0], point[0]) < 12 and get_nearest(@pos[1], point[1]) < 4
+			if get_nearest(@pos[0], point[0]) < 8 and get_nearest(@pos[1], point[1]) < 4
 				presult.push point
 			end
 		end
@@ -368,10 +393,9 @@ class Enemy < GameObject
 				   (nearest_y.nil? or get_nearest(target[1], res[1]) < nearest_y)
 					nearest_x = get_nearest(target[0], res[0])
 					nearest_y = get_nearest(target[1], res[1])
-					result = res # if waypoint_in_course? res
+					result = res if waypoint_in_course? res
 				end
 			end
-			p presult, target, result
 			return result
 		end
 	end
@@ -436,12 +460,11 @@ class Enemy < GameObject
 	end
 
 	def need_jump(target)
-		need = false 
 		if in_map and not @jumping and moving
-			need = true if jump_is_necessary # and @velocity_x.abs > 0.2
-			need = true if target.is_a? Actor and target.jumping and in_position @target_pos
+			return true if jump_is_necessary # and @velocity_x.abs > 0.2
+			return true if target.is_a? Actor and target.jumping and in_position target
 		end
-		return need
+		return false
 	end
 
 	def jump_is_necessary
@@ -453,10 +476,10 @@ class Enemy < GameObject
 		return false if parent.gridmap.tiles[[@pos[0],@pos[1]-2]].nil? or 
 						parent.gridmap.tiles[[@pos[0],@pos[1]-2]] == 0
 		if x == previous_x and !in_position @target_pos
-			for i in @pos[0]-1...@pos[0]+1
+			for i in @pos[0]-1..@pos[0]+1
 				next if i >= @pos[0] and in_left_of @target_pos
 				next if i <= @pos[0] and in_right_of @target_pos
-				for j in @pos[1]-3...@pos[1]-1
+				for j in @pos[1]-3..@pos[1]-1
 					return true if parent.gridmap.tiles[[i,j]] != 0
 				end
 			end
@@ -576,13 +599,13 @@ class Enemy < GameObject
 			@velocity_x += 0.1 if in_right_of @target_pos
 			@velocity_x = @speed if @velocity_x > @speed; @velocity_x = -@speed if @velocity_x < -@speed
 			if near_of @target_pos
-				@velocity_x += 0.2 if @velocity_x < 0; @velocity_x -= 0.2 if @velocity_x > 0
+				@velocity_x += 0.3 if @velocity_x < 0; @velocity_x -= 0.3 if @velocity_x > 0
 				if @velocity_x.abs < 0.2 #fix
 					stand_still 
 				end
 			end
 		else
-			@velocity_x += 0.2 if @velocity_x < 0; @velocity_x -= 0.2 if @velocity_x > 0
+			@velocity_x += 0.3 if @velocity_x < 0; @velocity_x -= 0.3 if @velocity_x > 0
 			if @velocity_x.abs < 0.2 #fix
 				stand_still 
 			end
@@ -627,21 +650,23 @@ class Enemy < GameObject
 		case @command[0][0]
 			when :idle
 				@moving = false
+				@paths.shift
 				@target_pos = nil
 				stand_still
 			when :attack
 				@moving = false
+				@paths.shift
 				@target_pos = nil
 				attack unless attacking
 			when :get_waypoint
 				return if in_position @command[0][1]
 				get_waypoint @command[0][1] # produces @target_pos value
-				check_position @target_pos, true
 			when :move_to_target
 				check_position @target_pos, true
 				@moving = true
 			when :stop
 				@moving = false
+				@paths.shift
 				@target_pos = nil
 		end
 		@current_command = @command[0][0]
@@ -670,7 +695,6 @@ class Enemy < GameObject
 			@image = character_frame(:jump, :last) if @velocity_y > 3
 		end
 		check_collision
-		execute_command unless attacking
-
+		execute_command 
 	end
 end

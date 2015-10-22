@@ -1,7 +1,7 @@
 class Level01 < Scene
 	def setup		
 		super
-		@area = [400,192]
+		@area = [512,192]
 		@player.x = 32 # self.viewport.x+(@player.bb.width/2)+16 # 32
 		@player.y = 136 # 246
 		@player.y_flag = @player.y

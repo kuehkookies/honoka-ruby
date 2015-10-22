@@ -292,8 +292,9 @@ class Map
     end
     name.uniq!
     tiles.each do |tile|
-      clas = Object.const_get(tile.keys[0]).to_s
-      next if name.include?(clas)
+      clas = Object.const_get(tile.keys[0])
+      next unless clas.superclass == Solid
+      next if name.include?(clas.to_s)
       x = (tile.values[0].values_at(:x)[0] / 16).to_i
       y = (tile.values[0].values_at(:y)[0] / 16).to_i
       has[y][x] = 0

@@ -71,7 +71,7 @@ class Game < Chingu::Window
 		]
 		@map = Map.new(:map =>blocks, :row => @level-1, :col => @block-1)
 		switch_game_state(@map.current)
-		self.caption = "Pangaburan 0.2"
+		self.caption = "Pangaburan 0.1"
 	end
 
   # --------------------------------------------------------------------------------
